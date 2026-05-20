@@ -1194,7 +1194,7 @@ const TESTIMONIALS = [
   { name: "Marina, 52 anos", quote: "Dormi a noite toda pela primeira vez em 3 anos!" },
   { name: "Beatriz, 48 anos", quote: "Meu peso normalizou sem fazer dieta maluca" },
   { name: "Carla, 51 anos", quote: "Meu marido perguntou se eu estava feliz novamente" },
-  { name: "+8.247 mulheres", quote: "já transformaram suas vidas", icon: "👥" },
+  { name: "+8.247 mulheres", quote: "Já transformaram suas vidas com o nosso plano" },
 ];
 
 function ProcessingPage() {
