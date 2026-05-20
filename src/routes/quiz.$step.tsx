@@ -333,13 +333,26 @@ function QuizStep() {
 
         <QuizHeader />
 
-        <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
-          {q.title}
-        </h2>
-        {q.subtitle && (
-          <p className="text-[14px] text-[#999] text-center mb-8">
-            {q.subtitle}
-          </p>
+        {q.type === 'scale' ? (
+          <>
+            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-0 text-center">
+              {q.title}
+            </h2>
+            <h2 className="font-bold text-[20px] text-[#E85D8C] mb-8 text-center">
+              {q.subtitle}
+            </h2>
+          </>
+        ) : (
+          <>
+            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
+              {q.title}
+            </h2>
+            {q.subtitle && (
+              <p className="text-[14px] text-[#999] text-center mb-8">
+                {q.subtitle}
+              </p>
+            )}
+          </>
         )}
 
         {/* Options */}
