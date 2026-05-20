@@ -1885,10 +1885,10 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
   {
     id: "basico",
     label: "Se você quer testar primeiro",
-    labelColor: "#999",
+    labelColor: "#8B7300",
     name: "Básico",
     price: "R$ 1,99",
-    priceColor: "#E85D8C",
+    priceColor: "#B8941F",
     description:
       "Acesso ao app. Sem compromisso. Perfeito para entender como funciona.",
     features: [
@@ -1899,22 +1899,22 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     ],
     cta: "COMEÇAR COM BÁSICO",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/9NVEioxO8XP9XuebnhBn",
-    cardBg: "#FFFFFF",
-    border: "#E0E0E0",
+    cardBg: "#FFFDF5",
+    border: "#E8D27A",
     borderWidth: 2,
-    shadow: "0 2px 8px rgba(0,0,0,0.05)",
-    divider: "#E0E0E0",
-    btnBg: "#E85D8C",
-    btnHover: "#D64B7A",
+    shadow: "0 2px 10px rgba(184,148,31,0.10)",
+    divider: "#E8D27A",
+    btnBg: "linear-gradient(135deg,#D4AF37 0%,#F0CE5A 50%,#B8941F 100%)",
+    btnHover: "linear-gradient(135deg,#B8941F 0%,#D4AF37 50%,#8B7300 100%)",
   },
   {
     id: "premium",
-    label: "Opção mais escolhida",
-    labelColor: "#E85D8C",
+    label: "★ Opção mais escolhida",
+    labelColor: "#8B6508",
     name: "Premium",
     subheading: "Para transformação real",
     price: "R$ 9,89",
-    priceColor: "#E85D8C",
+    priceColor: "#8B6508",
     description:
       "O plano completo. Tudo que você precisa para transformar. 67% das mulheres escolhem este.",
     features: [
@@ -1926,22 +1926,22 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     ],
     cta: "ESCOLHER PREMIUM",
     checkoutUrl: "https://ggcheckout.app/checkout/v2/3B8zcUXZYtwguGI98R0f",
-    cardBg: "#FFFFFF",
-    border: "#E85D8C",
+    cardBg: "linear-gradient(180deg,#FFFBEA 0%,#FFF1C2 100%)",
+    border: "#C9A227",
     borderWidth: 3,
-    shadow: "0 4px 16px rgba(232,93,140,0.15)",
-    divider: "#E85D8C",
-    btnBg: "#E85D8C",
-    btnHover: "#D64B7A",
+    shadow: "0 8px 24px rgba(201,162,39,0.28)",
+    divider: "#C9A227",
+    btnBg: "linear-gradient(135deg,#B8860B 0%,#F0D070 45%,#D4AF37 100%)",
+    btnHover: "linear-gradient(135deg,#8B6508 0%,#D4AF37 45%,#B8860B 100%)",
   },
   {
     id: "vip",
     label: "Para quem quer máximo suporte",
-    labelColor: "#9333EA",
+    labelColor: "#7A5C00",
     name: "VIP Total",
     subheading: "Transformação com acompanhamento",
     price: "R$ 29,90",
-    priceColor: "#9333EA",
+    priceColor: "#7A5C00",
     description:
       "Tudo do Premium + comunidade + consultora. Para quando você quer ajuda no caminho.",
     features: [
@@ -1953,13 +1953,13 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     ],
     cta: "ESCOLHER VIP",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
-    cardBg: "#F3E8FF",
-    border: "#9333EA",
+    cardBg: "linear-gradient(180deg,#FFF8E1 0%,#F5E6A8 100%)",
+    border: "#B8860B",
     borderWidth: 2,
-    shadow: "0 2px 8px rgba(147,51,234,0.1)",
-    divider: "#9333EA",
-    btnBg: "#9333EA",
-    btnHover: "#7E22CE",
+    shadow: "0 4px 16px rgba(184,134,11,0.18)",
+    divider: "#B8860B",
+    btnBg: "linear-gradient(135deg,#8B6508 0%,#D4AF37 50%,#B8860B 100%)",
+    btnHover: "linear-gradient(135deg,#7A5C00 0%,#B8941F 50%,#8B6508 100%)",
   },
 ];
 
@@ -2028,13 +2028,46 @@ function SalesPage() {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .plan-card { animation: cardSlide 0.5s ease-out both; transition: transform 0.3s ease; }
+        @keyframes goldShimmer {
+          0% { background-position: -200% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+        @keyframes goldPulse {
+          0%, 100% { box-shadow: 0 4px 14px rgba(184,134,11,0.35), 0 0 0 0 rgba(212,175,55,0.55); }
+          50% { box-shadow: 0 6px 20px rgba(184,134,11,0.55), 0 0 0 8px rgba(212,175,55,0); }
+        }
+        .plan-card { animation: cardSlide 0.5s ease-out both; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .plan-card:nth-child(1) { animation-delay: 0.1s; }
         .plan-card:nth-child(2) { animation-delay: 0.3s; }
         .plan-card:nth-child(3) { animation-delay: 0.5s; }
-        .plan-card:hover { transform: translateY(-2px); }
+        .plan-card:hover { transform: translateY(-3px); }
+        .cta-gold {
+          position: relative;
+          overflow: hidden;
+          background-size: 200% 200% !important;
+          animation: goldShimmer 3.5s linear infinite;
+          box-shadow: 0 4px 14px rgba(184,134,11,0.30);
+          text-shadow: 0 1px 1px rgba(0,0,0,0.18);
+          letter-spacing: 0.5px;
+        }
+        .cta-gold::after {
+          content: "";
+          position: absolute;
+          top: 0; left: -75%;
+          width: 50%; height: 100%;
+          background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+          transform: skewX(-20deg);
+          animation: shine 2.8s ease-in-out infinite;
+        }
+        @keyframes shine {
+          0% { left: -75%; }
+          60%, 100% { left: 125%; }
+        }
+        .cta-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 22px rgba(184,134,11,0.45); }
+        .cta-premium-pulse { animation: goldShimmer 3.5s linear infinite, goldPulse 2.2s ease-in-out infinite; }
         .faq-item { transition: all 0.3s ease; }
       `}</style>
+
 
       {/* Top bar */}
       <div className="sticky top-0 z-10 bg-white px-3 pt-3 pb-2 border-b border-[#F0E0E8]">
@@ -2167,27 +2200,25 @@ function SalesPage() {
               </div>
               <button
                 onClick={() => handleBuy(plan)}
+                className={`cta-gold ${plan.id === "premium" ? "cta-premium-pulse" : ""}`}
                 style={{
                   width: "100%",
-                  height: plan.id === "premium" ? 48 : 44,
+                  height: plan.id === "premium" ? 50 : 46,
                   background: plan.btnBg,
                   color: "#FFFFFF",
-                  border: "none",
+                  border: "1px solid rgba(139,101,8,0.5)",
                   borderRadius: 10,
                   fontSize: 14,
-                  fontWeight: 700,
+                  fontWeight: 800,
                   cursor: "pointer",
                   marginTop: 20,
-                  transition: "background 0.3s ease, transform 0.3s ease",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = plan.btnHover;
-                  if (plan.id === "premium")
-                    e.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = plan.btnBg;
-                  e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
                 {plan.cta}
