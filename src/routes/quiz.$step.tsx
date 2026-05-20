@@ -455,6 +455,15 @@ function QuizStep() {
         return;
       }
     }
+    // Multi-select with count-based popups
+    if (isMulti && q.countPopupRanges) {
+      const count = selectedMulti.length;
+      const range = q.countPopupRanges.find((r) => count >= r.min && count <= r.max);
+      if (range) {
+        setActivePopup(range.popup(count));
+        return;
+      }
+    }
     // If this question has scale popup ranges, show the matching popup
     if (q.type === 'scale' && q.scalePopupRanges) {
       const range = q.scalePopupRanges.find(
@@ -481,7 +490,13 @@ function QuizStep() {
     }
   };
 
-  const hasSelection = q.type === 'scale' ? true : isMulti ? selectedMulti.length > 0 : !!selectedSingle;
+  const hasSelection =
+    q.type === 'scale' || q.multiSelectOptional
+      ? true
+      : isMulti
+      ? selectedMulti.length > 0
+      : !!selectedSingle;
+  const showMultiHint = isMulti && q.multiSelectOptional && selectedMulti.length < 2;
 
   return (
     <div
