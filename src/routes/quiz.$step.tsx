@@ -2037,136 +2037,277 @@ function SalesPage() {
         </div>
       </section>
 
-      {/* SECTION 4 — Pricing cards */}
-      <section ref={cardsRef} style={{ padding: "0 16px 24px" }}>
+      {/* SECTION 4 — Pricing cards (Dark theme) */}
+      <section
+        ref={cardsRef}
+        style={{
+          background: "linear-gradient(180deg, #050505 0%, #0A0A0A 100%)",
+          padding: "32px 16px 40px",
+        }}
+      >
+        <style>{`
+          @keyframes ctaShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+          }
+          @keyframes ctaPulse {
+            0%, 100% { box-shadow: 0 6px 20px rgba(232,93,140,0.45), 0 0 0 0 rgba(232,93,140,0.6); }
+            50% { box-shadow: 0 6px 28px rgba(232,93,140,0.7), 0 0 0 8px rgba(232,93,140,0); }
+          }
+          @keyframes badgePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.75; }
+          }
+          .cta-shine {
+            background: linear-gradient(90deg, #E85D8C 0%, #FF6B9D 25%, #FFB347 50%, #FF6B9D 75%, #E85D8C 100%);
+            background-size: 200% auto;
+            animation: ctaShimmer 3s linear infinite, ctaPulse 2.4s ease-in-out infinite;
+            transition: transform 0.2s ease;
+          }
+          .cta-shine:hover { transform: translateY(-2px) scale(1.02); }
+          .countdown-pill { animation: badgePulse 1.8s ease-in-out infinite; }
+        `}</style>
+
+        {/* Countdown header */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+          <div
+            className="countdown-pill"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "rgba(232,93,140,0.12)",
+              border: "1px solid rgba(232,93,140,0.4)",
+              color: "#FFB347",
+              fontSize: 12,
+              fontWeight: 700,
+              padding: "8px 14px",
+              borderRadius: 999,
+            }}
+          >
+            <span>⏱️</span>
+            <span>Disponibilidade desta condição:</span>
+            <span style={{ color: "#FF6B9D", fontVariantNumeric: "tabular-nums" }}>
+              {countdownLabel}
+            </span>
+          </div>
+        </div>
+
+        {/* "Pegadinha" intro card */}
+        <div
+          style={{
+            background: "#0F0F0F",
+            border: "1px solid #2A2A2A",
+            borderRadius: 16,
+            padding: 20,
+            marginBottom: 20,
+            color: "#E5E5E5",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: "#FFFFFF",
+              margin: "0 0 10px",
+              lineHeight: 1.35,
+            }}
+          >
+            "Por que o Plano Básico custa apenas <span style={{ color: "#FFB347" }}>R$ 1,99</span>? Qual é a pegadinha?"
+          </h3>
+          <p style={{ fontSize: 13, color: "#B5B5B5", lineHeight: 1.6, margin: 0 }}>
+            Não tem pegadinha. Eu decidi liberar a Jornada Base por um valor
+            simbólico porque sei que você provavelmente já gastou dinheiro com
+            suplementos e promessas que não funcionaram. Eu quero que você
+            instale o app, teste o método por si mesma e sinta os primeiros
+            alívios. Se fizer sentido, no checkout você pode destravar Premium
+            ou VIP para acelerar. Se não fizer, você está protegida pela
+            <b style={{ color: "#FFFFFF" }}> Garantia incondicional de 7 dias.</b>
+          </p>
+        </div>
+
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {SALES_PLANS.map((plan) => (
-            <div
-              key={plan.id}
-              style={{
-                position: "relative",
-                background: plan.cardBg,
-                border: `${plan.borderWidth}px solid ${plan.borderColor}`,
-                borderRadius: 16,
-                padding: 20,
-                boxShadow: plan.shadow,
-                transition: "all 0.3s ease",
-              }}
-            >
-              {/* Badge */}
+          {SALES_PLANS.map((plan) => {
+            const isPremium = plan.id === "premium";
+            const isVip = plan.id === "vip";
+            return (
               <div
+                key={plan.id}
                 style={{
-                  display: "inline-block",
-                  background:
-                    plan.badgeStyle === "primary" ? "#E85D8C" : "#FFE5ED",
-                  color: plan.badgeStyle === "primary" ? "#FFFFFF" : "#E85D8C",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  padding:
-                    plan.badgeStyle === "primary" ? "8px 14px" : "6px 12px",
-                  borderRadius: 20,
-                  marginBottom: 12,
+                  position: "relative",
+                  background: plan.cardBg,
+                  border: `${plan.borderWidth}px solid ${plan.borderColor}`,
+                  borderRadius: 16,
+                  padding: "22px 20px",
+                  boxShadow: plan.shadow,
+                  transition: "all 0.3s ease",
+                  overflow: "hidden",
                 }}
               >
-                {plan.badge}
-              </div>
-
-              {plan.ribbon && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 12,
-                    right: 12,
-                    background: "#4CAF50",
-                    color: "#FFFFFF",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    padding: "4px 10px",
-                    borderRadius: 4,
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  {plan.ribbon}
-                </div>
-              )}
-
-              <h3
-                style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: "#2C2C2C",
-                  margin: "0 0 8px",
-                }}
-              >
-                {plan.name}
-              </h3>
-              <div
-                style={{
-                  fontSize: 36,
-                  fontWeight: 700,
-                  color: "#E85D8C",
-                  lineHeight: 1.1,
-                  marginBottom: 4,
-                }}
-              >
-                {plan.price}
-              </div>
-              <div style={{ fontSize: 12, color: "#999", marginBottom: 20 }}>
-                {plan.priceNote}
-              </div>
-
-              <div
-                style={{
-                  height: 1,
-                  background: plan.highlight ? "#E85D8C" : "#E0E0E0",
-                  margin: "20px 0",
-                }}
-              />
-
-              <div style={{ fontSize: 14, color: "#2C2C2C", lineHeight: 1.6 }}>
-                {plan.features.map((f, i) => (
-                  <div
-                    key={i}
+                {/* Top ribbons row */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+                  {plan.ribbon && (
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        background: isPremium
+                          ? "linear-gradient(135deg, #FFB347 0%, #FF8C42 100%)"
+                          : "linear-gradient(135deg, #C084FC 0%, #8B5CF6 100%)",
+                        color: "#0A0A0A",
+                        fontSize: 10,
+                        fontWeight: 800,
+                        padding: "4px 10px",
+                        borderRadius: 4,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {isVip && <span style={{ marginRight: 4 }}>⊕</span>}
+                      {plan.ribbon}
+                    </span>
+                  )}
+                  <span
                     style={{
-                      marginBottom: 12,
-                      fontWeight: f.emphasis ? 700 : 400,
-                      color: f.emphasis ? "#E85D8C" : "#2C2C2C",
+                      display: "inline-block",
+                      background: "linear-gradient(135deg, #FF4D6D 0%, #C9184A 100%)",
+                      color: "#FFFFFF",
+                      fontSize: 10,
+                      fontWeight: 800,
+                      padding: "4px 10px",
+                      borderRadius: 4,
+                      letterSpacing: 0.5,
                     }}
                   >
-                    <Check />
-                    {f.text}
-                  </div>
-                ))}
-              </div>
+                    {plan.badge}
+                  </span>
+                </div>
 
-              <button
-                onClick={() => handleBuy(plan)}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "#D64B7A")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "#E85D8C")
-                }
-                style={{
-                  width: "100%",
-                  height: 48,
-                  background: "#E85D8C",
-                  color: "#FFFFFF",
-                  fontSize: 16,
-                  fontWeight: 700,
-                  border: "none",
-                  borderRadius: 8,
-                  cursor: "pointer",
-                  marginTop: 24,
-                  transition: "all 0.3s ease",
-                }}
-              >
-                COMPRAR AGORA →
-              </button>
-            </div>
-          ))}
+                <h3
+                  style={{
+                    fontSize: 22,
+                    fontWeight: 800,
+                    color: "#FFFFFF",
+                    margin: "0 0 4px",
+                  }}
+                >
+                  {plan.name}
+                </h3>
+                {plan.id === "basico" && (
+                  <div style={{ fontSize: 11, color: "#888", marginBottom: 6 }}>
+                    Valor real R$ 97
+                  </div>
+                )}
+
+                {/* Per-card countdown */}
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,179,71,0.3)",
+                    color: "#FFB347",
+                    fontSize: 11,
+                    fontWeight: 600,
+                    padding: "4px 10px",
+                    borderRadius: 999,
+                    marginBottom: 12,
+                  }}
+                >
+                  <span>⏱️</span>
+                  <span>Disponível por:</span>
+                  <span style={{ color: "#FF6B9D", fontVariantNumeric: "tabular-nums" }}>
+                    {countdownLabel}
+                  </span>
+                </div>
+
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "#A0A0A0",
+                    lineHeight: 1.5,
+                    margin: "0 0 16px",
+                  }}
+                >
+                  {plan.priceNote}
+                </p>
+
+                <div
+                  style={{
+                    fontSize: 40,
+                    fontWeight: 800,
+                    background: "linear-gradient(135deg, #FFB347 0%, #FF6B9D 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1.1,
+                    marginBottom: 18,
+                  }}
+                >
+                  {plan.price}
+                </div>
+
+                <div style={{ fontSize: 13, color: "#D5D5D5", lineHeight: 1.6 }}>
+                  {plan.features.map((f, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 8,
+                        marginBottom: 10,
+                        fontWeight: f.emphasis ? 700 : 400,
+                        color: f.emphasis ? "#FFB347" : "#D5D5D5",
+                      }}
+                    >
+                      <span style={{ color: "#FF6B9D", marginTop: 1 }}>✦</span>
+                      <span>{f.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "#888",
+                    lineHeight: 1.5,
+                    marginTop: 16,
+                    marginBottom: 16,
+                  }}
+                >
+                  <b style={{ color: "#B5B5B5" }}>Para quem é:</b>{" "}
+                  {plan.id === "basico" &&
+                    "Para conhecer o método com segurança, criar rotina e mapear seus sintomas no app."}
+                  {plan.id === "premium" &&
+                    "Para quem quer ferramentas de ação rápida quando a crise bate, sem depender de força de vontade."}
+                  {plan.id === "vip" &&
+                    "Para quem não quer passar por isso sozinha e quer suporte, direção e continuidade."}
+                </div>
+
+                <button
+                  onClick={() => handleBuy(plan)}
+                  className="cta-shine"
+                  style={{
+                    width: "100%",
+                    height: 50,
+                    color: "#FFFFFF",
+                    fontSize: 14,
+                    fontWeight: 800,
+                    letterSpacing: 0.5,
+                    border: "none",
+                    borderRadius: 10,
+                    cursor: "pointer",
+                  }}
+                >
+                  GARANTIR MINHA VAGA AGORA
+                </button>
+              </div>
+            );
+          })}
         </div>
       </section>
+
+
 
       {/* SECTION 6 — Guarantee */}
       <section style={{ padding: "0 16px 32px" }}>
