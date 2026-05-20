@@ -2396,6 +2396,7 @@ function SalesPage() {
                       borderLeft: "3px solid #E85D8C",
                       borderRight: "1px solid #E85D8C",
                       borderBottom: "1px solid #E85D8C",
+                      whiteSpace: "pre-line",
                     }}
                   >
                     {item.a}
