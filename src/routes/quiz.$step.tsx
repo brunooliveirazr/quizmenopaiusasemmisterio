@@ -639,7 +639,7 @@ const QUESTIONS: Record<string, Question> = {
   },
   "18": {
     title: "Como você nos conheceu?",
-    subtitle: "(Seu nome e como chegou aqui)",
+    subtitle: "(Para finalizar, qual seu nome?)",
     type: 'select',
     optional: true,
     options: [
@@ -650,6 +650,9 @@ const QUESTIONS: Record<string, Question> = {
       "Email/Newsletter",
       "Outro",
     ],
+    textConfig: {
+      placeholder: "Seu primeiro nome",
+    },
   },
 };
 
