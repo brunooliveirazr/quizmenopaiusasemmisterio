@@ -2045,8 +2045,8 @@ function SalesPage() {
           100% { background-position: 200% 50%; }
         }
         @keyframes goldPulse {
-          0%, 100% { box-shadow: 0 4px 14px rgba(184,134,11,0.35), 0 0 0 0 rgba(212,175,55,0.55); }
-          50% { box-shadow: 0 6px 20px rgba(184,134,11,0.55), 0 0 0 8px rgba(212,175,55,0); }
+          0%, 100% { box-shadow: 0 4px 14px rgba(232,93,140,0.35), 0 0 0 0 rgba(232,93,140,0.55); }
+          50% { box-shadow: 0 6px 20px rgba(232,93,140,0.55), 0 0 0 8px rgba(232,93,140,0); }
         }
         .plan-card { animation: cardSlide 0.5s ease-out both; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .plan-card:nth-child(1) { animation-delay: 0.1s; }
@@ -2058,7 +2058,7 @@ function SalesPage() {
           overflow: hidden;
           background-size: 200% 200% !important;
           animation: goldShimmer 3.5s linear infinite;
-          box-shadow: 0 4px 14px rgba(184,134,11,0.30);
+          box-shadow: 0 4px 14px rgba(232,93,140,0.30);
           text-shadow: 0 1px 1px rgba(0,0,0,0.18);
           letter-spacing: 0.5px;
         }
@@ -2075,7 +2075,7 @@ function SalesPage() {
           0% { left: -75%; }
           60%, 100% { left: 125%; }
         }
-        .cta-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 22px rgba(184,134,11,0.45); }
+        .cta-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 22px rgba(232,93,140,0.45); }
         .cta-premium-pulse { animation: goldShimmer 3.5s linear infinite, goldPulse 2.2s ease-in-out infinite; }
         .faq-item { transition: all 0.3s ease; }
       `}</style>
