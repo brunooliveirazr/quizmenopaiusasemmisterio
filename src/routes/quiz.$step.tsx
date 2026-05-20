@@ -1321,19 +1321,87 @@ function ProcessingPage() {
 
 function TimelinePage() {
   const navigate = useNavigate();
+  const [chartDone, setChartDone] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+
+  const CHART_MS = 8000;
+  const STATIC_MS = 10000;
 
   const milestones = [
-    { x: 60, y: 280, label: "Hoje", desc: "Acesso ao app liberado", color: "#CFCFE0", delay: 0.2 },
-    { x: 150, y: 210, label: "1-3 dias", desc: "Primeiros sintomas melhoram", color: "#FFD700", delay: 0.4 },
-    { x: 250, y: 130, label: "7 dias", desc: "Dormir melhor & mais energia", color: "#FFD700", delay: 0.6 },
-    { x: 340, y: 55, label: "13-21 dias", desc: "Transformação visível", color: "#FFD700", delay: 0.8, big: true },
+    { x: 60, y: 280, label: "Hoje", desc: "Acesso ao app liberado", color: "#CFCFE0", delay: 0.6 },
+    { x: 150, y: 210, label: "1-3 dias", desc: "Primeiros sintomas melhoram", color: "#FFD700", delay: 2.6 },
+    { x: 250, y: 130, label: "7 dias", desc: "Dormir melhor & mais energia", color: "#FFD700", delay: 5.0 },
+    { x: 340, y: 55, label: "13-21 dias", desc: "Transformação visível", color: "#FFD700", delay: 7.4, big: true },
   ];
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setChartDone(true), CHART_MS);
+    const t2 = setTimeout(() => {
+      navigate({ to: "/quiz/$step", params: { step: "20" } });
+    }, CHART_MS + STATIC_MS);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!chartDone) return;
+    setCountdown(10);
+    const iv = setInterval(() => {
+      setCountdown((c) => (c > 0 ? c - 1 : 0));
+    }, 1000);
+    return () => clearInterval(iv);
+  }, [chartDone]);
 
   return (
     <div
       className="min-h-screen w-full flex justify-center animate-fade-in"
       style={{ background: "linear-gradient(180deg, #3B1361 0%, #6B46C1 100%)" }}
     >
+      <style>{`
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+        @keyframes pulseRing {
+          0% { transform: scale(0.8); opacity: 0.7; }
+          70% { transform: scale(1.6); opacity: 0; }
+          100% { transform: scale(0.8); opacity: 0; }
+        }
+        @keyframes nodePop {
+          0% { transform: scale(0); opacity: 0; }
+          60% { transform: scale(1.4); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes balloonIn {
+          0% { transform: translateY(8px) scale(0.6); opacity: 0; }
+          60% { transform: translateY(-2px) scale(1.08); opacity: 1; }
+          100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes glow {
+          0%, 100% { filter: drop-shadow(0 0 4px rgba(232,93,140,0.6)); }
+          50% { filter: drop-shadow(0 0 14px rgba(232,93,140,1)); }
+        }
+        .timeline-path {
+          stroke-dasharray: 1;
+          stroke-dashoffset: 1;
+          animation: drawLine 8s ease-in-out forwards, glow 2s ease-in-out infinite;
+        }
+        .timeline-node {
+          transform-origin: center;
+          transform-box: fill-box;
+          opacity: 0;
+          animation: nodePop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+        }
+        .timeline-ring {
+          transform-origin: center;
+          transform-box: fill-box;
+          animation: pulseRing 1.8s ease-out infinite;
+        }
+        .timeline-balloon {
+          opacity: 0;
+          animation: balloonIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+        }
+      `}</style>
+
       <div className="w-full max-w-[480px] min-h-screen flex flex-col px-5 pt-8 pb-6 text-white">
         <p className="text-center text-[12px] tracking-wide text-white/80">
           Seu plano pessoal está pronto!
@@ -1346,33 +1414,36 @@ function TimelinePage() {
         <div className="relative w-full">
           <svg width="100%" height="320" viewBox="0 0 400 320" className="overflow-visible">
             <path
+              className="timeline-path"
+              pathLength={1}
               d="M 60 280 Q 120 250 150 210 T 250 130 T 340 55"
               stroke="#E85D8C"
               strokeWidth="4"
               fill="none"
               strokeLinecap="round"
-              strokeDasharray="6 8"
-              opacity="0.9"
             />
             {milestones.map((m, i) => (
-              <g key={i} style={{ animation: `fade-in 0.5s ease-out ${m.delay}s both` }}>
+              <g key={i}>
                 <circle
+                  className="timeline-node"
                   cx={m.x}
                   cy={m.y}
                   r={m.big ? 13 : 10}
                   fill={m.color}
                   stroke="#FFFFFF"
                   strokeWidth="2"
+                  style={{ animationDelay: `${m.delay}s` }}
                 />
                 {m.big && (
                   <circle
+                    className="timeline-ring"
                     cx={m.x}
                     cy={m.y}
-                    r="20"
+                    r="18"
                     fill="none"
                     stroke="#FFD700"
                     strokeWidth="2"
-                    opacity="0.4"
+                    style={{ animationDelay: `${m.delay + 0.3}s` }}
                   />
                 )}
               </g>
@@ -1387,20 +1458,24 @@ function TimelinePage() {
             return (
               <div
                 key={i}
-                className="absolute"
+                className="absolute timeline-balloon"
                 style={{
                   left: `${leftPct}%`,
                   top: `${topPx}px`,
-                  transform:
+                  transformOrigin:
+                    align === "left" ? "left top" : align === "right" ? "right top" : "center top",
+                  marginLeft:
+                    align === "left" ? "-12px" : align === "right" ? undefined : undefined,
+                  translate:
                     align === "left"
-                      ? "translateX(-10%)"
+                      ? "-10% 0"
                       : align === "right"
-                      ? "translateX(-90%)"
-                      : "translateX(-50%)",
-                  animation: `fade-in 0.5s ease-out ${m.delay + 0.1}s both`,
+                      ? "-90% 0"
+                      : "-50% 0",
+                  animationDelay: `${m.delay + 0.2}s`,
                 }}
               >
-                <div className="bg-white rounded-lg px-3 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.15)] min-w-[120px] max-w-[160px]">
+                <div className="bg-white rounded-lg px-3 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.25)] min-w-[120px] max-w-[160px]">
                   <p className="text-[11px] font-bold text-[#E85D8C] leading-tight">
                     {m.label}
                   </p>
@@ -1413,22 +1488,32 @@ function TimelinePage() {
           })}
         </div>
 
-        <p className="text-center text-[13px] text-white/90 leading-relaxed mt-10 mb-10 px-2">
-          Vamos garantir que tudo esteja pronto para você ter a melhor experiência!
-        </p>
-
         <div className="flex-1" />
 
-        <button
-          onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
-          className="w-full h-14 rounded-xl bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-all shadow-[0_4px_12px_rgba(232,93,140,0.4)] hover:-translate-y-0.5"
-        >
-          CONTINUAR
-        </button>
+        {chartDone ? (
+          <div className="mt-10 mb-2 animate-fade-in">
+            <div className="bg-white/10 border border-white/20 rounded-xl px-4 py-4 text-center backdrop-blur-sm">
+              <p className="text-[14px] text-white leading-relaxed">
+                Vamos garantir que tudo esteja pronto para você ter a melhor experiência.
+              </p>
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#FFD700] animate-pulse" />
+                <p className="text-[13px] font-bold text-[#FFD700] tabular-nums">
+                  Aguarde {countdown} segundo{countdown === 1 ? "" : "s"}...
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className="text-center text-[13px] text-white/90 leading-relaxed mt-10 mb-10 px-2">
+            Construindo sua linha do tempo personalizada...
+          </p>
+        )}
       </div>
     </div>
   );
 }
+
 
 
 type StoredAnswers = Record<
