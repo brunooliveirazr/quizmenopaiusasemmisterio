@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { QuizHeader } from "@/components/QuizHeader";
 
 export const Route = createFileRoute("/quiz/$step")({
   component: QuizStep,
@@ -41,7 +42,8 @@ function QuizStep() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-white to-[#FFE5ED] flex justify-center">
-      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-3 pb-10">
+      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-1 pb-10">
+        <QuizHeader />
         {/* Progress */}
         <div>
           <div className="h-1 w-full bg-[#E0E0E0] rounded-full overflow-hidden">
