@@ -14,6 +14,12 @@ type Popup = {
   body: string;
 };
 
+type ScaleRangePopup = {
+  min: number;
+  max: number;
+  popup: Popup;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
@@ -23,6 +29,8 @@ type Question = {
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
+  type?: 'scale';
+  scalePopupRanges?: ScaleRangePopup[];
 };
 
 const QUESTIONS: Record<string, Question> = {
