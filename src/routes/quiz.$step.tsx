@@ -654,7 +654,9 @@ function QuizStep() {
   const { step } = useParams({ from: "/quiz/$step" });
   const navigate = useNavigate();
   const stepNum = parseInt(step, 10) || 1;
+  if (step === "19") return <ProcessingPage />;
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
+
   const progress = (stepNum / TOTAL) * 100;
   const isMulti = !!q.multiSelect;
 
