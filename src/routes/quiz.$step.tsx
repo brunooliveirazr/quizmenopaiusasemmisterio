@@ -12,6 +12,7 @@ type Question = {
   title: string;
   subtitle?: string;
   options: string[];
+  multiSelect?: boolean;
   toastMessage?: string;
 };
 
@@ -39,6 +40,21 @@ const QUESTIONS: Record<string, Question> = {
     ],
     toastMessage: "✓ Excelente! Já estamos identificando as soluções certas para você...",
   },
+  "3": {
+    title: "Selecione seus principais sintomas:",
+    subtitle: "(Quanto mais você selecionar, melhor será a personalização)",
+    multiSelect: true,
+    options: [
+      "Fogachos/Ondas de calor",
+      "Insônia/Sono ruim",
+      "Irritabilidade/Mudanças de humor",
+      "Ganho de peso",
+      "Confusão mental/Falta de foco",
+      "Ressecamento vaginal",
+      "Fadiga/Cansaço extremo",
+      "Dores nas articulações",
+    ],
+  },
 };
 
 function QuizStep() {
@@ -47,31 +63,59 @@ function QuizStep() {
   const stepNum = parseInt(step, 10) || 1;
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
   const progress = (stepNum / TOTAL) * 100;
+  const isMulti = !!q.multiSelect;
 
-  const [selected, setSelected] = useState<string | null>(null);
+  // single: string | null; multi: string[]
+  const [selectedSingle, setSelectedSingle] = useState<string | null>(null);
+  const [selectedMulti, setSelectedMulti] = useState<string[]>([]);
   const [showToast, setShowToast] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
-    setSelected(null);
+    setSelectedSingle(null);
+    setSelectedMulti([]);
     setShowToast(false);
+    setShowError(false);
   }, [step]);
 
-  const handleSelect = (opt: string) => {
-    if (selected) return;
-    setSelected(opt);
+  const goNext = () => {
+    const next = stepNum + 1;
+    if (next <= TOTAL) {
+      navigate({ to: "/quiz/$step", params: { step: String(next) } });
+    }
+  };
+
+  // Single-select handlers (auto-advance)
+  const handleSelectSingle = (opt: string) => {
+    if (selectedSingle) return;
+    setSelectedSingle(opt);
     setShowToast(true);
     window.setTimeout(() => setShowToast(false), 2000);
-    window.setTimeout(() => {
-      const next = stepNum + 1;
-      if (next <= TOTAL) {
-        navigate({ to: "/quiz/$step", params: { step: String(next) } });
-      }
-    }, 2500);
+    window.setTimeout(() => goNext(), 2500);
   };
+
+  // Multi-select handlers
+  const toggleMulti = (opt: string) => {
+    setShowError(false);
+    setSelectedMulti((prev) =>
+      prev.includes(opt) ? prev.filter((s) => s !== opt) : [...prev, opt]
+    );
+  };
+
+  const handleContinue = () => {
+    if (selectedMulti.length === 0) {
+      setShowError(true);
+      window.setTimeout(() => setShowError(false), 2500);
+      return;
+    }
+    goNext();
+  };
+
+  const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
 
   return (
     <div className="min-h-screen w-full bg-white flex justify-center">
-      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 py-6">
+      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-6 pb-4">
         {/* Sticky progress */}
         <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
           <div className="flex items-center gap-3">
@@ -99,13 +143,56 @@ function QuizStep() {
         )}
 
         {/* Options */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 flex-1">
           {q.options.map((opt) => {
-            const isSelected = selected === opt;
+            if (isMulti) {
+              const checked = selectedMulti.includes(opt);
+              return (
+                <button
+                  key={opt}
+                  onClick={() => toggleMulti(opt)}
+                  className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
+                    checked
+                      ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
+                      : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
+                  }`}
+                >
+                  {/* Custom checkbox */}
+                  <div
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                      checked
+                        ? "bg-[#E85D8C] border-[#E85D8C]"
+                        : "bg-white border-[#E0E0E0]"
+                    }`}
+                  >
+                    {checked && (
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2 6L5 9L10 3"
+                          stroke="white"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </div>
+                  <span>{opt}</span>
+                </button>
+              );
+            }
+
+            const isSelected = selectedSingle === opt;
             return (
               <button
                 key={opt}
-                onClick={() => handleSelect(opt)}
+                onClick={() => handleSelectSingle(opt)}
                 className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
                   isSelected
                     ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
@@ -121,13 +208,40 @@ function QuizStep() {
           })}
         </div>
 
-        {/* Toast */}
-        {showToast && (
+        {/* Sticky Continue button for multi-select */}
+        {isMulti && (
+          <div className="sticky bottom-0 bg-white pt-4 pb-2 -mx-4 px-4">
+            <button
+              onClick={handleContinue}
+              disabled={!hasSelection}
+              className={`w-full h-14 rounded-xl font-bold text-[16px] text-white transition-all ${
+                hasSelection
+                  ? "bg-[#E85D8C] hover:bg-[#D64B7A]"
+                  : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
+              }`}
+            >
+              CONTINUAR →
+            </button>
+          </div>
+        )}
+
+        {/* Toast (single select) */}
+        {showToast && !isMulti && (
           <div
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#4CAF50] text-white px-4 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
             style={{ opacity: 0.95 }}
           >
             {q.toastMessage ?? "✓ Perfeito! Estamos montando seu diagnóstico..."}
+          </div>
+        )}
+
+        {/* Error tooltip (multi-select) */}
+        {showError && (
+          <div
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FF5252] text-white px-5 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
+            style={{ opacity: 0.95 }}
+          >
+            Selecione pelo menos um sintoma
           </div>
         )}
       </div>
