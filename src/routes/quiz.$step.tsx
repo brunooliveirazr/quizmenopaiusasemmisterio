@@ -1294,12 +1294,9 @@ function ProcessingPage() {
             className={`transition-opacity duration-500 ${testimonialVisible ? "opacity-100" : "opacity-0"}`}
           >
             <p className="text-[14px] text-[#2C2C2C] italic" style={{ lineHeight: 1.6 }}>
-              {t.icon ? <span className="mr-2">{t.icon}</span> : null}
               "{t.quote}"
             </p>
-            {!t.icon && (
-              <p className="text-[12px] text-[#999] mt-2 not-italic">— {t.name}</p>
-            )}
+            <p className="text-[12px] text-[#999] mt-2 not-italic">— {t.name}</p>
           </div>
         </div>
 
