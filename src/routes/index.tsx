@@ -11,13 +11,18 @@ export const Route = createFileRoute("/")({
         content:
           "Descubra qual é o plano de menopausa ideal para o seu corpo em 3 minutos.",
       },
+      { property: "og:title", content: "Menopausa Sem Mistério — Quiz" },
+      { property: "og:description", content: "Descubra qual é o plano de menopausa ideal para o seu corpo em 3 minutos." },
+      { property: "og:url", content: "https://quizmenopaiusasemmisterio.lovable.app/" },
     ],
     links: [
+      { rel: "canonical", href: "https://quizmenopaiusasemmisterio.lovable.app/" },
       { rel: "preload", as: "image", href: heroMockup, fetchpriority: "high" },
     ],
   }),
   component: Index,
 });
+
 
 function Index() {
   return (
