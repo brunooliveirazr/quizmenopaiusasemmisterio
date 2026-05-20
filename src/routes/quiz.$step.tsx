@@ -658,12 +658,17 @@ const QUESTIONS: Record<string, Question> = {
 
 function QuizStep() {
   const { step } = useParams({ from: "/quiz/$step" });
-  const navigate = useNavigate();
   const stepNum = parseInt(step, 10) || 1;
   if (step === "19") return <ProcessingPage />;
-  if (step === "22") return <TimelinePage />;
-  if (step === "20") return <ResultsPage />;
-  if (step === "21") return <SalesPage />;
+  if (step === "20") return <TimelinePage />;
+  if (step === "21") return <ResultsPage />;
+  if (step === "22") return <SalesPage />;
+
+  return <QuizQuestionPage step={step} stepNum={stepNum} />;
+}
+
+function QuizQuestionPage({ step, stepNum }: { step: string; stepNum: number }) {
+  const navigate = useNavigate();
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
 
   const progress = (stepNum / TOTAL) * 100;
@@ -1308,7 +1313,7 @@ function ProcessingPage() {
         {done && (
           <div className="pb-6 animate-fade-in">
             <button
-              onClick={() => navigate({ to: "/quiz/$step", params: { step: "22" } })}
+              onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
               className="w-full h-14 rounded-xl bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-colors"
             >
               VER MEU RESULTADO PERSONALIZADO →
@@ -1338,7 +1343,7 @@ function TimelinePage() {
   useEffect(() => {
     const t1 = setTimeout(() => setChartDone(true), CHART_MS);
     const t2 = setTimeout(() => {
-      navigate({ to: "/quiz/$step", params: { step: "20" } });
+      navigate({ to: "/quiz/$step", params: { step: "21" } });
     }, CHART_MS + STATIC_MS);
     return () => {
       clearTimeout(t1);
@@ -1554,7 +1559,7 @@ function ResultsPage() {
     try {
       sessionStorage.setItem("quizAnswers", JSON.stringify(answers));
     } catch {}
-    navigate({ to: "/quiz/$step", params: { step: "21" } });
+    navigate({ to: "/quiz/$step", params: { step: "22" } });
   };
 
   const handleRestart = () => {
@@ -1580,7 +1585,7 @@ function ResultsPage() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => navigate({ to: "/quiz/$step", params: { step: "19" } })}
+            onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
             aria-label="Voltar"
             className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
           >
@@ -1940,7 +1945,7 @@ function SalesPage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+            onClick={() => navigate({ to: "/quiz/$step", params: { step: "21" } })}
             aria-label="Voltar"
             className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center shrink-0"
           >
