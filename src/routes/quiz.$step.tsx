@@ -479,6 +479,33 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "13": {
+    title: "Qual é sua altura?",
+    subtitle: "(Em cm ou metros)",
+    gradientBg: true,
+    type: 'text',
+    options: [],
+    textConfig: {
+      placeholder: "Exemplo: 165 ou 1,65",
+      min: 140,
+      max: 210,
+      errorMessage: "Altura deve estar entre 140 e 210 cm",
+      allowDecimal: true,
+    },
+  },
+  "14": {
+    title: "Qual é seu peso atual?",
+    subtitle: "(Em kg)",
+    type: 'text',
+    options: [],
+    textConfig: {
+      placeholder: "Exemplo: 75 ou 75,5",
+      min: 40,
+      max: 200,
+      errorMessage: "Peso deve estar entre 40 e 200 kg",
+      allowDecimal: true,
+    },
+  },
 };
 
 function QuizStep() {
