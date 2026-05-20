@@ -846,9 +846,6 @@ function QuizStep() {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <span className="text-[12px] text-[#999] tabular-nums">
-              {stepNum} / {TOTAL}
-            </span>
           </div>
         </div>
 
