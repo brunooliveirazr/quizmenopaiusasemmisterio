@@ -66,6 +66,57 @@ const QUESTIONS: Record<string, Question> = {
   },
 };
 
+  "4": {
+    title: "Você já tentou resolver isso antes?",
+    gradientBg: true,
+    options: [
+      "Nunca tentei nada",
+      "Tentei chás/vitaminas soltas",
+      "Tentei academia/dieta",
+      "Tentei medicação (HRT)",
+      "Tentei TUDO. Nada funcionou.",
+      "Testo coisas, mas desisto rápido",
+    ],
+    defaultPopup: {
+      icon: "💡",
+      title: "Anotado!",
+      body: "Cada tentativa anterior nos ajuda a entender o que NÃO funciona para você — e a montar o plano certo a partir daqui.\n\nVamos continuar?",
+    },
+    popups: {
+      "Nunca tentei nada": {
+        icon: "✨",
+        title: "Ótimo!",
+        body: "Você ainda está no ponto zero.\nIsso significa que quando você implementar a solução certa, os resultados vão aparecer RÁPIDO.\n\nA maioria das mulheres que começa aqui vê mudanças em 7-14 dias. Você pode ser a próxima.\n\nVamos lá?",
+      },
+      "Tentei chás/vitaminas soltas": {
+        icon: "🌿",
+        title: "Faz sentido tentar...",
+        body: "Chás e vitaminas isoladas até ajudam, mas raramente atacam a raiz hormonal.\n\nQuando a gente combina os elementos certos NA ORDEM CERTA, o efeito muda completamente.\n\nVamos descobrir sua combinação?",
+      },
+      "Tentei academia/dieta": {
+        icon: "💪",
+        title: "Academia e dieta são ótimos... MAS",
+        body: "...quando a culpa é hormonal, nenhum agachamento do mundo resolve.\n\nA boa notícia? Quando você ALINHA os hormônios, tudo o mais fica fácil.\n\nVamos descobrir como fazer isso para VOCÊ especificamente. Continua?",
+      },
+      "Tentei medicação (HRT)": {
+        icon: "💊",
+        title: "Você já deu um passo grande.",
+        body: "HRT funciona para muitas mulheres — mas precisa estar acompanhada de rotina, alimentação e suporte específico para você.\n\nVamos descobrir o que está faltando no seu plano.",
+      },
+      "Tentei TUDO. Nada funcionou.": {
+        icon: "💔",
+        title: "Eu entendo.",
+        body: "Você já investiu tempo, dinheiro e esperança.\nE mesmo assim... nada colou.\n\nMas sabe o que descobri? O problema não é VOCÊ.\nÉ que você estava tentando soluções genéricas.\nVocê precisa de algo PERSONALIZADO.\n\nÉ exatamente isso que estamos montando agora. Vamos continuar?",
+      },
+      "Testo coisas, mas desisto rápido": {
+        icon: "🌀",
+        title: "Você não é \"sem força de vontade\".",
+        body: "Você só nunca teve um plano simples o bastante para seguir.\n\nO que vamos montar aqui cabe na sua rotina — sem dietas malucas, sem 2h de academia, sem culpa.\n\nVamos continuar?",
+      },
+    },
+  },
+};
+
 function QuizStep() {
   const { step } = useParams({ from: "/quiz/$step" });
   const navigate = useNavigate();
