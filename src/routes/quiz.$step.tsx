@@ -1194,7 +1194,7 @@ const TESTIMONIALS = [
   { name: "Marina, 52 anos", quote: "Dormi a noite toda pela primeira vez em 3 anos!" },
   { name: "Beatriz, 48 anos", quote: "Meu peso normalizou sem fazer dieta maluca" },
   { name: "Carla, 51 anos", quote: "Meu marido perguntou se eu estava feliz novamente" },
-  { name: "+8.247 mulheres", quote: "já transformaram suas vidas", icon: "👥" },
+  { name: "+8.247 mulheres", quote: "Já transformaram suas vidas com o nosso plano" },
 ];
 
 function ProcessingPage() {
@@ -1294,12 +1294,9 @@ function ProcessingPage() {
             className={`transition-opacity duration-500 ${testimonialVisible ? "opacity-100" : "opacity-0"}`}
           >
             <p className="text-[14px] text-[#2C2C2C] italic" style={{ lineHeight: 1.6 }}>
-              {t.icon ? <span className="mr-2">{t.icon}</span> : null}
               "{t.quote}"
             </p>
-            {!t.icon && (
-              <p className="text-[12px] text-[#999] mt-2 not-italic">— {t.name}</p>
-            )}
+            <p className="text-[12px] text-[#999] mt-2 not-italic">— {t.name}</p>
           </div>
         </div>
 
