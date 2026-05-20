@@ -122,6 +122,138 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <DevQuizNav />
     </QueryClientProvider>
   );
 }
+
+function DevQuizNav() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const h = window.location.hostname;
+    const isPreview =
+      h.includes("lovable") || h === "localhost" || h.startsWith("127.");
+    setShow(isPreview);
+  }, []);
+
+  if (!show) return null;
+
+  const steps = Array.from({ length: 22 }, (_, i) => i + 1);
+  const current = location.pathname.startsWith("/quiz/")
+    ? location.pathname.split("/")[2]
+    : null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 8,
+        right: 8,
+        zIndex: 99999,
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
+      {open ? (
+        <div
+          style={{
+            background: "rgba(20,20,20,0.95)",
+            color: "white",
+            padding: "10px",
+            borderRadius: 10,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+            maxWidth: 280,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 8,
+              fontSize: 11,
+              opacity: 0.8,
+            }}
+          >
+            <span>DEV · Navegar fases do quiz</span>
+            <button
+              onClick={() => setOpen(false)}
+              style={{
+                background: "transparent",
+                color: "white",
+                border: "none",
+                cursor: "pointer",
+                fontSize: 14,
+              }}
+            >
+              ×
+            </button>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(8, 1fr)",
+              gap: 4,
+            }}
+          >
+            <button
+              onClick={() => navigate({ to: "/" })}
+              style={btnStyle(location.pathname === "/")}
+            >
+              ⌂
+            </button>
+            {steps.map((n) => (
+              <button
+                key={n}
+                onClick={() =>
+                  navigate({
+                    to: "/quiz/$step",
+                    params: { step: String(n) },
+                  })
+                }
+                style={btnStyle(current === String(n))}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            background: "#E85D8C",
+            color: "white",
+            border: "none",
+            borderRadius: 999,
+            padding: "8px 12px",
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          }}
+        >
+          DEV · fases
+        </button>
+      )}
+    </div>
+  );
+}
+
+function btnStyle(active: boolean): React.CSSProperties {
+  return {
+    background: active ? "#E85D8C" : "rgba(255,255,255,0.1)",
+    color: "white",
+    border: "none",
+    borderRadius: 6,
+    padding: "6px 0",
+    fontSize: 11,
+    cursor: "pointer",
+    fontWeight: 600,
+  };
+}
+
