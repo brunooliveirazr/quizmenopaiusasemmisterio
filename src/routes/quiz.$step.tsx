@@ -656,6 +656,7 @@ function QuizStep() {
   const stepNum = parseInt(step, 10) || 1;
   if (step === "19") return <ProcessingPage />;
   if (step === "20") return <ResultsPage />;
+  if (step === "21") return <SalesPage />;
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
 
   const progress = (stepNum / TOTAL) * 100;
