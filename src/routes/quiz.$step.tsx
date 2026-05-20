@@ -117,7 +117,7 @@ const QUESTIONS: Record<string, Question> = {
       },
       "Testo coisas, mas desisto rápido": {
         icon: "🌀",
-        title: "Você não é \"sem força de vontade\".",
+        title: 'Você não é "sem força de vontade".',
         body: "Você só nunca teve um plano simples o bastante para seguir.\n\nO que vamos montar aqui cabe na sua rotina — sem dietas malucas, sem 2h de academia, sem culpa.\n\nVamos continuar?",
       },
     },
