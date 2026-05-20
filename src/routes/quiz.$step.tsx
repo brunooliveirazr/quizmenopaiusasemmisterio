@@ -62,7 +62,7 @@ type Question = {
 const QUESTIONS: Record<string, Question> = {
   "1": {
     title: "Qual é a sua faixa etária?",
-    subtitle: "(Vamos calibrar o plano para você)",
+    subtitle: "(Vamos calibrar o plano ideal para você)",
     options: [
       "Até 40 anos",
       "41-45 anos",
