@@ -76,16 +76,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Menopause Clarity offers a personalized menopause quiz to identify ideal plans and symptom relief." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Menopause Clarity offers a personalized menopause quiz to identify ideal plans and symptom relief." },
+      { title: "Menopausa Sem Mistério — Quiz" },
+      { name: "description", content: "Menopausa Sem Mistério: descubra em 3 minutos o plano ideal para aliviar seus sintomas de menopausa com um quiz personalizado." },
+      { name: "author", content: "Menopausa Sem Mistério" },
+      { property: "og:site_name", content: "Menopausa Sem Mistério" },
+      { property: "og:title", content: "Menopausa Sem Mistério — Quiz" },
+      { property: "og:description", content: "Descubra em 3 minutos o plano ideal para aliviar seus sintomas de menopausa." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Menopause Clarity offers a personalized menopause quiz to identify ideal plans and symptom relief." },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Menopausa Sem Mistério — Quiz" },
+      { name: "twitter:description", content: "Descubra em 3 minutos o plano ideal para aliviar seus sintomas de menopausa." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ccd26abf-5143-4046-947c-4d8817987ad8/id-preview-f8a2ac7e--836013ca-4b08-4493-9e23-03db1d4e7553.lovable.app-1779302316237.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ccd26abf-5143-4046-947c-4d8817987ad8/id-preview-f8a2ac7e--836013ca-4b08-4493-9e23-03db1d4e7553.lovable.app-1779302316237.png" },
     ],
@@ -93,6 +93,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: appCss,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Menopausa Sem Mistério",
+          url: "https://quizmenopaiusasemmisterio.lovable.app",
+          description: "Quiz personalizado para identificar o plano ideal de alívio de sintomas da menopausa.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Menopausa Sem Mistério",
+          url: "https://quizmenopaiusasemmisterio.lovable.app",
+          email: "adm@menopausasemmisterio.com.br",
+        }),
       },
     ],
   }),
@@ -104,7 +126,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
@@ -121,7 +143,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
     </QueryClientProvider>
   );
 }
