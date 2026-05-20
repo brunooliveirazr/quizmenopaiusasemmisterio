@@ -1327,20 +1327,10 @@ function ResultsPage() {
   const totalAnswered = Object.keys(answers).length;
 
   const handleSeeOffer = () => {
-    // TODO: Substituir pela URL real da página de vendas
-    const params = new URLSearchParams({
-      age: String(age),
-      stage: String(stage),
-      symptoms: symptoms.join("|"),
-      impact: String(impact),
-      time: String(time),
-      style: String(style),
-    });
     try {
       sessionStorage.setItem("quizAnswers", JSON.stringify(answers));
     } catch {}
-    console.log("Redirect to sales page with:", params.toString());
-    alert("Página de vendas em breve!");
+    navigate({ to: "/quiz/$step", params: { step: "21" } });
   };
 
   const handleRestart = () => {
