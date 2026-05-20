@@ -26,6 +26,14 @@ type CountRangePopup = {
   popup: (count: number) => Popup;
 };
 
+type TextQuestionConfig = {
+  placeholder: string;
+  min?: number;
+  max?: number;
+  errorMessage?: string;
+  allowDecimal?: boolean;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
@@ -38,12 +46,13 @@ type Question = {
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
-  type?: 'scale';
+  type?: 'scale' | 'text';
   scalePopupRanges?: ScaleRangePopup[];
   countPopupRanges?: CountRangePopup[];
   optionIcons?: Record<string, string>;
   titleColor?: string;
   optionSubtitles?: Record<string, string>;
+  textConfig?: TextQuestionConfig;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -470,6 +479,33 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "13": {
+    title: "Qual é sua altura?",
+    subtitle: "(Em cm ou metros)",
+    gradientBg: true,
+    type: 'text',
+    options: [],
+    textConfig: {
+      placeholder: "Exemplo: 165 ou 1,65",
+      min: 140,
+      max: 210,
+      errorMessage: "Altura deve estar entre 140 e 210 cm",
+      allowDecimal: true,
+    },
+  },
+  "14": {
+    title: "Qual é seu peso atual?",
+    subtitle: "(Em kg)",
+    type: 'text',
+    options: [],
+    textConfig: {
+      placeholder: "Exemplo: 75 ou 75,5",
+      min: 40,
+      max: 200,
+      errorMessage: "Peso deve estar entre 40 e 200 kg",
+      allowDecimal: true,
+    },
+  },
 };
 
 function QuizStep() {
@@ -488,11 +524,15 @@ function QuizStep() {
   const [activePopup, setActivePopup] = useState<Popup | null>(null);
 
   const [scaleValue, setScaleValue] = useState(5);
+  const [textValue, setTextValue] = useState("");
+  const [textError, setTextError] = useState(false);
 
   useEffect(() => {
     setSelectedSingle(null);
     setSelectedMulti([]);
     setScaleValue(5);
+    setTextValue("");
+    setTextError(false);
     setShowToast(false);
     setShowError(false);
     setActivePopup(null);
@@ -526,6 +566,21 @@ function QuizStep() {
     if (!hasSelection) {
       setShowError(true);
       window.setTimeout(() => setShowError(false), 2500);
+      return;
+    }
+    // Text input validation
+    if (q.type === 'text' && q.textConfig) {
+      const numValue = parseFloat(textValue.replace(',', '.'));
+      const min = q.textConfig.min ?? -Infinity;
+      const max = q.textConfig.max ?? Infinity;
+      if (isNaN(numValue) || numValue < min || numValue > max) {
+        setTextError(true);
+        window.setTimeout(() => setTextError(false), 2500);
+        setShowError(true);
+        window.setTimeout(() => setShowError(false), 2500);
+        return;
+      }
+      goNext();
       return;
     }
     // If this question has popups, show the contextual popup instead of advancing
@@ -574,6 +629,8 @@ function QuizStep() {
   const hasSelection =
     q.type === 'scale' || q.multiSelectOptional
       ? true
+      : q.type === 'text'
+      ? textValue.trim().length > 0
       : isMulti
       ? selectedMulti.length > 0
       : !!selectedSingle;
@@ -729,6 +786,35 @@ function QuizStep() {
                 </div>
               </div>
             </div>
+          ) : q.type === 'text' ? (
+            <div className="flex flex-col flex-1">
+              <input
+                type="text"
+                inputMode="decimal"
+                placeholder={q.textConfig?.placeholder}
+                value={textValue}
+                onChange={(e) => {
+                  setTextValue(e.target.value);
+                  setTextError(false);
+                  setShowError(false);
+                }}
+                className={`w-full h-14 px-4 rounded-xl border-2 text-[16px] text-[#2C2C2C] bg-white outline-none transition-all duration-200 ${
+                  textError
+                    ? "border-[#FFC107]"
+                    : textValue.trim()
+                    ? "border-[#E85D8C]"
+                    : "border-[#E0E0E0]"
+                }`}
+                style={{
+                  boxShadow: textValue.trim() && !textError ? '0 0 0 3px rgba(232, 93, 140, 0.1)' : 'none',
+                }}
+              />
+              {textError && q.textConfig?.errorMessage && (
+                <p className="text-[13px] text-[#FFC107] mt-2 text-center">
+                  {q.textConfig.errorMessage}
+                </p>
+              )}
+            </div>
           ) : (
             <div className="flex flex-col gap-3 flex-1">
               {q.options.map((opt) => {
@@ -826,7 +912,7 @@ function QuizStep() {
                 : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
             }`}
           >
-            {q.type === 'scale' || isMulti ? "CONTINUAR →" : "PRÓXIMO →"}
+            {q.type === 'scale' || isMulti || q.type === 'text' ? "CONTINUAR →" : "PRÓXIMO →"}
           </button>
         </div>
 
@@ -846,7 +932,7 @@ function QuizStep() {
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FF5252] text-white px-5 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
             style={{ opacity: 0.95 }}
           >
-            {isMulti ? "Selecione pelo menos um sintoma" : "Selecione uma opção para continuar"}
+            {isMulti ? "Selecione pelo menos um sintoma" : q.type === 'text' ? q.textConfig?.errorMessage || "Digite um valor válido" : "Selecione uma opção para continuar"}
           </div>
         )}
 
