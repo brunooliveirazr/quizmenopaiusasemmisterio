@@ -524,11 +524,15 @@ function QuizStep() {
   const [activePopup, setActivePopup] = useState<Popup | null>(null);
 
   const [scaleValue, setScaleValue] = useState(5);
+  const [textValue, setTextValue] = useState("");
+  const [textError, setTextError] = useState(false);
 
   useEffect(() => {
     setSelectedSingle(null);
     setSelectedMulti([]);
     setScaleValue(5);
+    setTextValue("");
+    setTextError(false);
     setShowToast(false);
     setShowError(false);
     setActivePopup(null);
