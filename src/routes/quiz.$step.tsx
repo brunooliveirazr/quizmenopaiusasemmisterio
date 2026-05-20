@@ -2138,15 +2138,38 @@ function SalesPage() {
               key={plan.id}
               className="plan-card"
               style={{
+                position: "relative",
                 background: plan.cardBg,
                 border: `${plan.borderWidth}px solid ${plan.border}`,
                 borderRadius: 12,
                 padding: plan.id === "premium" ? 24 : 20,
+                paddingTop: plan.id === "premium" ? 40 : 20,
                 boxShadow: plan.shadow,
                 display: "flex",
                 flexDirection: "column",
+                overflow: "hidden",
               }}
             >
+              {plan.id === "premium" && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    background: "#E85D8C",
+                    color: "#FFFFFF",
+                    fontSize: 11,
+                    fontWeight: 800,
+                    textAlign: "center",
+                    padding: "6px 0",
+                    letterSpacing: "0.8px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  ⭐ MAIS POPULAR
+                </div>
+              )}
               <div
                 style={{
                   fontSize: 11,
@@ -2173,8 +2196,8 @@ function SalesPage() {
               )}
               <div
                 style={{
-                  fontSize: plan.id === "premium" ? 36 : 32,
-                  fontWeight: 700,
+                  fontSize: plan.id === "premium" ? 40 : 34,
+                  fontWeight: 800,
                   color: plan.priceColor,
                   marginTop: 12,
                   lineHeight: 1.1,
@@ -2215,22 +2238,27 @@ function SalesPage() {
                 className={`cta-gold ${plan.id === "premium" ? "cta-premium-pulse" : ""}`}
                 style={{
                   width: "100%",
-                  height: plan.id === "premium" ? 50 : 46,
+                  height: plan.id === "premium" ? 52 : 48,
                   background: plan.btnBg,
                   color: "#FFFFFF",
-                  border: "1px solid rgba(232,93,140,0.5)",
+                  border: "none",
                   borderRadius: 10,
                   fontSize: 14,
                   fontWeight: 800,
                   cursor: "pointer",
                   marginTop: 20,
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  boxShadow: "0 4px 14px rgba(232,93,140,0.35)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = plan.btnHover;
+                  e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(232,93,140,0.50)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = plan.btnBg;
+                  e.currentTarget.style.transform = "translateY(0) scale(1)";
+                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(232,93,140,0.35)";
                 }}
               >
                 {plan.cta}
