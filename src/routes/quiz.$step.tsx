@@ -436,7 +436,10 @@ function QuizStep() {
           </>
         ) : (
           <>
-            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
+            <h2
+              className="font-bold text-[20px] mt-8 mb-2 text-center"
+              style={{ color: q.titleColor || "#2C2C2C" }}
+            >
               {q.title}
             </h2>
             {q.subtitle && (
@@ -571,6 +574,7 @@ function QuizStep() {
                 }
 
                 const isSelected = selectedSingle === opt;
+                const icon = q.optionIcons?.[opt];
                 return (
                   <button
                     key={opt}
@@ -581,7 +585,10 @@ function QuizStep() {
                         : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    <span>{opt}</span>
+                    <span className="flex items-center gap-3">
+                      {icon && <span className="text-[20px]">{icon}</span>}
+                      <span>{opt}</span>
+                    </span>
                     {isSelected && (
                       <span className="text-[#E85D8C] text-lg font-bold">✓</span>
                     )}
