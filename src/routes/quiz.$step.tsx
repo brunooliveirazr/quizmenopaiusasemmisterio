@@ -122,9 +122,17 @@ function QuizStep() {
   return (
     <div className="min-h-screen w-full bg-white flex justify-center">
       <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-6 pb-4">
-        {/* Sticky progress */}
+        {/* Sticky progress + back */}
         <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={goBack}
+              aria-label="Voltar"
+              className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+            >
+              ←
+            </button>
             <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#E85D8C] transition-all duration-500"
