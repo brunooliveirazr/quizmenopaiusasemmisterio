@@ -2028,13 +2028,46 @@ function SalesPage() {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .plan-card { animation: cardSlide 0.5s ease-out both; transition: transform 0.3s ease; }
+        @keyframes goldShimmer {
+          0% { background-position: -200% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+        @keyframes goldPulse {
+          0%, 100% { box-shadow: 0 4px 14px rgba(184,134,11,0.35), 0 0 0 0 rgba(212,175,55,0.55); }
+          50% { box-shadow: 0 6px 20px rgba(184,134,11,0.55), 0 0 0 8px rgba(212,175,55,0); }
+        }
+        .plan-card { animation: cardSlide 0.5s ease-out both; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .plan-card:nth-child(1) { animation-delay: 0.1s; }
         .plan-card:nth-child(2) { animation-delay: 0.3s; }
         .plan-card:nth-child(3) { animation-delay: 0.5s; }
-        .plan-card:hover { transform: translateY(-2px); }
+        .plan-card:hover { transform: translateY(-3px); }
+        .cta-gold {
+          position: relative;
+          overflow: hidden;
+          background-size: 200% 200% !important;
+          animation: goldShimmer 3.5s linear infinite;
+          box-shadow: 0 4px 14px rgba(184,134,11,0.30);
+          text-shadow: 0 1px 1px rgba(0,0,0,0.18);
+          letter-spacing: 0.5px;
+        }
+        .cta-gold::after {
+          content: "";
+          position: absolute;
+          top: 0; left: -75%;
+          width: 50%; height: 100%;
+          background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+          transform: skewX(-20deg);
+          animation: shine 2.8s ease-in-out infinite;
+        }
+        @keyframes shine {
+          0% { left: -75%; }
+          60%, 100% { left: 125%; }
+        }
+        .cta-gold:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 22px rgba(184,134,11,0.45); }
+        .cta-premium-pulse { animation: goldShimmer 3.5s linear infinite, goldPulse 2.2s ease-in-out infinite; }
         .faq-item { transition: all 0.3s ease; }
       `}</style>
+
 
       {/* Top bar */}
       <div className="sticky top-0 z-10 bg-white px-3 pt-3 pb-2 border-b border-[#F0E0E8]">
