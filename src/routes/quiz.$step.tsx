@@ -222,22 +222,20 @@ function QuizStep() {
           })}
         </div>
 
-        {/* Sticky Continue button for multi-select */}
-        {isMulti && (
-          <div className="sticky bottom-0 bg-white pt-4 pb-2 -mx-4 px-4">
-            <button
-              onClick={handleContinue}
-              disabled={!hasSelection}
-              className={`w-full h-14 rounded-xl font-bold text-[16px] text-white transition-all ${
-                hasSelection
-                  ? "bg-[#E85D8C] hover:bg-[#D64B7A]"
-                  : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
-              }`}
-            >
-              CONTINUAR →
-            </button>
-          </div>
-        )}
+        {/* Sticky Continue button (always visible) */}
+        <div className="sticky bottom-0 bg-white pt-4 pb-2 -mx-4 px-4">
+          <button
+            onClick={handleContinue}
+            disabled={!hasSelection}
+            className={`w-full h-14 rounded-xl font-bold text-[16px] text-white transition-all ${
+              hasSelection
+                ? "bg-[#E85D8C] hover:bg-[#D64B7A]"
+                : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
+            }`}
+          >
+            {isMulti ? "CONTINUAR →" : "PRÓXIMO →"}
+          </button>
+        </div>
 
         {/* Toast (single select) */}
         {showToast && !isMulti && (
@@ -249,13 +247,13 @@ function QuizStep() {
           </div>
         )}
 
-        {/* Error tooltip (multi-select) */}
+        {/* Error tooltip */}
         {showError && (
           <div
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FF5252] text-white px-5 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
             style={{ opacity: 0.95 }}
           >
-            Selecione pelo menos um sintoma
+            {isMulti ? "Selecione pelo menos um sintoma" : "Selecione uma opção para continuar"}
           </div>
         )}
       </div>
