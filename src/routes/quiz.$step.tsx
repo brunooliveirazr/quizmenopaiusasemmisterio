@@ -1948,12 +1948,12 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
   },
   {
     id: "vip",
-    label: "Para quem quer máximo suporte",
-    labelColor: "#9333EA",
+    label: "👑 TRANSFORMAÇÃO TOTAL",
+    labelColor: "#FFFFFF",
     name: "VIP Total",
     subheading: "Transformação com acompanhamento",
     price: "R$ 29,90",
-    priceColor: "#E85D8C",
+    priceColor: "#9333EA",
     description:
       "Tudo do Premium + comunidade + consultora. Para quando você quer ajuda no caminho.",
     features: [
@@ -1965,13 +1965,13 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     ],
     cta: "ESCOLHER VIP",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
-    cardBg: "#FFFFFF",
-    border: "#E85D8C",
+    cardBg: "linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 100%)",
+    border: "#9333EA",
     borderWidth: 3,
-    shadow: "0 4px 16px rgba(232,93,140,0.15)",
-    divider: "#EDE4FB",
-    btnBg: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 100%)",
-    btnHover: "linear-gradient(135deg,#D64B7A 0%,#E85D8C 100%)",
+    shadow: "0 4px 16px rgba(147,51,234,0.15)",
+    divider: "#D8B4FE",
+    btnBg: "#9333EA",
+    btnHover: "#7E22CE",
   },
 ];
 
@@ -2142,22 +2142,22 @@ function SalesPage() {
                 background: plan.cardBg,
                 border: `${plan.borderWidth}px solid ${plan.border}`,
                 borderRadius: 12,
-                padding: plan.id === "premium" ? 24 : 20,
-                paddingTop: plan.id === "premium" ? 40 : 20,
+                padding: plan.id === "premium" || plan.id === "vip" ? 24 : 20,
+                paddingTop: plan.id === "premium" || plan.id === "vip" ? 40 : 20,
                 boxShadow: plan.shadow,
                 display: "flex",
                 flexDirection: "column",
                 overflow: "hidden",
               }}
             >
-              {plan.id === "premium" && (
+              {(plan.id === "premium" || plan.id === "vip") && (
                 <div
                   style={{
                     position: "absolute",
                     top: 0,
                     left: 0,
                     right: 0,
-                    background: "#E85D8C",
+                    background: plan.id === "vip" ? "#9333EA" : "#E85D8C",
                     color: "#FFFFFF",
                     fontSize: 11,
                     fontWeight: 800,
@@ -2167,10 +2167,10 @@ function SalesPage() {
                     textTransform: "uppercase",
                   }}
                 >
-                  ⭐ MAIS POPULAR
+                  {plan.id === "vip" ? "👑 TRANSFORMAÇÃO TOTAL" : "⭐ MAIS POPULAR"}
                 </div>
               )}
-              {plan.id !== "premium" && (
+              {plan.id !== "premium" && plan.id !== "vip" && (
                 <div
                   style={{
                     fontSize: 11,
@@ -2184,7 +2184,7 @@ function SalesPage() {
               )}
               <div
                 style={{
-                  fontSize: plan.id === "premium" ? 20 : 18,
+                  fontSize: plan.id === "premium" || plan.id === "vip" ? 20 : 18,
                   fontWeight: 700,
                   color: "#2C2C2C",
                 }}
@@ -2198,7 +2198,7 @@ function SalesPage() {
               )}
               <div
                 style={{
-                  fontSize: plan.id === "premium" ? 40 : 34,
+                  fontSize: plan.id === "premium" || plan.id === "vip" ? 40 : 34,
                   fontWeight: 800,
                   color: plan.priceColor,
                   marginTop: 12,
@@ -2237,10 +2237,10 @@ function SalesPage() {
               </div>
               <button
                 onClick={() => handleBuy(plan)}
-                className={`cta-gold ${plan.id === "premium" ? "cta-premium-pulse" : ""}`}
+                className={`cta-gold ${plan.id === "premium" || plan.id === "vip" ? "cta-premium-pulse" : ""}`}
                 style={{
                   width: "100%",
-                  height: plan.id === "premium" ? 52 : 48,
+                  height: plan.id === "premium" || plan.id === "vip" ? 52 : 48,
                   background: plan.btnBg,
                   color: "#FFFFFF",
                   border: "none",
@@ -2250,17 +2250,23 @@ function SalesPage() {
                   cursor: "pointer",
                   marginTop: 20,
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(232,93,140,0.35)",
+                  boxShadow: plan.id === "vip" 
+                    ? "0 4px 14px rgba(147,51,234,0.35)" 
+                    : "0 4px 14px rgba(232,93,140,0.35)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = plan.btnHover;
                   e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(232,93,140,0.50)";
+                  e.currentTarget.style.boxShadow = plan.id === "vip"
+                    ? "0 8px 24px rgba(147,51,234,0.50)"
+                    : "0 8px 24px rgba(232,93,140,0.50)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = plan.btnBg;
                   e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(232,93,140,0.35)";
+                  e.currentTarget.style.boxShadow = plan.id === "vip"
+                    ? "0 4px 14px rgba(147,51,234,0.35)"
+                    : "0 4px 14px rgba(232,93,140,0.35)";
                 }}
               >
                 {plan.cta}
