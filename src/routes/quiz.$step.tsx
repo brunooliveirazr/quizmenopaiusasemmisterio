@@ -725,13 +725,11 @@ function QuizStep() {
     }
     autoAdvanceTimer.current = window.setTimeout(() => {
       // Show contextual popup if defined
-      const popup = q.popups?.[opt] ?? q.defaultPopup;
+      const popup = POPUP_STEPS.has(step) ? (q.popups?.[opt] ?? q.defaultPopup) : null;
       if (popup) {
         setActivePopup(popup);
         return;
       }
-      // Persist answer with the just-selected value and navigate
-      try {
         const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
         stored[step] = { single: opt, multi: [], scale: scaleValue, text: textValue };
         localStorage.setItem("quizAnswers", JSON.stringify(stored));
