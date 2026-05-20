@@ -26,7 +26,6 @@ function Index() {
           <div className="h-1 w-full bg-[#E0E0E0] rounded-full overflow-hidden">
             <div className="h-full bg-[#E85D8C] w-0" />
           </div>
-          <p className="text-[12px] text-[#999] mt-1">0 / 20</p>
         </div>
 
         {/* Hero image */}
