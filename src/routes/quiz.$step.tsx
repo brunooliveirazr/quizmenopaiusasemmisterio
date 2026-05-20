@@ -2170,16 +2170,18 @@ function SalesPage() {
                   ⭐ MAIS POPULAR
                 </div>
               )}
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: plan.id === "basico" ? 400 : 700,
-                  color: plan.labelColor,
-                  marginBottom: 8,
-                }}
-              >
-                {plan.label}
-              </div>
+              {plan.id !== "premium" && (
+                <div
+                  style={{
+                    fontSize: 11,
+                    fontWeight: plan.id === "basico" ? 400 : 700,
+                    color: plan.labelColor,
+                    marginBottom: 8,
+                  }}
+                >
+                  {plan.label}
+                </div>
+              )}
               <div
                 style={{
                   fontSize: plan.id === "premium" ? 20 : 18,
