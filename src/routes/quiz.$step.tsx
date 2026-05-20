@@ -170,6 +170,7 @@ const QUESTIONS: Record<string, Question> = {
         body: "Múltiplos sintomas atacando de uma vez.\nIsso é exaustivo.\n\nMAS sabe qual é a notícia BOA? Uma solução bem estruturada resolve MÚLTIPLOS sintomas de uma vez.\n\nVocê não precisa resolver um por um.\nUm reequilíbrio hormonal bem feito tira você do caos.",
       },
     },
+  },
   "6": {
     title: "De 1 a 10: Quanto os sintomas",
     subtitle: "impactam seu dia a dia?",
