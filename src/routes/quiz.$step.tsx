@@ -629,6 +629,8 @@ function QuizStep() {
   const hasSelection =
     q.type === 'scale' || q.multiSelectOptional
       ? true
+      : q.type === 'text'
+      ? textValue.trim().length > 0
       : isMulti
       ? selectedMulti.length > 0
       : !!selectedSingle;
