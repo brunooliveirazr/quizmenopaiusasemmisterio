@@ -1,0 +1,8 @@
+# Menopausa Sem Mistério
+
+> Quiz personalizado de menopausa que identifica o plano ideal e ajuda a aliviar sintomas em 3 minutos.
+
+## Pages
+
+- [Home](/): Apresentação do quiz e chamada para começar.
+- [Quiz](/quiz/1): Quiz interativo de avaliação de sintomas e perfil hormonal.
