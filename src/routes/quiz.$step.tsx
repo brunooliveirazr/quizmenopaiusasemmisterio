@@ -8,6 +8,9 @@ export const Route = createFileRoute("/quiz/$step")({
 
 const TOTAL = 20;
 
+// Apenas 8 popups estratégicos distribuídos nas 18 perguntas iniciais
+const POPUP_STEPS = new Set(["4", "6", "7", "8", "10", "12", "15", "17"]);
+
 type Popup = {
   icon: string;
   title: string;
@@ -722,12 +725,11 @@ function QuizStep() {
     }
     autoAdvanceTimer.current = window.setTimeout(() => {
       // Show contextual popup if defined
-      const popup = q.popups?.[opt] ?? q.defaultPopup;
+      const popup = POPUP_STEPS.has(step) ? (q.popups?.[opt] ?? q.defaultPopup) : null;
       if (popup) {
         setActivePopup(popup);
         return;
       }
-      // Persist answer with the just-selected value and navigate
       try {
         const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
         stored[step] = { single: opt, multi: [], scale: scaleValue, text: textValue };
@@ -770,30 +772,32 @@ function QuizStep() {
       return;
     }
     // If this question has popups, show the contextual popup instead of advancing
-    if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
-      const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
-      if (popup) {
-        setActivePopup(popup);
-        return;
+    if (POPUP_STEPS.has(step)) {
+      if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
+        const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
+        if (popup) {
+          setActivePopup(popup);
+          return;
+        }
       }
-    }
-    // Multi-select with count-based popups
-    if (isMulti && q.countPopupRanges) {
-      const count = selectedMulti.length;
-      const range = q.countPopupRanges.find((r) => count >= r.min && count <= r.max);
-      if (range) {
-        setActivePopup(range.popup(count));
-        return;
+      // Multi-select with count-based popups
+      if (isMulti && q.countPopupRanges) {
+        const count = selectedMulti.length;
+        const range = q.countPopupRanges.find((r) => count >= r.min && count <= r.max);
+        if (range) {
+          setActivePopup(range.popup(count));
+          return;
+        }
       }
-    }
-    // If this question has scale popup ranges, show the matching popup
-    if (q.type === 'scale' && q.scalePopupRanges) {
-      const range = q.scalePopupRanges.find(
-        (r) => scaleValue >= r.min && scaleValue <= r.max
-      );
-      if (range) {
-        setActivePopup(range.popup);
-        return;
+      // If this question has scale popup ranges, show the matching popup
+      if (q.type === 'scale' && q.scalePopupRanges) {
+        const range = q.scalePopupRanges.find(
+          (r) => scaleValue >= r.min && scaleValue <= r.max
+        );
+        if (range) {
+          setActivePopup(range.popup);
+          return;
+        }
       }
     }
     goNext();
