@@ -20,18 +20,27 @@ type ScaleRangePopup = {
   popup: Popup;
 };
 
+type CountRangePopup = {
+  min: number;
+  max: number;
+  popup: (count: number) => Popup;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
+  subtitleColor?: string;
   titleEnd?: string;
   options: string[];
   multiSelect?: boolean;
+  multiSelectOptional?: boolean;
   toastMessage?: string;
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
   type?: 'scale';
   scalePopupRanges?: ScaleRangePopup[];
+  countPopupRanges?: CountRangePopup[];
   optionIcons?: Record<string, string>;
   titleColor?: string;
 };
