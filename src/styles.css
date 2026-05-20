@@ -166,3 +166,127 @@
     color: var(--color-foreground);
   }
 }
+
+/* ============================================================
+   BRAND MASTER PALETTE (Quiz + LP)
+   Namespaced as --brand-* to avoid collision with Tailwind theme tokens.
+   ============================================================ */
+:root {
+  /* Primária */
+  --brand-primary: #E85D8C;
+  --brand-primary-dark: #D64B7A;
+  --brand-primary-light: #FF8FB3;
+
+  /* Secundária */
+  --brand-secondary: #F5A5B8;
+
+  /* Accent */
+  --brand-accent: #FFE5ED;
+  --brand-accent-light: #FFF5F8;
+
+  /* VIP / Tertiary */
+  --brand-vip: #9333EA;
+  --brand-vip-dark: #7E22CE;
+  --brand-vip-light: #F3E8FF;
+
+  /* Utilitários */
+  --brand-trust: #2196F3;
+  --brand-trust-bg: #E3F2FD;
+  --brand-success: #4CAF50;
+  --brand-urgency: #FF6B35;
+
+  /* Text */
+  --brand-dark: #2C2C2C;
+  --brand-medium: #666666;
+  --brand-light: #999999;
+  --brand-line: #E0E0E0;
+  --brand-white: #FFFFFF;
+}
+
+/* ============= CARDS ============= */
+
+/* Básico */
+.card-basic {
+  background: var(--brand-white);
+  border: 2px solid var(--brand-line);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.card-basic-price { color: var(--brand-primary); }
+.card-basic-button {
+  background: var(--brand-primary);
+  color: var(--brand-white);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-basic-button:hover { background: var(--brand-primary-dark); }
+
+/* Premium (DESTAQUE) */
+.card-premium {
+  background: var(--brand-white);
+  border: 3px solid var(--brand-primary);
+  box-shadow: 0 4px 16px rgba(232, 93, 140, 0.15);
+  transform: scale(1.02);
+}
+.card-premium-ribbon {
+  background: var(--brand-primary);
+  color: var(--brand-white);
+}
+.card-premium-price {
+  color: var(--brand-primary);
+  font-size: 40px;
+}
+.card-premium-button {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-light) 100%);
+  color: var(--brand-white);
+  box-shadow: 0 4px 12px rgba(232, 93, 140, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-premium-button:hover {
+  background: var(--brand-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(232, 93, 140, 0.4);
+}
+
+/* VIP (LUXO) */
+.card-vip {
+  background: linear-gradient(135deg, var(--brand-white) 0%, var(--brand-vip-light) 100%);
+  border: 3px solid var(--brand-vip);
+  box-shadow: 0 4px 16px rgba(147, 51, 234, 0.15);
+}
+.card-vip-ribbon {
+  background: var(--brand-vip);
+  color: var(--brand-white);
+}
+.card-vip-price {
+  color: var(--brand-vip);
+  font-size: 36px;
+}
+.card-vip-button {
+  background: var(--brand-vip);
+  color: var(--brand-white);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-vip-button:hover {
+  background: var(--brand-vip-dark);
+  transform: translateY(-2px);
+}
+
+/* ============= GARANTIA ============= */
+.guarantee-section {
+  background: var(--brand-trust-bg);
+  border-left: 4px solid var(--brand-trust);
+}
+.guarantee-title { color: var(--brand-trust); }
+
+/* ============= URGÊNCIA ============= */
+.urgency-section {
+  background: var(--brand-urgency);
+  color: var(--brand-white);
+}
+
+/* ============= PROVA SOCIAL ============= */
+.testimonial-badge {
+  background: var(--brand-accent);
+  color: var(--brand-primary);
+}
+.stat-number { color: var(--brand-primary); }
+
