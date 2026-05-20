@@ -2237,10 +2237,10 @@ function SalesPage() {
               </div>
               <button
                 onClick={() => handleBuy(plan)}
-                className={`cta-gold ${plan.id === "premium" ? "cta-premium-pulse" : ""}`}
+                className={`cta-gold ${plan.id === "premium" || plan.id === "vip" ? "cta-premium-pulse" : ""}`}
                 style={{
                   width: "100%",
-                  height: plan.id === "premium" ? 52 : 48,
+                  height: plan.id === "premium" || plan.id === "vip" ? 52 : 48,
                   background: plan.btnBg,
                   color: "#FFFFFF",
                   border: "none",
@@ -2250,17 +2250,23 @@ function SalesPage() {
                   cursor: "pointer",
                   marginTop: 20,
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(232,93,140,0.35)",
+                  boxShadow: plan.id === "vip" 
+                    ? "0 4px 14px rgba(147,51,234,0.35)" 
+                    : "0 4px 14px rgba(232,93,140,0.35)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = plan.btnHover;
                   e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(232,93,140,0.50)";
+                  e.currentTarget.style.boxShadow = plan.id === "vip"
+                    ? "0 8px 24px rgba(147,51,234,0.50)"
+                    : "0 8px 24px rgba(232,93,140,0.50)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = plan.btnBg;
                   e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(232,93,140,0.35)";
+                  e.currentTarget.style.boxShadow = plan.id === "vip"
+                    ? "0 4px 14px rgba(147,51,234,0.35)"
+                    : "0 4px 14px rgba(232,93,140,0.35)";
                 }}
               >
                 {plan.cta}
