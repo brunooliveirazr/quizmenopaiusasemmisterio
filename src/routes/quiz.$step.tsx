@@ -1461,10 +1461,12 @@ function TimelinePage() {
             const topPx = m.y - 56;
             const align =
               leftPct < 25 ? "left" : leftPct > 75 ? "right" : "center";
+            const translateX =
+              align === "left" ? "-10%" : align === "right" ? "-90%" : "-50%";
             return (
               <div
                 key={i}
-                className="absolute timeline-balloon"
+                className="absolute"
                 style={{
                   left: `${leftPct}%`,
                   top: `${topPx}px`,
@@ -1472,16 +1474,13 @@ function TimelinePage() {
                     align === "left" ? "left top" : align === "right" ? "right top" : "center top",
                   marginLeft:
                     align === "left" ? "-12px" : align === "right" ? undefined : undefined,
-                  translate:
-                    align === "left"
-                      ? "-10% 0"
-                      : align === "right"
-                      ? "-90% 0"
-                      : "-50% 0",
-                  animationDelay: `${m.delay + 0.2}s`,
+                  transform: `translateX(${translateX})`,
                 }}
               >
-                <div className="bg-white rounded-lg px-3 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.25)] min-w-[120px] max-w-[160px]">
+                <div
+                  className="timeline-balloon bg-white rounded-lg px-3 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.25)] min-w-[120px] max-w-[160px]"
+                  style={{ animationDelay: `${m.delay + 0.2}s` }}
+                >
                   <p className="text-[11px] font-bold text-[#E85D8C] leading-tight">
                     {m.label}
                   </p>
