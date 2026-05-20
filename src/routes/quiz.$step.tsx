@@ -1291,3 +1291,231 @@ function ProcessingPage() {
     </div>
   );
 }
+
+type StoredAnswers = Record<
+  string,
+  { single: string | null; multi: string[]; scale: number; text: string }
+>;
+
+function ResultsPage() {
+  const navigate = useNavigate();
+  const [answers, setAnswers] = useState<StoredAnswers>({});
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+      setAnswers(stored);
+    } catch {}
+  }, []);
+
+  const age = answers["1"]?.single ?? "—";
+  const stage = answers["2"]?.single ?? "—";
+  const symptoms = answers["3"]?.multi ?? [];
+  const impact = answers["6"]?.scale ?? 0;
+  const time = answers["11"]?.single ?? "—";
+  const style = answers["12"]?.single ?? "—";
+  const mainSymptom = symptoms[0] ?? "seus sintomas";
+
+  const symptomsLabel =
+    symptoms.length === 0
+      ? "—"
+      : symptoms.length <= 3
+      ? symptoms.join(", ")
+      : `${symptoms.slice(0, 3).join(", ")} +${symptoms.length - 3}`;
+
+  const totalAnswered = Object.keys(answers).length;
+
+  const handleSeeOffer = () => {
+    // TODO: Substituir pela URL real da página de vendas
+    const params = new URLSearchParams({
+      age: String(age),
+      stage: String(stage),
+      symptoms: symptoms.join("|"),
+      impact: String(impact),
+      time: String(time),
+      style: String(style),
+    });
+    try {
+      sessionStorage.setItem("quizAnswers", JSON.stringify(answers));
+    } catch {}
+    console.log("Redirect to sales page with:", params.toString());
+    alert("Página de vendas em breve!");
+  };
+
+  const handleRestart = () => {
+    try {
+      localStorage.removeItem("quizAnswers");
+    } catch {}
+    navigate({ to: "/quiz/$step", params: { step: "1" } });
+  };
+
+  const Check = () => (
+    <span style={{ color: "#4CAF50", marginRight: 8, fontWeight: 700 }}>✓</span>
+  );
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(180deg, #FFE5ED 0%, #FFFFFF 100%)",
+        paddingBottom: 24,
+      }}
+    >
+      <QuizHeader
+        progress={100}
+        stepText="20 / 20"
+        onBack={() => navigate({ to: "/quiz/$step", params: { step: "19" } })}
+      />
+
+      <div style={{ padding: "24px 16px" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 48 }}>🎉</div>
+          <h1
+            style={{
+              fontSize: 24,
+              fontWeight: 700,
+              color: "#E85D8C",
+              marginTop: 24,
+              marginBottom: 8,
+            }}
+          >
+            SEU DIAGNÓSTICO PERSONALIZADO
+          </h1>
+          <p style={{ fontSize: 14, color: "#999", marginBottom: 32 }}>
+            Baseado em {totalAnswered} respostas específicas suas
+          </p>
+        </div>
+
+        {/* Diagnóstico card */}
+        <div
+          style={{
+            background: "#FFF5F8",
+            border: "2px solid #E85D8C",
+            borderRadius: 16,
+            padding: 24,
+            marginBottom: 24,
+            fontSize: 14,
+            color: "#2C2C2C",
+            lineHeight: 1.8,
+          }}
+        >
+          <div><Check />Idade: {age}</div>
+          <div><Check />Estágio: {stage}</div>
+          <div><Check />Sintomas principais: {symptomsLabel}</div>
+          <div><Check />Nível de impacto: {impact}/10</div>
+          <div><Check />Tempo disponível: {time}</div>
+          <div><Check />Estilo: {style}</div>
+        </div>
+
+        {/* Recomendação card */}
+        <div
+          style={{
+            background: "#FFFFFF",
+            border: "2px solid #E85D8C",
+            borderRadius: 16,
+            padding: 24,
+            marginBottom: 24,
+            boxShadow: "0 4px 12px rgba(232, 93, 140, 0.15)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: "#E85D8C",
+              marginBottom: 12,
+            }}
+          >
+            RECOMENDAÇÃO:
+          </div>
+          <div
+            style={{
+              height: 1,
+              background: "#E0E0E0",
+              marginBottom: 16,
+            }}
+          />
+          <p
+            style={{
+              fontSize: 14,
+              color: "#2C2C2C",
+              lineHeight: 1.6,
+              marginBottom: 12,
+            }}
+          >
+            Com base em seu perfil, você precisa de um método que combina:
+          </p>
+          <div style={{ fontSize: 14, color: "#2C2C2C", lineHeight: 1.8 }}>
+            <div><Check />Rotina {time} diária</div>
+            <div><Check />Foco em {mainSymptom}</div>
+            <div><Check />Abordagem {style}</div>
+            <div><Check />Suporte estruturado (não genérico)</div>
+          </div>
+          <p
+            style={{
+              fontSize: 14,
+              color: "#2C2C2C",
+              lineHeight: 1.6,
+              marginTop: 16,
+              fontWeight: 600,
+            }}
+          >
+            Você descobriu como funcionava!
+            <br />
+            Agora vem a solução...
+          </p>
+        </div>
+
+        <p
+          style={{
+            fontSize: 14,
+            color: "#999",
+            textAlign: "center",
+            marginBottom: 32,
+          }}
+        >
+          Sua oferta personalizada está esperando.
+        </p>
+
+        <button
+          onClick={handleSeeOffer}
+          style={{
+            display: "block",
+            width: "100%",
+            height: 56,
+            background: "#E85D8C",
+            color: "#FFFFFF",
+            border: "none",
+            borderRadius: 12,
+            fontSize: 16,
+            fontWeight: 700,
+            cursor: "pointer",
+            marginBottom: 16,
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#D64B7A")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#E85D8C")}
+        >
+          VER MINHA OFERTA PERSONALIZADA →
+        </button>
+
+        <button
+          onClick={handleRestart}
+          style={{
+            display: "block",
+            width: "100%",
+            height: 48,
+            background: "transparent",
+            color: "#E85D8C",
+            border: "1px solid #E85D8C",
+            borderRadius: 12,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Voltar e refazer
+        </button>
+      </div>
+    </div>
+  );
+}
