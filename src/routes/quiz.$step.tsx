@@ -893,7 +893,8 @@ function QuizStep() {
         )}
 
         {/* Options / Scale */}
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 mt-8">
+
           {q.type === 'scale' ? (
             <div className="flex flex-col items-center justify-center flex-1">
               {/* Large number display */}
