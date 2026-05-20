@@ -2218,7 +2218,7 @@ function SalesPage() {
                   height: plan.id === "premium" ? 50 : 46,
                   background: plan.btnBg,
                   color: "#FFFFFF",
-                  border: "1px solid rgba(139,101,8,0.5)",
+                  border: "1px solid rgba(232,93,140,0.5)",
                   borderRadius: 10,
                   fontSize: 14,
                   fontWeight: 800,
