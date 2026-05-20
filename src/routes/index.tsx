@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroWoman from "@/assets/hero-woman.jpg";
+import heroMockup from "@/assets/hero-mockup.jpg";
 import { QuizHeader } from "@/components/QuizHeader";
 
 export const Route = createFileRoute("/")({
@@ -30,11 +30,11 @@ function Index() {
 
         {/* Hero image */}
         <img
-          src={heroWoman}
-          alt="Mulher confiante sorrindo"
+          src={heroMockup}
+          alt="App Menopausa Sem Mistério"
           width={1024}
-          height={1024}
-          className="w-full h-[60vh] object-cover rounded-b-3xl mt-2"
+          height={1820}
+          className="w-full h-[55vh] object-contain mt-2 bg-[#f5f3ee]"
         />
 
         {/* Content */}
