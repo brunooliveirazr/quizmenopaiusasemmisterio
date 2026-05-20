@@ -299,7 +299,7 @@ function QuizStep() {
     }
   };
 
-  const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
+  const hasSelection = q.type === 'scale' ? true : isMulti ? selectedMulti.length > 0 : !!selectedSingle;
 
   return (
     <div
