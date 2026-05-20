@@ -682,6 +682,10 @@ function QuizStep() {
     setShowToast(false);
     setShowError(false);
     setActivePopup(null);
+    if (autoAdvanceTimer.current) {
+      window.clearTimeout(autoAdvanceTimer.current);
+      autoAdvanceTimer.current = null;
+    }
   }, [step]);
 
   const saveAnswer = () => {
