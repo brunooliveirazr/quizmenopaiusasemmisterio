@@ -20,13 +20,7 @@ function Index() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-white to-[#FFE5ED] flex justify-center">
       <div className="w-full max-w-[480px] min-h-screen flex flex-col pb-32 relative">
-        <QuizHeader />
-        {/* Progress bar */}
-        <div className="px-4 pt-1">
-          <div className="h-1 w-full bg-[#E0E0E0] rounded-full overflow-hidden">
-            <div className="h-full bg-[#E85D8C] w-0" />
-          </div>
-        </div>
+        <QuizHeader size="lg" />
 
         {/* Hero image */}
         <img
