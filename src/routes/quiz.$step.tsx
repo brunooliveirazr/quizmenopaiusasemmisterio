@@ -127,7 +127,7 @@ function QuizStep() {
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#4CAF50] text-white px-4 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
             style={{ opacity: 0.95 }}
           >
-            ✓ Perfeito! Estamos montando seu diagnóstico...
+            {q.toastMessage ?? "✓ Perfeito! Estamos montando seu diagnóstico..."}
           </div>
         )}
       </div>
