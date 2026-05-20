@@ -786,6 +786,35 @@ function QuizStep() {
                 </div>
               </div>
             </div>
+          ) : q.type === 'text' ? (
+            <div className="flex flex-col flex-1">
+              <input
+                type="text"
+                inputMode="decimal"
+                placeholder={q.textConfig?.placeholder}
+                value={textValue}
+                onChange={(e) => {
+                  setTextValue(e.target.value);
+                  setTextError(false);
+                  setShowError(false);
+                }}
+                className={`w-full h-14 px-4 rounded-xl border-2 text-[16px] text-[#2C2C2C] bg-white outline-none transition-all duration-200 ${
+                  textError
+                    ? "border-[#FFC107]"
+                    : textValue.trim()
+                    ? "border-[#E85D8C]"
+                    : "border-[#E0E0E0]"
+                }`}
+                style={{
+                  boxShadow: textValue.trim() && !textError ? '0 0 0 3px rgba(232, 93, 140, 0.1)' : 'none',
+                }}
+              />
+              {textError && q.textConfig?.errorMessage && (
+                <p className="text-[13px] text-[#FFC107] mt-2 text-center">
+                  {q.textConfig.errorMessage}
+                </p>
+              )}
+            </div>
           ) : (
             <div className="flex flex-col gap-3 flex-1">
               {q.options.map((opt) => {
