@@ -273,6 +273,16 @@ function QuizStep() {
         return;
       }
     }
+    // If this question has scale popup ranges, show the matching popup
+    if (q.type === 'scale' && q.scalePopupRanges) {
+      const range = q.scalePopupRanges.find(
+        (r) => scaleValue >= r.min && scaleValue <= r.max
+      );
+      if (range) {
+        setActivePopup(range.popup);
+        return;
+      }
+    }
     goNext();
   };
 
