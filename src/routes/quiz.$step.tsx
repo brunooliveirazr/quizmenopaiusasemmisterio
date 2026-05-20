@@ -860,29 +860,29 @@ function QuizStep() {
 
         {q.type === 'scale' ? (
           <>
-            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-0 text-center">
+            <h2 className="font-bold text-[18px] sm:text-[20px] text-[#2C2C2C] mt-6 mb-0 text-center leading-snug px-2">
               {q.title}
             </h2>
-            <h2 className="font-bold text-[20px] text-[#E85D8C] mb-8 text-center">
+            <h2 className="font-semibold text-[14px] sm:text-[15px] text-[#E85D8C] mb-6 text-center leading-snug px-2">
               {q.subtitle}
             </h2>
           </>
         ) : (
           <>
             <h2
-              className="font-bold text-[20px] mt-8 mb-0 text-center"
+              className="font-bold text-[18px] sm:text-[20px] mt-6 mb-0 text-center leading-snug px-2"
               style={{ color: q.titleColor || "#2C2C2C" }}
             >
               {q.title}
             </h2>
             {q.subtitle && (
-              <h2 className="font-bold text-[20px] text-[#E85D8C] text-center mt-0 mb-0">
+              <h2 className="font-semibold text-[14px] sm:text-[15px] text-[#E85D8C] text-center mt-1 mb-0 leading-snug px-2">
                 {q.subtitle}
               </h2>
             )}
             {q.titleEnd && (
               <h2
-                className="font-bold text-[20px] text-center mt-0 mb-8"
+                className="font-bold text-[18px] sm:text-[20px] text-center mt-1 mb-6 leading-snug px-2"
                 style={{ color: q.titleColor || "#2C2C2C" }}
               >
                 {q.titleEnd}
@@ -1038,7 +1038,7 @@ function QuizStep() {
                     <button
                       key={opt}
                       onClick={() => toggleMulti(opt)}
-                      className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
+                      className={`w-full min-h-14 px-4 py-3 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[15px] sm:text-[16px] text-left text-[#2C2C2C] leading-snug ${
                         checked
                           ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
                           : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
@@ -1046,7 +1046,7 @@ function QuizStep() {
                     >
                       {/* Custom checkbox */}
                       <div
-                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all shrink-0 ${
                           checked
                             ? "bg-[#E85D8C] border-[#E85D8C]"
                             : "bg-white border-[#E0E0E0]"
@@ -1070,7 +1070,7 @@ function QuizStep() {
                           </svg>
                         )}
                       </div>
-                      <span>{opt}</span>
+                      <span className="flex-1">{opt}</span>
                     </button>
                   );
                 }
@@ -1078,30 +1078,29 @@ function QuizStep() {
                 const isSelected = selectedSingle === opt;
                 const icon = q.optionIcons?.[opt];
                 const subtitle = q.optionSubtitles?.[opt];
-                const btnHeight = subtitle ? "min-h-[70px] py-3" : "h-14";
                 return (
                   <button
                     key={opt}
                     onClick={() => handleSelectSingle(opt)}
-                    className={`w-full ${btnHeight} px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
+                    className={`w-full min-h-14 px-4 py-3 rounded-xl border-2 transition-all duration-300 flex items-center justify-between gap-3 text-[15px] sm:text-[16px] text-[#2C2C2C] leading-snug ${
                       isSelected
                         ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
                         : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    <span className="flex flex-col items-start gap-0.5">
-                      <span className="flex items-center gap-3">
-                        {icon && <span className="text-[20px]">{icon}</span>}
-                        <span>{opt}</span>
+                    <span className="flex flex-col items-start gap-0.5 text-left flex-1 min-w-0">
+                      <span className="flex items-center gap-2 w-full">
+                        {icon && <span className="text-[20px] shrink-0">{icon}</span>}
+                        <span className="flex-1">{opt}</span>
                       </span>
                       {subtitle && (
-                        <span className={`text-[13px] text-[#999] font-normal ${icon ? 'pl-8' : ''}`}>
+                        <span className={`text-[12px] sm:text-[13px] text-[#999] font-normal ${icon ? 'pl-7' : ''}`}>
                           {subtitle}
                         </span>
                       )}
                     </span>
                     {isSelected && (
-                      <span className="text-[#E85D8C] text-lg font-bold">✓</span>
+                      <span className="text-[#E85D8C] text-lg font-bold shrink-0">✓</span>
                     )}
                   </button>
                 );
@@ -1733,23 +1732,24 @@ function SalesPage() {
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         color: "#2C2C2C",
+        overflowX: "hidden",
       }}
     >
       {/* Sticky top bar */}
-      <div className="sticky top-0 z-10 bg-white px-4 pt-4 pb-2 border-b border-[#F0E0E8]">
-        <div className="flex items-center gap-3">
+      <div className="sticky top-0 z-10 bg-white px-3 pt-3 pb-2 border-b border-[#F0E0E8]">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
             aria-label="Voltar"
-            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center shrink-0"
           >
             ←
           </button>
-          <div className="flex-1 text-center text-[12px] font-semibold text-[#E85D8C] tracking-wide">
+          <div className="flex-1 text-center text-[11px] sm:text-[12px] font-semibold text-[#E85D8C] tracking-wide">
             🔒 OFERTA ESPECIAL — APENAS HOJE
           </div>
-          <span className="w-6" />
+          <span className="w-6 shrink-0" />
         </div>
       </div>
 
@@ -1859,9 +1859,8 @@ function SalesPage() {
                 background: plan.cardBg,
                 border: `${plan.borderWidth}px solid ${plan.borderColor}`,
                 borderRadius: 16,
-                padding: 24,
+                padding: 20,
                 boxShadow: plan.shadow,
-                transform: plan.scale ? `scale(${plan.scale})` : undefined,
                 transition: "all 0.3s ease",
               }}
             >
