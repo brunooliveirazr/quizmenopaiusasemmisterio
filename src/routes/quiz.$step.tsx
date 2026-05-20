@@ -46,13 +46,14 @@ type Question = {
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
-  type?: 'scale' | 'text';
+  type?: 'scale' | 'text' | 'select';
   scalePopupRanges?: ScaleRangePopup[];
   countPopupRanges?: CountRangePopup[];
   optionIcons?: Record<string, string>;
   titleColor?: string;
   optionSubtitles?: Record<string, string>;
   textConfig?: TextQuestionConfig;
+  optional?: boolean;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -633,6 +634,20 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "18": {
+    title: "Como você nos conheceu?",
+    subtitle: "(Seu nome e como chegou aqui)",
+    type: 'select',
+    optional: true,
+    options: [
+      "Anúncio do Instagram",
+      "Anúncio do Facebook",
+      "Google Search",
+      "Indicação de amiga",
+      "Email/Newsletter",
+      "Outro",
+    ],
+  },
 };
 
 function QuizStep() {
@@ -754,7 +769,7 @@ function QuizStep() {
   };
 
   const hasSelection =
-    q.type === 'scale' || q.multiSelectOptional
+    q.type === 'scale' || q.multiSelectOptional || q.optional || q.type === 'select'
       ? true
       : q.type === 'text'
       ? textValue.trim().length > 0
