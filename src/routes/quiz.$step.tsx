@@ -654,7 +654,9 @@ function QuizStep() {
   const { step } = useParams({ from: "/quiz/$step" });
   const navigate = useNavigate();
   const stepNum = parseInt(step, 10) || 1;
+  if (step === "19") return <ProcessingPage />;
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
+
   const progress = (stepNum / TOTAL) * 100;
   const isMulti = !!q.multiSelect;
 
@@ -1129,6 +1131,145 @@ function QuizStep() {
                 OK, Continuar →
               </button>
             </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const PROCESSING_TASKS = [
+  { text: "Analisando seu perfil hormonal...", at: 0 },
+  { text: "Calibrando rotina para sua idade...", at: 2 },
+  { text: "Mapeando seus sintomas-chave...", at: 4 },
+  { text: "Calculando tempo ideal de sono...", at: 6 },
+  { text: "Estruturando protocolo de estresse...", at: 8 },
+];
+
+const TESTIMONIALS = [
+  { name: "Marina, 52 anos", quote: "Dormi a noite toda pela primeira vez em 3 anos!" },
+  { name: "Beatriz, 48 anos", quote: "Meu peso normalizou sem fazer dieta maluca" },
+  { name: "Carla, 51 anos", quote: "Meu marido perguntou se eu estava feliz novamente" },
+  { name: "+8.247 mulheres", quote: "já transformaram suas vidas", icon: "👥" },
+];
+
+function ProcessingPage() {
+  const navigate = useNavigate();
+  const [elapsed, setElapsed] = useState(0);
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
+  const [testimonialVisible, setTestimonialVisible] = useState(true);
+
+  useEffect(() => {
+    const start = Date.now();
+    const tick = window.setInterval(() => {
+      const e = (Date.now() - start) / 1000;
+      setElapsed(Math.min(e, 10));
+      if (e >= 10) window.clearInterval(tick);
+    }, 100);
+    return () => window.clearInterval(tick);
+  }, []);
+
+  useEffect(() => {
+    const cycle = window.setInterval(() => {
+      setTestimonialVisible(false);
+      window.setTimeout(() => {
+        setTestimonialIdx((i) => (i + 1) % TESTIMONIALS.length);
+        setTestimonialVisible(true);
+      }, 400);
+    }, 2500);
+    return () => window.clearInterval(cycle);
+  }, []);
+
+  const pct = Math.min(100, Math.round((elapsed / 10) * 100));
+  const done = elapsed >= 10;
+  const t = TESTIMONIALS[testimonialIdx];
+
+  return (
+    <div className="min-h-screen w-full flex justify-center bg-gradient-to-b from-[#FFE5ED] to-white">
+      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4">
+        {/* Progress bar */}
+        <div className="pt-4">
+          <div className="flex items-center gap-3">
+            <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
+              <div className="h-full bg-[#E85D8C] transition-all" style={{ width: "95%" }} />
+            </div>
+            <span className="text-[12px] text-[#999] tabular-nums">19 / 20</span>
+          </div>
+        </div>
+
+        {/* Heading */}
+        <div className="text-center mt-10 mb-8">
+          <p className="font-bold text-[18px] text-[#E85D8C]">
+            🔄 Gerando seu plano personalizado...
+          </p>
+        </div>
+
+        {/* Progress bar visual */}
+        <div className="flex flex-col items-center">
+          <div className="w-4/5 h-1.5 bg-[#E0E0E0] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#E85D8C] transition-all duration-100 ease-linear"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+          <div className="text-[16px] text-[#E85D8C] mt-2 font-medium tabular-nums">
+            {pct}%
+          </div>
+        </div>
+
+        {/* Tasks */}
+        <div className="mt-8 flex flex-col gap-3 px-2">
+          {PROCESSING_TASKS.map((task) => {
+            if (elapsed < task.at) return null;
+            const isDone = elapsed >= task.at + 2;
+            return (
+              <div
+                key={task.text}
+                className="flex items-center gap-3 text-[16px] text-[#2C2C2C] animate-fade-in"
+              >
+                {isDone ? (
+                  <span className="text-[20px] text-[#4CAF50]">✓</span>
+                ) : (
+                  <span className="text-[20px] text-[#FFC107] inline-block animate-spin">⏳</span>
+                )}
+                <span>{task.text}</span>
+              </div>
+            );
+          })}
+          {done && (
+            <div className="flex items-center gap-3 text-[16px] text-[#2C2C2C] font-bold animate-fade-in">
+              <span className="text-[24px] text-[#4CAF50]">✓</span>
+              <span>Pronto! Seu plano foi criado exclusivamente para você.</span>
+            </div>
+          )}
+        </div>
+
+        {/* Testimonial */}
+        <div className="mt-8 bg-white rounded-xl p-4 shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+          <div
+            className={`transition-opacity duration-500 ${testimonialVisible ? "opacity-100" : "opacity-0"}`}
+          >
+            <p className="text-[14px] text-[#2C2C2C] italic" style={{ lineHeight: 1.6 }}>
+              {t.icon ? <span className="mr-2">{t.icon}</span> : null}
+              "{t.quote}"
+            </p>
+            {!t.icon && (
+              <p className="text-[12px] text-[#999] mt-2 not-italic">— {t.name}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="flex-1" />
+
+        {/* Final button */}
+        {done && (
+          <div className="pb-6 animate-fade-in">
+            <button
+              onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+              className="w-full h-14 rounded-xl bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-colors"
+            >
+              VER MEU RESULTADO PERSONALIZADO →
+            </button>
           </div>
         )}
       </div>
