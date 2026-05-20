@@ -2197,6 +2197,56 @@ function SalesPage() {
         </div>
       </section>
 
+      {/* SEÇÃO 2B — Garantia + Cancelamento seguro */}
+      <section style={{ padding: "0 16px 24px" }}>
+        {/* Selo de garantia */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            background: "#F0FDF4",
+            border: "1px solid #BBF7D0",
+            borderRadius: 10,
+            padding: "14px 16px",
+            marginBottom: 12,
+          }}
+        >
+          <span style={{ fontSize: 24, flexShrink: 0 }}>🛡️</span>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>
+              Garantia de 7 dias
+            </div>
+            <div style={{ fontSize: 12, color: "#3F6B4F", lineHeight: 1.5 }}>
+              Se você não sentir diferença na rotina em 7 dias, devolvemos 100% do valor. Sem perguntas.
+            </div>
+          </div>
+        </div>
+
+        {/* Cancelamento fácil */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            background: "#EFF6FF",
+            border: "1px solid #BFDBFE",
+            borderRadius: 10,
+            padding: "14px 16px",
+          }}
+        >
+          <span style={{ fontSize: 24, flexShrink: 0 }}>🔒</span>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#1E40AF" }}>
+              Cancelamento fácil e seguro
+            </div>
+            <div style={{ fontSize: 12, color: "#3B5F9F", lineHeight: 1.5 }}>
+              Cancele quando quiser, sem burocracia. Você está no controle do seu investimento.
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SEÇÃO 3 — Comparação simples */}
       <section style={{ background: "#FFFFFF", padding: "24px 16px" }}>
         <h3
