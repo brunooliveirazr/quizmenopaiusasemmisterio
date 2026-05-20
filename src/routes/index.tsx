@@ -28,7 +28,7 @@ function Index() {
           alt="App Menopausa Sem Mistério"
           width={1024}
           height={1820}
-          className="w-full h-[55vh] object-contain mt-2 bg-[#f5f3ee]"
+          className="w-full h-[55vh] object-contain mt-2 bg-white"
         />
 
         {/* Content */}
