@@ -658,12 +658,17 @@ const QUESTIONS: Record<string, Question> = {
 
 function QuizStep() {
   const { step } = useParams({ from: "/quiz/$step" });
-  const navigate = useNavigate();
   const stepNum = parseInt(step, 10) || 1;
   if (step === "19") return <ProcessingPage />;
-  if (step === "22") return <TimelinePage />;
-  if (step === "20") return <ResultsPage />;
-  if (step === "21") return <SalesPage />;
+  if (step === "20") return <TimelinePage />;
+  if (step === "21") return <ResultsPage />;
+  if (step === "22") return <SalesPage />;
+
+  return <QuizQuestionPage step={step} stepNum={stepNum} />;
+}
+
+function QuizQuestionPage({ step, stepNum }: { step: string; stepNum: number }) {
+  const navigate = useNavigate();
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
 
   const progress = (stepNum / TOTAL) * 100;
