@@ -860,29 +860,29 @@ function QuizStep() {
 
         {q.type === 'scale' ? (
           <>
-            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-0 text-center">
+            <h2 className="font-bold text-[18px] sm:text-[20px] text-[#2C2C2C] mt-6 mb-0 text-center leading-snug px-2">
               {q.title}
             </h2>
-            <h2 className="font-bold text-[20px] text-[#E85D8C] mb-8 text-center">
+            <h2 className="font-semibold text-[14px] sm:text-[15px] text-[#E85D8C] mb-6 text-center leading-snug px-2">
               {q.subtitle}
             </h2>
           </>
         ) : (
           <>
             <h2
-              className="font-bold text-[20px] mt-8 mb-0 text-center"
+              className="font-bold text-[18px] sm:text-[20px] mt-6 mb-0 text-center leading-snug px-2"
               style={{ color: q.titleColor || "#2C2C2C" }}
             >
               {q.title}
             </h2>
             {q.subtitle && (
-              <h2 className="font-bold text-[20px] text-[#E85D8C] text-center mt-0 mb-0">
+              <h2 className="font-semibold text-[14px] sm:text-[15px] text-[#E85D8C] text-center mt-1 mb-0 leading-snug px-2">
                 {q.subtitle}
               </h2>
             )}
             {q.titleEnd && (
               <h2
-                className="font-bold text-[20px] text-center mt-0 mb-8"
+                className="font-bold text-[18px] sm:text-[20px] text-center mt-1 mb-6 leading-snug px-2"
                 style={{ color: q.titleColor || "#2C2C2C" }}
               >
                 {q.titleEnd}
