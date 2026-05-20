@@ -1735,20 +1735,20 @@ function SalesPage() {
       }}
     >
       {/* Sticky top bar */}
-      <div className="sticky top-0 z-10 bg-white px-4 pt-4 pb-2 border-b border-[#F0E0E8]">
-        <div className="flex items-center gap-3">
+      <div className="sticky top-0 z-10 bg-white px-3 pt-3 pb-2 border-b border-[#F0E0E8]">
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
             aria-label="Voltar"
-            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center shrink-0"
           >
             ←
           </button>
-          <div className="flex-1 text-center text-[12px] font-semibold text-[#E85D8C] tracking-wide">
+          <div className="flex-1 text-center text-[11px] sm:text-[12px] font-semibold text-[#E85D8C] tracking-wide">
             🔒 OFERTA ESPECIAL — APENAS HOJE
           </div>
-          <span className="w-6" />
+          <span className="w-6 shrink-0" />
         </div>
       </div>
 
