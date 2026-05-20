@@ -2535,8 +2535,11 @@ function SalesPage() {
             Privacidade
           </a>{" "}
           |{" "}
-          <a href="#" style={{ color: "#E85D8C", textDecoration: "underline" }}>
-            Contato
+          <a
+            href="mailto:adm@menopausasemmisterio.com.br"
+            style={{ color: "#E85D8C", textDecoration: "underline" }}
+          >
+            Suporte
           </a>
         </div>
       </footer>
