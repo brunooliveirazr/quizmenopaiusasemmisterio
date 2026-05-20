@@ -1973,6 +1973,7 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     btnBg: "#9333EA",
     btnHover: "#7E22CE",
   },
+];
 
 const CONSULTIVE_FAQ = [
   {
