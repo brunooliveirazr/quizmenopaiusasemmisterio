@@ -12,6 +12,9 @@ export const Route = createFileRoute("/")({
           "Descubra qual é o plano de menopausa ideal para o seu corpo em 3 minutos.",
       },
     ],
+    links: [
+      { rel: "preload", as: "image", href: heroMockup, fetchpriority: "high" },
+    ],
   }),
   component: Index,
 });
@@ -28,8 +31,11 @@ function Index() {
           alt="App Menopausa Sem Mistério"
           width={1024}
           height={1820}
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-[55vh] object-contain mt-2 bg-white"
         />
+
 
         {/* Content */}
         <div className="px-6 text-center">
