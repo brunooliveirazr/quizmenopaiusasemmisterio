@@ -2200,27 +2200,25 @@ function SalesPage() {
               </div>
               <button
                 onClick={() => handleBuy(plan)}
+                className={`cta-gold ${plan.id === "premium" ? "cta-premium-pulse" : ""}`}
                 style={{
                   width: "100%",
-                  height: plan.id === "premium" ? 48 : 44,
+                  height: plan.id === "premium" ? 50 : 46,
                   background: plan.btnBg,
                   color: "#FFFFFF",
-                  border: "none",
+                  border: "1px solid rgba(139,101,8,0.5)",
                   borderRadius: 10,
                   fontSize: 14,
-                  fontWeight: 700,
+                  fontWeight: 800,
                   cursor: "pointer",
                   marginTop: 20,
-                  transition: "background 0.3s ease, transform 0.3s ease",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = plan.btnHover;
-                  if (plan.id === "premium")
-                    e.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = plan.btnBg;
-                  e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
                 {plan.cta}
