@@ -1,16 +1,23 @@
 import logo from "@/assets/logo.jpg";
 
-export function QuizHeader() {
+export function QuizHeader({ size = "sm" }: { size?: "sm" | "lg" }) {
+  const isLg = size === "lg";
   return (
     <div className="flex flex-col items-center pt-4 pb-2">
       <img
         src={logo}
         alt="Menopausa Sem Mistério"
-        width={64}
-        height={64}
-        className="h-14 w-14 object-contain"
+        width={128}
+        height={128}
+        className={isLg ? "h-28 w-28 object-contain" : "h-14 w-14 object-contain"}
       />
-      <p className="mt-1 text-[11px] tracking-[0.18em] uppercase text-[#B86A85] font-semibold">
+      <p
+        className={
+          isLg
+            ? "mt-2 text-[22px] tracking-[0.18em] uppercase text-[#B86A85] font-semibold"
+            : "mt-1 text-[11px] tracking-[0.18em] uppercase text-[#B86A85] font-semibold"
+        }
+      >
         Menopausa Sem Mistério
       </p>
     </div>
