@@ -1319,6 +1319,118 @@ function ProcessingPage() {
   );
 }
 
+function TimelinePage() {
+  const navigate = useNavigate();
+
+  const milestones = [
+    { x: 60, y: 280, label: "Hoje", desc: "Acesso ao app liberado", color: "#CFCFE0", delay: 0.2 },
+    { x: 150, y: 210, label: "1-3 dias", desc: "Primeiros sintomas melhoram", color: "#FFD700", delay: 0.4 },
+    { x: 250, y: 130, label: "7 dias", desc: "Dormir melhor & mais energia", color: "#FFD700", delay: 0.6 },
+    { x: 340, y: 55, label: "13-21 dias", desc: "Transformação visível", color: "#FFD700", delay: 0.8, big: true },
+  ];
+
+  return (
+    <div
+      className="min-h-screen w-full flex justify-center animate-fade-in"
+      style={{ background: "linear-gradient(180deg, #3B1361 0%, #6B46C1 100%)" }}
+    >
+      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-5 pt-8 pb-6 text-white">
+        <p className="text-center text-[12px] tracking-wide text-white/80">
+          Seu plano pessoal está pronto!
+        </p>
+
+        <h1 className="text-center font-bold text-[28px] sm:text-[32px] leading-tight mt-3 mb-8">
+          Recupere sua Energia em 13 Dias
+        </h1>
+
+        <div className="relative w-full">
+          <svg width="100%" height="320" viewBox="0 0 400 320" className="overflow-visible">
+            <path
+              d="M 60 280 Q 120 250 150 210 T 250 130 T 340 55"
+              stroke="#E85D8C"
+              strokeWidth="4"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray="6 8"
+              opacity="0.9"
+            />
+            {milestones.map((m, i) => (
+              <g key={i} style={{ animation: `fade-in 0.5s ease-out ${m.delay}s both` }}>
+                <circle
+                  cx={m.x}
+                  cy={m.y}
+                  r={m.big ? 13 : 10}
+                  fill={m.color}
+                  stroke="#FFFFFF"
+                  strokeWidth="2"
+                />
+                {m.big && (
+                  <circle
+                    cx={m.x}
+                    cy={m.y}
+                    r="20"
+                    fill="none"
+                    stroke="#FFD700"
+                    strokeWidth="2"
+                    opacity="0.4"
+                  />
+                )}
+              </g>
+            ))}
+          </svg>
+
+          {milestones.map((m, i) => {
+            const leftPct = (m.x / 400) * 100;
+            const topPx = m.y - 56;
+            const align =
+              leftPct < 25 ? "left" : leftPct > 75 ? "right" : "center";
+            return (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  left: `${leftPct}%`,
+                  top: `${topPx}px`,
+                  transform:
+                    align === "left"
+                      ? "translateX(-10%)"
+                      : align === "right"
+                      ? "translateX(-90%)"
+                      : "translateX(-50%)",
+                  animation: `fade-in 0.5s ease-out ${m.delay + 0.1}s both`,
+                }}
+              >
+                <div className="bg-white rounded-lg px-3 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.15)] min-w-[120px] max-w-[160px]">
+                  <p className="text-[11px] font-bold text-[#E85D8C] leading-tight">
+                    {m.label}
+                  </p>
+                  <p className="text-[11px] text-[#2C2C2C] leading-snug mt-0.5">
+                    {m.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <p className="text-center text-[13px] text-white/90 leading-relaxed mt-10 mb-10 px-2">
+          Vamos garantir que tudo esteja pronto para você ter a melhor experiência!
+        </p>
+
+        <div className="flex-1" />
+
+        <button
+          onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+          className="w-full h-14 rounded-xl bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-all shadow-[0_4px_12px_rgba(232,93,140,0.4)] hover:-translate-y-0.5"
+        >
+          CONTINUAR
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
 type StoredAnswers = Record<
   string,
   { single: string | null; multi: string[]; scale: number; text: string }
