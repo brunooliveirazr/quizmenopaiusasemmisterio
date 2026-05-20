@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { QuizHeader } from "@/components/QuizHeader";
 
 export const Route = createFileRoute("/quiz/$step")({
@@ -16,13 +17,13 @@ type Question = {
 const QUESTIONS: Record<string, Question> = {
   "1": {
     title: "Qual é a sua faixa etária?",
-    subtitle: "Isso nos ajuda a personalizar seu plano.",
+    subtitle: "(Vamos calibrar o plano para você)",
     options: [
-      "Menos de 40 anos",
-      "40 a 44 anos",
-      "45 a 49 anos",
-      "50 a 54 anos",
-      "55 anos ou mais",
+      "Até 40 anos",
+      "41-45 anos",
+      "46-50 anos",
+      "51-55 anos",
+      "Acima de 55 anos",
     ],
   },
 };
@@ -34,56 +35,88 @@ function QuizStep() {
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
   const progress = (stepNum / TOTAL) * 100;
 
-  const handleSelect = () => {
-    const next = stepNum + 1;
-    if (next > TOTAL) return;
-    navigate({ to: "/quiz/$step", params: { step: String(next) } });
+  const [selected, setSelected] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    setSelected(null);
+    setShowToast(false);
+  }, [step]);
+
+  const handleSelect = (opt: string) => {
+    if (selected) return;
+    setSelected(opt);
+    setShowToast(true);
+    window.setTimeout(() => setShowToast(false), 2000);
+    window.setTimeout(() => {
+      const next = stepNum + 1;
+      if (next <= TOTAL) {
+        navigate({ to: "/quiz/$step", params: { step: String(next) } });
+      }
+    }, 2500);
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-white to-[#FFE5ED] flex justify-center">
-      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-1 pb-10">
-        <QuizHeader />
-        {/* Progress */}
-        <div>
-          <div className="h-1 w-full bg-[#E0E0E0] rounded-full overflow-hidden">
-            <div
-              className="h-full bg-[#E85D8C] transition-all"
-              style={{ width: `${progress}%` }}
-            />
+    <div className="min-h-screen w-full bg-white flex justify-center">
+      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 py-6">
+        {/* Sticky progress */}
+        <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
+          <div className="flex items-center gap-3">
+            <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#E85D8C] transition-all duration-500"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span className="text-[12px] text-[#999] tabular-nums">
+              {stepNum} / {TOTAL}
+            </span>
           </div>
-          <p className="text-[12px] text-[#999] mt-1">
-            {stepNum} / {TOTAL}
-          </p>
         </div>
 
-        {/* Question */}
-        <div className="mt-10">
-          <h1
-            className="font-bold text-[24px] text-[#2C2C2C] text-center"
-            style={{ lineHeight: 1.3 }}
-          >
-            {q.title}
-          </h1>
-          {q.subtitle && (
-            <p className="text-[16px] text-[#666] mt-3 text-center">
-              {q.subtitle}
-            </p>
-          )}
-        </div>
+        <QuizHeader />
+
+        <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
+          {q.title}
+        </h2>
+        {q.subtitle && (
+          <p className="text-[14px] text-[#999] text-center mb-8">
+            {q.subtitle}
+          </p>
+        )}
 
         {/* Options */}
-        <div className="mt-8 flex flex-col gap-3">
-          {q.options.map((opt) => (
-            <button
-              key={opt}
-              onClick={handleSelect}
-              className="w-full text-left px-5 py-4 rounded-xl bg-white border-2 border-[#F0D5DD] hover:border-[#E85D8C] hover:bg-[#FFF0F5] transition-all text-[16px] text-[#2C2C2C] font-medium shadow-sm"
-            >
-              {opt}
-            </button>
-          ))}
+        <div className="flex flex-col gap-3">
+          {q.options.map((opt) => {
+            const isSelected = selected === opt;
+            return (
+              <button
+                key={opt}
+                onClick={() => handleSelect(opt)}
+                className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
+                  isSelected
+                    ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
+                    : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
+                }`}
+              >
+                <span>{opt}</span>
+                {isSelected && (
+                  <span className="text-[#E85D8C] text-lg font-bold">✓</span>
+                )}
+              </button>
+            );
+          })}
         </div>
+
+        {/* Toast */}
+        {showToast && (
+          <div
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#4CAF50] text-white px-4 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
+            style={{ opacity: 0.95 }}
+          >
+            ✓ Perfeito! Estamos montando seu diagnóstico...
+          </div>
+        )}
       </div>
     </div>
   );
