@@ -1523,3 +1523,719 @@ function ResultsPage() {
   );
 }
 
+
+// ============= TELA 21: PÁGINA DE VENDAS INTEGRADA =============
+type SalesPlan = {
+  id: "basico" | "premium" | "vip";
+  name: string;
+  price: string;
+  priceNote: string;
+  badge: string;
+  badgeStyle: "soft" | "primary";
+  ribbon?: string;
+  features: { text: string; emphasis?: boolean }[];
+  checkoutUrl: string;
+  highlight?: boolean;
+  cardBg?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  shadow?: string;
+  scale?: number;
+};
+
+const SALES_PLANS: SalesPlan[] = [
+  {
+    id: "basico",
+    name: "Básico",
+    price: "R$ 1,99",
+    priceNote: "acesso único",
+    badge: "POPULAR ENTRE INICIANTES",
+    badgeStyle: "soft",
+    features: [
+      { text: "Acesso ao app + jornada base" },
+      { text: "Rotina diária / check-ins" },
+      { text: "Leitura de conteúdo" },
+      { text: "Sem commitment - teste e avalie" },
+    ],
+    checkoutUrl: "https://ggcheckout.app/checkout/v5/9NVEioxO8XP9XuebnhBn",
+    cardBg: "#FFFFFF",
+    borderColor: "#E0E0E0",
+    borderWidth: 2,
+    shadow: "0 2px 8px rgba(0,0,0,0.05)",
+  },
+  {
+    id: "premium",
+    name: "Premium",
+    price: "R$ 9,89",
+    priceNote: "acesso completo ao app",
+    badge: "MAIS POPULAR ⭐",
+    badgeStyle: "primary",
+    ribbon: "RECOMENDADO",
+    features: [
+      { text: "Tudo do Básico +" },
+      { text: "Módulos Premium desbloqueados" },
+      { text: "Protocolos avançados & aprofundamento" },
+      { text: "Acesso vitalício" },
+      { text: "MAIS ESCOLHIDO", emphasis: true },
+    ],
+    checkoutUrl: "https://ggcheckout.app/checkout/v2/3B8zcUXZYtwguGI98R0f",
+    highlight: true,
+    cardBg: "#FFFFFF",
+    borderColor: "#E85D8C",
+    borderWidth: 3,
+    shadow: "0 4px 16px rgba(232,93,140,0.2)",
+    scale: 1.02,
+  },
+  {
+    id: "vip",
+    name: "VIP Total",
+    price: "R$ 29,90",
+    priceNote: "transformação completa",
+    badge: "PARA QUEM QUER TUDO",
+    badgeStyle: "soft",
+    features: [
+      { text: "Tudo do Premium +" },
+      { text: "Comunidade 24h (WhatsApp privado)" },
+      { text: "Consultora VIP (orientação personalizada)" },
+      { text: "Relatório para levar ao médico" },
+      { text: "Plano VIP 30 dias guiado", emphasis: true },
+      { text: "SUPORTE MÁXIMO", emphasis: true },
+    ],
+    checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
+    cardBg: "linear-gradient(180deg, #FFFFFF 0%, #FFF5F8 100%)",
+    borderColor: "#E85D8C",
+    borderWidth: 2,
+    shadow: "0 2px 8px rgba(0,0,0,0.05)",
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: "Como funciona o acesso ao app?",
+    a: "Após a confirmação do pagamento, você recebe um link por e-mail para acessar seu app. Pode ser instalado no celular como um app normal (sem ir à App Store).",
+  },
+  {
+    q: "Qual a diferença entre os planos?",
+    a: "Básico é para teste (R$ 1,99). Premium é o completo com recursos avançados (R$ 9,89). VIP inclui comunidade + suporte de consultora (R$ 29,90).",
+  },
+  {
+    q: "Preciso fazer de novo o quiz se comprar Premium depois de Básico?",
+    a: "Não! Seus dados ficam salvos. É só fazer upgrade e novos recursos desbloqueiam.",
+  },
+  {
+    q: "Quanto tempo leva para ver resultados?",
+    a: "Maioria das mulheres vê melhora em 7-14 dias. Alguns em dias. Cada corpo é único.",
+  },
+  {
+    q: "É realmente seguro? Como vocês tratam meus dados?",
+    a: "Seus dados são criptografados e nunca compartilhados. Você tem privacidade completa.",
+  },
+];
+
+function SalesPage() {
+  const navigate = useNavigate();
+  const [answers, setAnswers] = useState<StoredAnswers>({});
+  const [orderBump, setOrderBump] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const cardsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(
+        sessionStorage.getItem("quizAnswers") ||
+          localStorage.getItem("quizAnswers") ||
+          "{}",
+      );
+      setAnswers(stored);
+    } catch {}
+    window.scrollTo(0, 0);
+  }, []);
+
+  const age = answers["1"]?.single ?? "—";
+  const stage = answers["2"]?.single ?? "—";
+  const symptoms = answers["3"]?.multi ?? [];
+  const impact = answers["6"]?.scale ?? 0;
+  const time = answers["11"]?.single ?? "5 minutos/dia";
+  const symptomsLabel =
+    symptoms.length === 0
+      ? "—"
+      : symptoms.slice(0, 3).join(", ");
+
+  const recommendedPlan: SalesPlan["id"] =
+    impact >= 8 ? "vip" : impact >= 5 ? "premium" : "basico";
+  const recommendedName =
+    SALES_PLANS.find((p) => p.id === recommendedPlan)?.name ?? "Premium";
+
+  const recommendationMessage = `Você tem ${time} disponível e nível de impacto ${impact}/10. O plano ${recommendedName.toUpperCase()} é ideal para você: equilíbrio entre ação rápida e profundidade.`;
+
+  const buildCheckoutUrl = (plan: SalesPlan) => {
+    const params = new URLSearchParams({
+      plan: plan.id,
+      bump: orderBump ? "1" : "0",
+      age: String(age),
+      stage: String(stage),
+      symptoms: symptoms.join("|"),
+      impact: String(impact),
+      time: String(time),
+    });
+    return `${plan.checkoutUrl}?${params.toString()}`;
+  };
+
+  const handleBuy = (plan: SalesPlan) => {
+    try {
+      console.log("[analytics] checkout_click", { plan: plan.id, bump: orderBump });
+    } catch {}
+    window.location.href = buildCheckoutUrl(plan);
+  };
+
+  const scrollToCards = () => {
+    cardsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const Check = ({ color = "#4CAF50" }: { color?: string }) => (
+    <span style={{ color, marginRight: 8, fontWeight: 700 }}>✓</span>
+  );
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#FFFFFF",
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        color: "#2C2C2C",
+      }}
+    >
+      {/* Sticky top bar */}
+      <div className="sticky top-0 z-10 bg-white px-4 pt-4 pb-2 border-b border-[#F0E0E8]">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+            aria-label="Voltar"
+            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+          >
+            ←
+          </button>
+          <div className="flex-1 text-center text-[12px] font-semibold text-[#E85D8C] tracking-wide">
+            🔒 OFERTA ESPECIAL — APENAS HOJE
+          </div>
+          <span className="w-6" />
+        </div>
+      </div>
+
+      {/* SECTION 1 — Header + Recap */}
+      <section
+        style={{
+          background: "linear-gradient(180deg, #FFFFFF 0%, #FFE5ED 100%)",
+          padding: "32px 16px",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <div style={{ fontSize: 48, lineHeight: 1 }}>🎉</div>
+          <h1
+            style={{
+              fontSize: 24,
+              fontWeight: 700,
+              color: "#2C2C2C",
+              marginTop: 16,
+              marginBottom: 8,
+            }}
+          >
+            Seu Diagnóstico Personalizado está Pronto!
+          </h1>
+          <p style={{ fontSize: 14, color: "#999", margin: 0 }}>
+            Baseado em suas respostas específicas
+          </p>
+        </div>
+
+        <div
+          style={{
+            background: "#FFF5F8",
+            border: "2px solid #E85D8C",
+            borderRadius: 12,
+            padding: 20,
+            fontSize: 14,
+            color: "#2C2C2C",
+            lineHeight: 1.8,
+          }}
+        >
+          <div><Check />Idade: <b>{age}</b></div>
+          <div><Check />Estágio: <b>{stage}</b></div>
+          <div><Check />Sintomas principais: <b>{symptomsLabel}</b></div>
+          <div><Check />Nível de impacto: <b>{impact}/10</b></div>
+          <div><Check />Tipo de plano ideal: <b>{recommendedName}</b></div>
+        </div>
+      </section>
+
+      {/* SECTION 2 — Recommendation */}
+      <section style={{ padding: "24px 16px" }}>
+        <h3
+          style={{
+            fontSize: 18,
+            fontWeight: 700,
+            color: "#E85D8C",
+            marginBottom: 12,
+          }}
+        >
+          Sua Recomendação Baseada no Perfil:
+        </h3>
+        <p style={{ fontSize: 14, color: "#2C2C2C", lineHeight: 1.6, margin: 0 }}>
+          {recommendationMessage}
+        </p>
+      </section>
+
+      {/* SECTION 3 — VSL */}
+      <section style={{ padding: "0 16px 32px" }}>
+        <h3
+          style={{
+            fontSize: 16,
+            fontWeight: 700,
+            color: "#2C2C2C",
+            marginBottom: 16,
+          }}
+        >
+          Como Funciona o Método
+        </h3>
+        <div
+          style={{
+            width: "100%",
+            aspectRatio: "16 / 9",
+            background: "#F0F0F0",
+            borderRadius: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#666",
+            fontSize: 14,
+            textAlign: "center",
+            padding: 16,
+          }}
+        >
+          <div>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>▶</div>
+            Vídeo explicativo (2 minutos) — em breve
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4 — Pricing cards */}
+      <section ref={cardsRef} style={{ padding: "0 16px 24px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {SALES_PLANS.map((plan) => (
+            <div
+              key={plan.id}
+              style={{
+                position: "relative",
+                background: plan.cardBg,
+                border: `${plan.borderWidth}px solid ${plan.borderColor}`,
+                borderRadius: 16,
+                padding: 24,
+                boxShadow: plan.shadow,
+                transform: plan.scale ? `scale(${plan.scale})` : undefined,
+                transition: "all 0.3s ease",
+              }}
+            >
+              {/* Badge */}
+              <div
+                style={{
+                  display: "inline-block",
+                  background:
+                    plan.badgeStyle === "primary" ? "#E85D8C" : "#FFE5ED",
+                  color: plan.badgeStyle === "primary" ? "#FFFFFF" : "#E85D8C",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  padding:
+                    plan.badgeStyle === "primary" ? "8px 14px" : "6px 12px",
+                  borderRadius: 20,
+                  marginBottom: 12,
+                }}
+              >
+                {plan.badge}
+              </div>
+
+              {plan.ribbon && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 12,
+                    right: 12,
+                    background: "#4CAF50",
+                    color: "#FFFFFF",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    padding: "4px 10px",
+                    borderRadius: 4,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  {plan.ribbon}
+                </div>
+              )}
+
+              <h3
+                style={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: "#2C2C2C",
+                  margin: "0 0 8px",
+                }}
+              >
+                {plan.name}
+              </h3>
+              <div
+                style={{
+                  fontSize: 36,
+                  fontWeight: 700,
+                  color: "#E85D8C",
+                  lineHeight: 1.1,
+                  marginBottom: 4,
+                }}
+              >
+                {plan.price}
+              </div>
+              <div style={{ fontSize: 12, color: "#999", marginBottom: 20 }}>
+                {plan.priceNote}
+              </div>
+
+              <div
+                style={{
+                  height: 1,
+                  background: plan.highlight ? "#E85D8C" : "#E0E0E0",
+                  margin: "20px 0",
+                }}
+              />
+
+              <div style={{ fontSize: 14, color: "#2C2C2C", lineHeight: 1.6 }}>
+                {plan.features.map((f, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      marginBottom: 12,
+                      fontWeight: f.emphasis ? 700 : 400,
+                      color: f.emphasis ? "#E85D8C" : "#2C2C2C",
+                    }}
+                  >
+                    <Check />
+                    {f.text}
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => handleBuy(plan)}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#D64B7A")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "#E85D8C")
+                }
+                style={{
+                  width: "100%",
+                  height: 48,
+                  background: "#E85D8C",
+                  color: "#FFFFFF",
+                  fontSize: 16,
+                  fontWeight: 700,
+                  border: "none",
+                  borderRadius: 8,
+                  cursor: "pointer",
+                  marginTop: 24,
+                  transition: "all 0.3s ease",
+                }}
+              >
+                COMPRAR AGORA →
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SECTION 5 — Order bump */}
+      <section style={{ padding: "16px 16px 32px" }}>
+        <h3
+          style={{
+            fontSize: 16,
+            fontWeight: 700,
+            color: "#2C2C2C",
+            marginBottom: 16,
+          }}
+        >
+          Potencialize Seus Resultados
+        </h3>
+        <label
+          style={{
+            display: "flex",
+            gap: 12,
+            background: "linear-gradient(180deg, #FFF9E6 0%, #FFFBF0 100%)",
+            border: "2px dashed #FFC107",
+            borderRadius: 12,
+            padding: 16,
+            cursor: "pointer",
+            alignItems: "flex-start",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={orderBump}
+            onChange={(e) => setOrderBump(e.target.checked)}
+            style={{
+              width: 20,
+              height: 20,
+              accentColor: "#FFC107",
+              marginTop: 2,
+              flexShrink: 0,
+            }}
+          />
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#2C2C2C" }}>
+              Planilha de Acompanhamento + E-book Extra
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                color: "#666",
+                marginTop: 4,
+                marginBottom: 8,
+              }}
+            >
+              Rastreie seus sintomas dia a dia e entenda seus padrões
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#FFC107" }}>
+              + R$ 7,90
+            </div>
+            <div style={{ fontSize: 10, color: "#999", marginTop: 2 }}>
+              (será adicionado ao seu carrinho)
+            </div>
+          </div>
+        </label>
+      </section>
+
+      {/* SECTION 6 — Guarantee */}
+      <section style={{ padding: "0 16px 32px" }}>
+        <div
+          style={{
+            background: "#F0F8FF",
+            borderLeft: "4px solid #2196F3",
+            borderRadius: 8,
+            padding: 20,
+          }}
+        >
+          <div style={{ fontSize: 24, marginBottom: 8 }}>🛡️</div>
+          <h3
+            style={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: "#2C2C2C",
+              margin: "0 0 8px",
+            }}
+          >
+            30 Dias de Garantia Incondicional
+          </h3>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#555",
+              lineHeight: 1.6,
+              margin: 0,
+            }}
+          >
+            Se em 30 dias você não sentir melhora nos seus sintomas, devolvemos
+            100% do seu dinheiro. Sem perguntas. Sem burocracia. O risco é TODO
+            NOSSO.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 7 — FAQ */}
+      <section style={{ padding: "0 16px 32px" }}>
+        <h2
+          style={{
+            fontSize: 20,
+            fontWeight: 700,
+            color: "#2C2C2C",
+            marginBottom: 24,
+          }}
+        >
+          Dúvidas Frequentes
+        </h2>
+        <div>
+          {FAQ_ITEMS.map((item, i) => {
+            const open = openFaq === i;
+            return (
+              <div key={i} style={{ marginBottom: 12 }}>
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(open ? null : i)}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: "#2C2C2C",
+                    padding: 16,
+                    background: "#F5F5F5",
+                    border: "1px solid #E0E0E0",
+                    borderRadius: open ? "8px 8px 0 0" : 8,
+                    cursor: "pointer",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <span>{item.q}</span>
+                  <span style={{ color: "#E85D8C", fontWeight: 700 }}>
+                    {open ? "−" : "+"}
+                  </span>
+                </button>
+                {open && (
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: "#555",
+                      lineHeight: 1.6,
+                      padding: 16,
+                      background: "#FAFAFA",
+                      borderRadius: "0 0 8px 8px",
+                      borderLeft: "3px solid #E85D8C",
+                    }}
+                  >
+                    {item.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* SECTION 8 — Final CTA */}
+      <section style={{ padding: "0 16px 32px" }}>
+        <div
+          style={{
+            background: "linear-gradient(180deg, #FFE5ED 0%, #FFFFFF 100%)",
+            padding: "32px 16px",
+            borderRadius: 12,
+            textAlign: "center",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: "#2C2C2C",
+              margin: "0 0 12px",
+            }}
+          >
+            Qual é a sua escolha?
+          </h3>
+          <p
+            style={{
+              fontSize: 14,
+              color: "#666",
+              lineHeight: 1.6,
+              marginBottom: 24,
+            }}
+          >
+            Você pode continuar como está.
+            <br />
+            Ou você pode começar SUA transformação AGORA.
+          </p>
+          <button
+            type="button"
+            onClick={scrollToCards}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#D64B7A";
+              e.currentTarget.style.boxShadow =
+                "0 6px 16px rgba(232,93,140,0.4)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "#E85D8C";
+              e.currentTarget.style.boxShadow =
+                "0 4px 12px rgba(232,93,140,0.3)";
+            }}
+            style={{
+              width: "100%",
+              height: 56,
+              background: "#E85D8C",
+              color: "#FFFFFF",
+              fontSize: 18,
+              fontWeight: 700,
+              border: "none",
+              borderRadius: 8,
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(232,93,140,0.3)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            ESCOLHA SEU PLANO ACIMA ↑
+          </button>
+        </div>
+      </section>
+
+      {/* SECTION 9 — Social proof */}
+      <section style={{ padding: "0 16px 32px", textAlign: "center" }}>
+        <p style={{ fontSize: 12, color: "#999", marginBottom: 16 }}>
+          Junte-se a 8.247 mulheres que já transformaram suas vidas
+        </p>
+        <div
+          style={{
+            fontSize: 18,
+            color: "#FFD700",
+            marginBottom: 8,
+            letterSpacing: 2,
+          }}
+        >
+          ⭐⭐⭐⭐⭐
+        </div>
+        <p style={{ fontSize: 12, color: "#666", margin: 0 }}>
+          4.8/5 em satisfação (baseado em +2.400 avaliações)
+        </p>
+      </section>
+
+      {/* SECTION 10 — Footer */}
+      <footer
+        style={{
+          background: "#F5F5F5",
+          borderTop: "1px solid #E0E0E0",
+          padding: "24px 16px",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{
+            fontSize: 11,
+            color: "#999",
+            lineHeight: 1.6,
+            margin: "0 0 12px",
+          }}
+        >
+          Menopausa Sem Mistérios © 2026. Todos os direitos reservados.
+          <br />
+          Este conteúdo é educativo, não substitui orientação médica.
+          <br />
+          Consulte seu médico antes de fazer qualquer mudança em saúde.
+        </p>
+        <div
+          style={{
+            fontSize: 11,
+            color: "#E85D8C",
+          }}
+        >
+          <a href="#" style={{ color: "#E85D8C", textDecoration: "underline" }}>
+            Termos de Serviço
+          </a>{" "}
+          |{" "}
+          <a href="#" style={{ color: "#E85D8C", textDecoration: "underline" }}>
+            Política de Privacidade
+          </a>{" "}
+          |{" "}
+          <a href="#" style={{ color: "#E85D8C", textDecoration: "underline" }}>
+            Contato
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
+}
