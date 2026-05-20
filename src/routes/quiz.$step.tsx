@@ -4,7 +4,23 @@ import { QuizHeader } from "@/components/QuizHeader";
 
 export const Route = createFileRoute("/quiz/$step")({
   component: QuizStep,
+  head: ({ params }) => {
+    const title = `Quiz Menopausa — Etapa ${params.step} | Menopausa Sem Mistério`;
+    const description = `Etapa ${params.step} do quiz personalizado para descobrir o plano ideal de alívio dos sintomas da menopausa.`;
+    const url = `https://quizmenopaiusasemmisterio.lovable.app/quiz/${params.step}`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
 });
+
 
 const TOTAL = 20;
 
