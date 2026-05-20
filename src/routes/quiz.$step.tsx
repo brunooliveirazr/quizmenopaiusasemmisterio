@@ -2198,7 +2198,7 @@ function SalesPage() {
               )}
               <div
                 style={{
-                  fontSize: plan.id === "premium" ? 40 : 34,
+                  fontSize: plan.id === "premium" || plan.id === "vip" ? 40 : 34,
                   fontWeight: 800,
                   color: plan.priceColor,
                   marginTop: 12,
