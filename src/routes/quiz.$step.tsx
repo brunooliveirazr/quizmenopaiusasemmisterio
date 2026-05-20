@@ -343,6 +343,52 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "10": {
+    title: "Imagina acordar e você:",
+    subtitle: "(Selecione as vitórias que você quer)",
+    subtitleColor: "#E85D8C",
+    multiSelect: true,
+    multiSelectOptional: true,
+    options: [
+      "💤 Dormiu a noite INTEIRA, acordou descansada",
+      "🔥 Não teve fogacho",
+      "⚡ Tem ENERGIA para o dia",
+      "🪞 Se sente linda no espelho",
+      "❤️ Quer seu parceiro / sente desejo",
+      "🧠 Consegue se focar no trabalho",
+      "😊 Está de bom humor",
+      "🎮 Sente controle sobre seu corpo",
+    ],
+    countPopupRanges: [
+      {
+        min: 0,
+        max: 1,
+        popup: () => ({
+          icon: "💭",
+          title: "Você quer algo específico.",
+          body: "Perfeito. Sua solução será altamente focada.\n\nVamos continuar montando seu método personalizado.",
+        }),
+      },
+      {
+        min: 2,
+        max: 4,
+        popup: (count) => ({
+          icon: "🎯",
+          title: `Essas ${count} vitórias são poderosas.`,
+          body: "São EXATAMENTE o que mulheres que seguem o método conseguem em 21-30 dias.\n\nNão é promessa mágica. São resultados REAIS de mulheres como você que já passaram por aqui.\n\nVocê quer estar nessa lista em 30 dias?",
+        }),
+      },
+      {
+        min: 5,
+        max: 8,
+        popup: (count) => ({
+          icon: "🌟",
+          title: "Você quer TUDO. E merece tudo.",
+          body: `${count} vitórias. Isso é ambicioso, mas REALIZÁVEL.\n\nMulheres que chegam aqui com essa determinação conseguem a maioria (senão todas) essas vitórias em 60 dias.\n\nVocê vai ser uma delas. Vamos lá?`,
+        }),
+      },
+    ],
+  },
 };
 
 function QuizStep() {
