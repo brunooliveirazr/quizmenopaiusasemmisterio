@@ -595,6 +595,44 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "17": {
+    title: "Qual seu nível de comprometimento com a solução?",
+    gradientBg: true,
+    options: [
+      "Estou desesperada. Faço o que for.",
+      "Estou muito motivada.",
+      "Estou interessada, mas cautelosa.",
+      "Estou aqui 'só pra ver'.",
+    ],
+    optionIcons: {
+      "Estou desesperada. Faço o que for.": "🔥",
+      "Estou muito motivada.": "💪",
+      "Estou interessada, mas cautelosa.": "🤔",
+      "Estou aqui 'só pra ver'.": "👀",
+    },
+    popups: {
+      "Estou desesperada. Faço o que for.": {
+        icon: "🎯",
+        title: "SUA HORA CHEGOU.",
+        body: "Mulheres que chegam aqui com essa determinação\nconseguem resultados em DIAS.\n\nSeu corpo estava esperando por uma estrutura assim.\n\nVamos dar exatamente o que ele precisa?",
+      },
+      "Estou muito motivada.": {
+        icon: "💪",
+        title: "Você é a pessoa CERTA para este método.",
+        body: "Essa motivação é ouro puro.\n\nCom sua energia, você vai implementar rápido, ver\nresultados rápido, e fortalecer o hábito.\n\nVamos transformar essa motivação em ação?",
+      },
+      "Estou interessada, mas cautelosa.": {
+        icon: "🤝",
+        title: "Você quer ter certeza antes de comprometer.",
+        body: "Inteligente. Você vai conseguir resultados PROVADOS\nem poucos dias. Aí sua cautela vira confiança.\n\nVocê será sua própria prova. Vamos?",
+      },
+      "Estou aqui 'só pra ver'.": {
+        icon: "👀",
+        title: "Tudo bem estar exploratória.",
+        body: "Mas já que chegou até aqui, seu corpo está pedindo\najuda. Pelo menos VER sua oferta personalizada custa nada.\n\nDepois você decide. Deal?",
+      },
+    },
+  },
 };
 
 function QuizStep() {
