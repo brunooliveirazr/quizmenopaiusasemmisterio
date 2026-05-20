@@ -912,7 +912,7 @@ function QuizStep() {
                 : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
             }`}
           >
-            {q.type === 'scale' || isMulti ? "CONTINUAR →" : "PRÓXIMO →"}
+            {q.type === 'scale' || isMulti || q.type === 'text' ? "CONTINUAR →" : "PRÓXIMO →"}
           </button>
         </div>
 
