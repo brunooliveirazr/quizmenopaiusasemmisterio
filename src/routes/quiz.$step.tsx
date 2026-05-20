@@ -26,6 +26,14 @@ type CountRangePopup = {
   popup: (count: number) => Popup;
 };
 
+type TextQuestionConfig = {
+  placeholder: string;
+  min?: number;
+  max?: number;
+  errorMessage?: string;
+  allowDecimal?: boolean;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
@@ -38,12 +46,13 @@ type Question = {
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
-  type?: 'scale';
+  type?: 'scale' | 'text';
   scalePopupRanges?: ScaleRangePopup[];
   countPopupRanges?: CountRangePopup[];
   optionIcons?: Record<string, string>;
   titleColor?: string;
   optionSubtitles?: Record<string, string>;
+  textConfig?: TextQuestionConfig;
 };
 
 const QUESTIONS: Record<string, Question> = {
