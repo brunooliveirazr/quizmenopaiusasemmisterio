@@ -1773,7 +1773,6 @@ const FAQ_ITEMS = [
 function SalesPage() {
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<StoredAnswers>({});
-  const [orderBump, setOrderBump] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const cardsRef = useRef<HTMLDivElement | null>(null);
 
@@ -1809,7 +1808,6 @@ function SalesPage() {
   const buildCheckoutUrl = (plan: SalesPlan) => {
     const params = new URLSearchParams({
       plan: plan.id,
-      bump: orderBump ? "1" : "0",
       age: String(age),
       stage: String(stage),
       symptoms: symptoms.join("|"),
@@ -1821,7 +1819,7 @@ function SalesPage() {
 
   const handleBuy = (plan: SalesPlan) => {
     try {
-      console.log("[analytics] checkout_click", { plan: plan.id, bump: orderBump });
+      console.log("[analytics] checkout_click", { plan: plan.id });
     } catch {}
     window.location.href = buildCheckoutUrl(plan);
   };
@@ -2087,66 +2085,6 @@ function SalesPage() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* SECTION 5 — Order bump */}
-      <section style={{ padding: "16px 16px 32px" }}>
-        <h3
-          style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: "#2C2C2C",
-            marginBottom: 16,
-          }}
-        >
-          Potencialize Seus Resultados
-        </h3>
-        <label
-          style={{
-            display: "flex",
-            gap: 12,
-            background: "linear-gradient(180deg, #FFF9E6 0%, #FFFBF0 100%)",
-            border: "2px dashed #FFC107",
-            borderRadius: 12,
-            padding: 16,
-            cursor: "pointer",
-            alignItems: "flex-start",
-          }}
-        >
-          <input
-            type="checkbox"
-            checked={orderBump}
-            onChange={(e) => setOrderBump(e.target.checked)}
-            style={{
-              width: 20,
-              height: 20,
-              accentColor: "#FFC107",
-              marginTop: 2,
-              flexShrink: 0,
-            }}
-          />
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#2C2C2C" }}>
-              Planilha de Acompanhamento + E-book Extra
-            </div>
-            <div
-              style={{
-                fontSize: 12,
-                color: "#666",
-                marginTop: 4,
-                marginBottom: 8,
-              }}
-            >
-              Rastreie seus sintomas dia a dia e entenda seus padrões
-            </div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#FFC107" }}>
-              + R$ 7,90
-            </div>
-            <div style={{ fontSize: 10, color: "#999", marginTop: 2 }}>
-              (será adicionado ao seu carrinho)
-            </div>
-          </div>
-        </label>
       </section>
 
       {/* SECTION 6 — Guarantee */}
