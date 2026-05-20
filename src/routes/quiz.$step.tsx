@@ -14,6 +14,12 @@ type Popup = {
   body: string;
 };
 
+type ScaleRangePopup = {
+  min: number;
+  max: number;
+  popup: Popup;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
@@ -23,6 +29,8 @@ type Question = {
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
+  type?: 'scale';
+  scalePopupRanges?: ScaleRangePopup[];
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -163,6 +171,42 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "6": {
+    title: "De 1 a 10: Quanto os sintomas",
+    subtitle: "impactam seu dia a dia?",
+    type: 'scale',
+    gradientBg: true,
+    options: [],
+    scalePopupRanges: [
+      {
+        min: 1,
+        max: 3,
+        popup: {
+          icon: "✨",
+          title: "Ainda está leve, MAS...",
+          body: "Você está aqui porque sabe que pode piorar.\nMelhor agir AGORA antes que fique insuportável.\n\nVocê está sendo inteligente. Vamos prevenir o pior.",
+        },
+      },
+      {
+        min: 4,
+        max: 6,
+        popup: {
+          icon: "📈",
+          title: "Isso está impactando sua qualidade de vida.",
+          body: "Você merece estar melhor.\n\nA boa notícia? No seu nível, as soluções funcionam RÁPIDO.\nEm 2-3 semanas você já nota diferença.",
+        },
+      },
+      {
+        min: 7,
+        max: 10,
+        popup: {
+          icon: "🆘",
+          title: "Você está sofrendo.",
+          body: "E isso HÁ QUANTO TEMPO?\n\nIsso acaba agora.\n\nAs mulheres que estavam no seu patamar reportam alívio significativo em 7-14 dias depois de começar.\n\nVocê TEM solução. E está bem aqui.",
+        },
+      },
+    ],
+  },
 };
 
 function QuizStep() {
@@ -180,9 +224,12 @@ function QuizStep() {
   const [showError, setShowError] = useState(false);
   const [activePopup, setActivePopup] = useState<Popup | null>(null);
 
+  const [scaleValue, setScaleValue] = useState(5);
+
   useEffect(() => {
     setSelectedSingle(null);
     setSelectedMulti([]);
+    setScaleValue(5);
     setShowToast(false);
     setShowError(false);
     setActivePopup(null);
@@ -226,6 +273,16 @@ function QuizStep() {
         return;
       }
     }
+    // If this question has scale popup ranges, show the matching popup
+    if (q.type === 'scale' && q.scalePopupRanges) {
+      const range = q.scalePopupRanges.find(
+        (r) => scaleValue >= r.min && scaleValue <= r.max
+      );
+      if (range) {
+        setActivePopup(range.popup);
+        return;
+      }
+    }
     goNext();
   };
 
@@ -242,7 +299,7 @@ function QuizStep() {
     }
   };
 
-  const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
+  const hasSelection = q.type === 'scale' ? true : isMulti ? selectedMulti.length > 0 : !!selectedSingle;
 
   return (
     <div
@@ -276,79 +333,171 @@ function QuizStep() {
 
         <QuizHeader />
 
-        <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
-          {q.title}
-        </h2>
-        {q.subtitle && (
-          <p className="text-[14px] text-[#999] text-center mb-8">
-            {q.subtitle}
-          </p>
+        {q.type === 'scale' ? (
+          <>
+            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-0 text-center">
+              {q.title}
+            </h2>
+            <h2 className="font-bold text-[20px] text-[#E85D8C] mb-8 text-center">
+              {q.subtitle}
+            </h2>
+          </>
+        ) : (
+          <>
+            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
+              {q.title}
+            </h2>
+            {q.subtitle && (
+              <p className="text-[14px] text-[#999] text-center mb-8">
+                {q.subtitle}
+              </p>
+            )}
+          </>
         )}
 
-        {/* Options */}
-        <div className="flex flex-col gap-3 flex-1">
-          {q.options.map((opt) => {
-            if (isMulti) {
-              const checked = selectedMulti.includes(opt);
-              return (
-                <button
-                  key={opt}
-                  onClick={() => toggleMulti(opt)}
-                  className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
-                    checked
-                      ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
-                      : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
-                  }`}
-                >
-                  {/* Custom checkbox */}
-                  <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                      checked
-                        ? "bg-[#E85D8C] border-[#E85D8C]"
-                        : "bg-white border-[#E0E0E0]"
+        {/* Options / Scale */}
+        <div className="flex flex-col flex-1">
+          {q.type === 'scale' ? (
+            <div className="flex flex-col items-center justify-center flex-1">
+              {/* Large number display */}
+              <div className="text-[48px] font-bold text-[#E85D8C] mb-4">
+                {scaleValue}
+              </div>
+
+              {/* Range slider */}
+              <div className="w-full px-2 mb-6">
+                <input
+                  type="range"
+                  min={1}
+                  max={10}
+                  value={scaleValue}
+                  onChange={(e) => setScaleValue(parseInt(e.target.value, 10))}
+                  className="w-full h-10 appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #FFB3D9 0%, #E85D8C ${(scaleValue - 1) / 9 * 100}%, #E0E0E0 ${(scaleValue - 1) / 9 * 100}%, #E0E0E0 100%)`,
+                    borderRadius: '20px',
+                    height: '8px',
+                  }}
+                />
+                <style>{`
+                  input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #E85D8C;
+                    border: 3px solid #FFFFFF;
+                    box-shadow: 0 2px 8px rgba(232, 93, 140, 0.3);
+                    cursor: pointer;
+                    transition: transform 0.15s ease;
+                    margin-top: -12px;
+                  }
+                  input[type="range"]::-webkit-slider-thumb:hover {
+                    transform: scale(1.1);
+                  }
+                  input[type="range"]::-moz-range-thumb {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #E85D8C;
+                    border: 3px solid #FFFFFF;
+                    box-shadow: 0 2px 8px rgba(232, 93, 140, 0.3);
+                    cursor: pointer;
+                    transition: transform 0.15s ease;
+                  }
+                  input[type="range"]::-moz-range-thumb:hover {
+                    transform: scale(1.1);
+                  }
+                  input[type="range"]::-webkit-slider-runnable-track {
+                    height: 8px;
+                    border-radius: 20px;
+                  }
+                  input[type="range"]::-moz-range-track {
+                    height: 8px;
+                    border-radius: 20px;
+                  }
+                `}</style>
+              </div>
+
+              {/* Emoji labels */}
+              <div className="flex justify-between w-full px-2 mb-8">
+                <div className="flex flex-col items-center">
+                  <span className="text-[24px]">😊</span>
+                  <span className="text-[12px] text-[#999] mt-1">1 - Leve</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[24px]">😭</span>
+                  <span className="text-[12px] text-[#999] mt-1">10 - Insuportável</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3 flex-1">
+              {q.options.map((opt) => {
+                if (isMulti) {
+                  const checked = selectedMulti.includes(opt);
+                  return (
+                    <button
+                      key={opt}
+                      onClick={() => toggleMulti(opt)}
+                      className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
+                        checked
+                          ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
+                          : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
+                      }`}
+                    >
+                      {/* Custom checkbox */}
+                      <div
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                          checked
+                            ? "bg-[#E85D8C] border-[#E85D8C]"
+                            : "bg-white border-[#E0E0E0]"
+                        }`}
+                      >
+                        {checked && (
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 6L5 9L10 3"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <span>{opt}</span>
+                    </button>
+                  );
+                }
+
+                const isSelected = selectedSingle === opt;
+                return (
+                  <button
+                    key={opt}
+                    onClick={() => handleSelectSingle(opt)}
+                    className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
+                      isSelected
+                        ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
+                        : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    {checked && (
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M2 6L5 9L10 3"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                    <span>{opt}</span>
+                    {isSelected && (
+                      <span className="text-[#E85D8C] text-lg font-bold">✓</span>
                     )}
-                  </div>
-                  <span>{opt}</span>
-                </button>
-              );
-            }
-
-            const isSelected = selectedSingle === opt;
-            return (
-              <button
-                key={opt}
-                onClick={() => handleSelectSingle(opt)}
-                className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
-                  isSelected
-                    ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
-                    : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
-                }`}
-              >
-                <span>{opt}</span>
-                {isSelected && (
-                  <span className="text-[#E85D8C] text-lg font-bold">✓</span>
-                )}
-              </button>
-            );
-          })}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Sticky Continue button (always visible) */}
@@ -362,7 +511,7 @@ function QuizStep() {
                 : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
             }`}
           >
-            {isMulti ? "CONTINUAR →" : "PRÓXIMO →"}
+            {q.type === 'scale' || isMulti ? "CONTINUAR →" : "PRÓXIMO →"}
           </button>
         </div>
 
