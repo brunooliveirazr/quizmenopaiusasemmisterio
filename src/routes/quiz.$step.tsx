@@ -1965,8 +1965,8 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
 
 const CONSULTIVE_FAQ = [
   {
-    q: "Qual a diferença entre Básico e Premium?",
-    a: "Básico é para testar. Premium é o completo com tudo. VIP é Premium + suporte.",
+    q: "Qual a diferença entre Básico, Premium e VIP?",
+    a: "• Plano Básico (entrada / para começar com segurança)\n\nIdeal para quem quer dar o primeiro passo, conhecer o método e iniciar a rotina sem complicação.\n\nVocê recebe: acesso ao app + jornada base, com conteúdo guiado e recursos essenciais (leitura dos módulos, progresso e rotina/check-ins).\n\nPara quem é: quem quer testar com baixo risco e começar a organizar os sintomas e a rotina.\n\n• Plano Premium (mais completo para resultado prático no dia a dia)\n\nIdeal para quem quer ir além do básico e ter materiais avançados para acelerar o progresso.\n\nVocê recebe: tudo do Básico + acesso aos conteúdos e recursos Premium (materiais extras e protocolos mais direcionados para situações do dia a dia).\n\nPara quem é: quem já sente que precisa de uma solução mais completa e quer avançar com mais ferramentas práticas.\n\n• Plano VIP (Premium + acompanhamento e pertencimento)\n\nIdeal para quem não quer passar por essa fase sozinha e quer apoio contínuo além do conteúdo.\n\nVocê recebe: tudo do Premium + benefícios VIP (como comunidade, recursos exclusivos e suporte/aconselhamento dentro do que o programa oferece).\n\nPara quem é: quem quer acompanhamento, motivação e um ecossistema completo para manter consistência e evoluir mais rápido.",
   },
   {
     q: "Quanto tempo até ver resultado?",
@@ -2396,6 +2396,7 @@ function SalesPage() {
                       borderLeft: "3px solid #E85D8C",
                       borderRight: "1px solid #E85D8C",
                       borderBottom: "1px solid #E85D8C",
+                      whiteSpace: "pre-line",
                     }}
                   >
                     {item.a}
