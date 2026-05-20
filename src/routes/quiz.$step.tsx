@@ -568,6 +568,21 @@ function QuizStep() {
       window.setTimeout(() => setShowError(false), 2500);
       return;
     }
+    // Text input validation
+    if (q.type === 'text' && q.textConfig) {
+      const numValue = parseFloat(textValue.replace(',', '.'));
+      const min = q.textConfig.min ?? -Infinity;
+      const max = q.textConfig.max ?? Infinity;
+      if (isNaN(numValue) || numValue < min || numValue > max) {
+        setTextError(true);
+        window.setTimeout(() => setTextError(false), 2500);
+        setShowError(true);
+        window.setTimeout(() => setShowError(false), 2500);
+        return;
+      }
+      goNext();
+      return;
+    }
     // If this question has popups, show the contextual popup instead of advancing
     if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
       const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
