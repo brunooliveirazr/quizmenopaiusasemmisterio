@@ -506,6 +506,51 @@ const QUESTIONS: Record<string, Question> = {
       allowDecimal: true,
     },
   },
+  "15": {
+    title: "Como está seu nível de estresse?",
+    gradientBg: true,
+    options: [
+      "Muito alto (trabalho, vida pessoal)",
+      "Alto (estou estressada)",
+      "Moderado (dias bons e ruins)",
+      "Baixo (estou razoável)",
+      "Muito baixo (vida tranquila)",
+    ],
+    optionIcons: {
+      "Muito alto (trabalho, vida pessoal)": "🚨",
+      "Alto (estou estressada)": "😰",
+      "Moderado (dias bons e ruins)": "😐",
+      "Baixo (estou razoável)": "😌",
+      "Muito baixo (vida tranquila)": "😊",
+    },
+    popups: {
+      "Muito alto (trabalho, vida pessoal)": {
+        icon: "🎯",
+        title: "O estresse está amplificando seus sintomas.",
+        body: "Isso é importantíssimo saber. Porque quando você\nreduz estresse + alinha hormônios, o efeito é multiplicativo.\n\nSua rotina vai incluir técnicas ESPECÍFICAS para\ngerenciar estresse. Vamos desativar essa bomba.",
+      },
+      "Alto (estou estressada)": {
+        icon: "💪",
+        title: "O estresse é um catalisador.",
+        body: "Quanto mais estressada, mais amplificados os sintomas.\n\nSua rotina vai priorizar ALÍVIO DE ESTRESSE.\nIsso vai impactar TODOS os seus sintomas.",
+      },
+      "Moderado (dias bons e ruins)": {
+        icon: "⚖️",
+        title: "Você está equilibrada.",
+        body: "Alguns dias são mais duros, outros leves.\n\nSua rotina vai incluir técnicas preventivas para\nnão deixar o estresse escalar.",
+      },
+      "Baixo (estou razoável)": {
+        icon: "✨",
+        title: "Você tem boa gestão de estresse.",
+        body: "Excelente. Sua rotina pode focar 100% em outros\nsintomas. Você tem essa base coberta.",
+      },
+      "Muito baixo (vida tranquila)": {
+        icon: "🧘",
+        title: "Você está muito tranquila.",
+        body: "Ótimo. Sua rotina vai ser mais sobre otimização\ne transformação. Você tem espaço mental para tudo.",
+      },
+    },
+  },
 };
 
 function QuizStep() {
