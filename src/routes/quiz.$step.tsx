@@ -730,6 +730,7 @@ function QuizStep() {
         setActivePopup(popup);
         return;
       }
+      try {
         const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
         stored[step] = { single: opt, multi: [], scale: scaleValue, text: textValue };
         localStorage.setItem("quizAnswers", JSON.stringify(stored));
