@@ -1038,7 +1038,7 @@ function QuizStep() {
                     <button
                       key={opt}
                       onClick={() => toggleMulti(opt)}
-                      className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
+                      className={`w-full min-h-14 px-4 py-3 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[15px] sm:text-[16px] text-left text-[#2C2C2C] leading-snug ${
                         checked
                           ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
                           : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
@@ -1046,7 +1046,7 @@ function QuizStep() {
                     >
                       {/* Custom checkbox */}
                       <div
-                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all shrink-0 ${
                           checked
                             ? "bg-[#E85D8C] border-[#E85D8C]"
                             : "bg-white border-[#E0E0E0]"
@@ -1070,7 +1070,7 @@ function QuizStep() {
                           </svg>
                         )}
                       </div>
-                      <span>{opt}</span>
+                      <span className="flex-1">{opt}</span>
                     </button>
                   );
                 }
