@@ -998,15 +998,22 @@ function QuizStep() {
               )}
             </div>
           ) : q.type === 'select' ? (
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col gap-3 flex-1">
+              {q.textConfig && (
+                <input
+                  type="text"
+                  value={textValue}
+                  onChange={(e) => setTextValue(e.target.value)}
+                  placeholder={q.textConfig.placeholder}
+                  className="w-full h-14 px-4 rounded-xl border-2 border-[#E0E0E0] bg-white text-[16px] text-[#2C2C2C] outline-none focus:border-[#E85D8C] transition-all duration-200"
+                />
+              )}
               <div className="relative">
                 <select
                   value={selectedSingle ?? ''}
-                  onChange={(e) => handleSelectSingle(e.target.value)}
+                  onChange={(e) => setSelectedSingle(e.target.value)}
                   className={`w-full h-14 px-4 pr-12 rounded-xl border-2 bg-white text-[16px] text-[#2C2C2C] appearance-none outline-none transition-all duration-200 cursor-pointer ${
-                    selectedSingle
-                      ? "border-[#E85D8C]"
-                      : "border-[#E0E0E0]"
+                    selectedSingle ? "border-[#E85D8C]" : "border-[#E0E0E0]"
                   }`}
                   style={{
                     backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
