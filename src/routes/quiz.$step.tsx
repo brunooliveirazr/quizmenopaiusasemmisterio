@@ -355,70 +355,149 @@ function QuizStep() {
           </>
         )}
 
-        {/* Options */}
-        <div className="flex flex-col gap-3 flex-1">
-          {q.options.map((opt) => {
-            if (isMulti) {
-              const checked = selectedMulti.includes(opt);
-              return (
-                <button
-                  key={opt}
-                  onClick={() => toggleMulti(opt)}
-                  className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
-                    checked
-                      ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
-                      : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
-                  }`}
-                >
-                  {/* Custom checkbox */}
-                  <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                      checked
-                        ? "bg-[#E85D8C] border-[#E85D8C]"
-                        : "bg-white border-[#E0E0E0]"
+        {/* Options / Scale */}
+        <div className="flex flex-col flex-1">
+          {q.type === 'scale' ? (
+            <div className="flex flex-col items-center justify-center flex-1">
+              {/* Large number display */}
+              <div className="text-[48px] font-bold text-[#E85D8C] mb-4">
+                {scaleValue}
+              </div>
+
+              {/* Range slider */}
+              <div className="w-full px-2 mb-6">
+                <input
+                  type="range"
+                  min={1}
+                  max={10}
+                  value={scaleValue}
+                  onChange={(e) => setScaleValue(parseInt(e.target.value, 10))}
+                  className="w-full h-10 appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #FFB3D9 0%, #E85D8C ${(scaleValue - 1) / 9 * 100}%, #E0E0E0 ${(scaleValue - 1) / 9 * 100}%, #E0E0E0 100%)`,
+                    borderRadius: '20px',
+                    height: '8px',
+                  }}
+                />
+                <style>{`
+                  input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #E85D8C;
+                    border: 3px solid #FFFFFF;
+                    box-shadow: 0 2px 8px rgba(232, 93, 140, 0.3);
+                    cursor: pointer;
+                    transition: transform 0.15s ease;
+                    margin-top: -12px;
+                  }
+                  input[type="range"]::-webkit-slider-thumb:hover {
+                    transform: scale(1.1);
+                  }
+                  input[type="range"]::-moz-range-thumb {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #E85D8C;
+                    border: 3px solid #FFFFFF;
+                    box-shadow: 0 2px 8px rgba(232, 93, 140, 0.3);
+                    cursor: pointer;
+                    transition: transform 0.15s ease;
+                  }
+                  input[type="range"]::-moz-range-thumb:hover {
+                    transform: scale(1.1);
+                  }
+                  input[type="range"]::-webkit-slider-runnable-track {
+                    height: 8px;
+                    border-radius: 20px;
+                  }
+                  input[type="range"]::-moz-range-track {
+                    height: 8px;
+                    border-radius: 20px;
+                  }
+                `}</style>
+              </div>
+
+              {/* Emoji labels */}
+              <div className="flex justify-between w-full px-2 mb-8">
+                <div className="flex flex-col items-center">
+                  <span className="text-[24px]">😊</span>
+                  <span className="text-[12px] text-[#999] mt-1">1 - Leve</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[24px]">😭</span>
+                  <span className="text-[12px] text-[#999] mt-1">10 - Insuportável</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3 flex-1">
+              {q.options.map((opt) => {
+                if (isMulti) {
+                  const checked = selectedMulti.includes(opt);
+                  return (
+                    <button
+                      key={opt}
+                      onClick={() => toggleMulti(opt)}
+                      className={`w-full h-14 px-4 rounded-xl border-2 transition-all duration-300 flex items-center gap-3 text-[16px] text-[#2C2C2C] ${
+                        checked
+                          ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
+                          : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
+                      }`}
+                    >
+                      {/* Custom checkbox */}
+                      <div
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                          checked
+                            ? "bg-[#E85D8C] border-[#E85D8C]"
+                            : "bg-white border-[#E0E0E0]"
+                        }`}
+                      >
+                        {checked && (
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 6L5 9L10 3"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <span>{opt}</span>
+                    </button>
+                  );
+                }
+
+                const isSelected = selectedSingle === opt;
+                return (
+                  <button
+                    key={opt}
+                    onClick={() => handleSelectSingle(opt)}
+                    className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
+                      isSelected
+                        ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
+                        : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    {checked && (
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M2 6L5 9L10 3"
-                          stroke="white"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                    <span>{opt}</span>
+                    {isSelected && (
+                      <span className="text-[#E85D8C] text-lg font-bold">✓</span>
                     )}
-                  </div>
-                  <span>{opt}</span>
-                </button>
-              );
-            }
-
-            const isSelected = selectedSingle === opt;
-            return (
-              <button
-                key={opt}
-                onClick={() => handleSelectSingle(opt)}
-                className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
-                  isSelected
-                    ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
-                    : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
-                }`}
-              >
-                <span>{opt}</span>
-                {isSelected && (
-                  <span className="text-[#E85D8C] text-lg font-bold">✓</span>
-                )}
-              </button>
-            );
-          })}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Sticky Continue button (always visible) */}
