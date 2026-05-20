@@ -2202,9 +2202,33 @@ function SalesPage() {
                   fontSize: plan.id === "premium" || plan.id === "vip" ? 20 : 18,
                   fontWeight: 700,
                   color: "#2C2C2C",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
                 }}
               >
                 {plan.name}
+                {plan.id === "premium" && (
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      background: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 100%)",
+                      color: "#FFFFFF",
+                      fontSize: 10,
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.6px",
+                      padding: "3px 10px",
+                      borderRadius: 999,
+                      boxShadow: "0 2px 8px rgba(232,93,140,0.35)",
+                    }}
+                  >
+                    <span>🏆</span>
+                    Mais escolhido
+                  </span>
+                )}
               </div>
               {plan.subheading && (
                 <div style={{ fontSize: 12, color: "#999", marginTop: 4 }}>
