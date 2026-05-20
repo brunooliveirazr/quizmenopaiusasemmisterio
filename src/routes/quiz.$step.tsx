@@ -129,12 +129,14 @@ function QuizStep() {
   const [selectedMulti, setSelectedMulti] = useState<string[]>([]);
   const [showToast, setShowToast] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [activePopup, setActivePopup] = useState<Popup | null>(null);
 
   useEffect(() => {
     setSelectedSingle(null);
     setSelectedMulti([]);
     setShowToast(false);
     setShowError(false);
+    setActivePopup(null);
   }, [step]);
 
   const goNext = () => {
@@ -147,8 +149,10 @@ function QuizStep() {
   // Single-select handler (no auto-advance — user clicks PRÓXIMO)
   const handleSelectSingle = (opt: string) => {
     setSelectedSingle(opt);
-    setShowToast(true);
-    window.setTimeout(() => setShowToast(false), 1800);
+    if (!q.popups && !q.defaultPopup) {
+      setShowToast(true);
+      window.setTimeout(() => setShowToast(false), 1800);
+    }
   };
 
   // Multi-select handlers
@@ -165,6 +169,19 @@ function QuizStep() {
       window.setTimeout(() => setShowError(false), 2500);
       return;
     }
+    // If this question has popups, show the contextual popup instead of advancing
+    if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
+      const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
+      if (popup) {
+        setActivePopup(popup);
+        return;
+      }
+    }
+    goNext();
+  };
+
+  const closePopupAndAdvance = () => {
+    setActivePopup(null);
     goNext();
   };
 
@@ -179,7 +196,11 @@ function QuizStep() {
   const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
 
   return (
-    <div className="min-h-screen w-full bg-white flex justify-center">
+    <div
+      className={`min-h-screen w-full flex justify-center ${
+        q.gradientBg ? "bg-gradient-to-b from-white to-[#FFE5ED]" : "bg-white"
+      }`}
+    >
       <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-6 pb-4">
         {/* Sticky progress + back */}
         <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
