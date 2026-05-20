@@ -8,12 +8,21 @@ export const Route = createFileRoute("/quiz/$step")({
 
 const TOTAL = 20;
 
+type Popup = {
+  icon: string;
+  title: string;
+  body: string;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
   options: string[];
   multiSelect?: boolean;
   toastMessage?: string;
+  gradientBg?: boolean;
+  popups?: Record<string, Popup>;
+  defaultPopup?: Popup;
 };
 
 const QUESTIONS: Record<string, Question> = {
