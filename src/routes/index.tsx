@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroWoman from "@/assets/hero-woman.jpg";
+import heroMockup from "@/assets/hero-mockup.jpg";
 import { QuizHeader } from "@/components/QuizHeader";
 
 export const Route = createFileRoute("/")({
