@@ -932,7 +932,7 @@ function QuizStep() {
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FF5252] text-white px-5 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
             style={{ opacity: 0.95 }}
           >
-            {isMulti ? "Selecione pelo menos um sintoma" : "Selecione uma opção para continuar"}
+            {isMulti ? "Selecione pelo menos um sintoma" : q.type === 'text' ? q.textConfig?.errorMessage || "Digite um valor válido" : "Selecione uma opção para continuar"}
           </div>
         )}
 
