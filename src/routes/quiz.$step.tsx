@@ -207,6 +207,43 @@ const QUESTIONS: Record<string, Question> = {
       },
     ],
   },
+  "7": {
+    title: "Quantas noites por semana você dorme MAL?",
+    options: [
+      "Quase toda noite (5-7 noites)",
+      "Maioria das noites (3-4 noites)",
+      "Algumas noites (1-2 noites)",
+      "Durmo bem, mas acordar é uma luta (letargia)",
+      "Meu sono é ok",
+    ],
+    popups: {
+      "Quase toda noite (5-7 noites)": {
+        icon: "🚨",
+        title: "Você está perdendo 35-49 horas de sono por semana.",
+        body: "Sabe o que isso significa? Você está operando como um zumbi.\nSeu corpo está pedindo SOCORRO.\n\nMas aqui está a boa notícia: sono ruim é UM dos sintomas mais RÁPIDOS de resolver quando você alinha os hormônios.\n\nAlgumas mulheres dormem BEM na primeira noite.\n\nVocê pode ser uma delas.",
+      },
+      "Maioria das noites (3-4 noites)": {
+        icon: "😪",
+        title: "Você está perdendo 15-28 horas de sono por mês.",
+        body: "Isso acumula. Seu corpo está exausto.\n\nMas a recuperação também é rápida.\nQuando você implementa o protocolo certo,\no sono melhora DRASTICAMENTE em dias.",
+      },
+      "Algumas noites (1-2 noites)": {
+        icon: "🌙",
+        title: "Pelo menos não é toda noite.",
+        body: "Mas essas 1-2 noites ruins por semana acumulam cansaço.\n\nA boa notícia? Com alguns ajustes simples nos hormônios,\nvocê dorme perfeitamente toda noite.",
+      },
+      "Durmo bem, mas acordar é uma luta (letargia)": {
+        icon: "😴",
+        title: "Você tem letargia (dormência excessiva).",
+        body: "Consegue dormir, mas acordar é um inferno.\nPeso nos membros, confusão ao acordar...\n\nIsso é hormonal. Quando você estabiliza, o despertar\nfica fácil e você acorda CHEIA DE ENERGIA.",
+      },
+      "Meu sono é ok": {
+        icon: "✅",
+        title: "Ótimo! Você tem esse aspecto controlado.",
+        body: "Mas se os outros sintomas estão te afetando,\neles podem começar a afetar o sono em breve.\n\nMelhor reequilibrar agora e manter o sono bom.",
+      },
+    },
+  },
 };
 
 function QuizStep() {
