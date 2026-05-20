@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QuizHeader } from "@/components/QuizHeader";
 
 export const Route = createFileRoute("/quiz/$step")({
