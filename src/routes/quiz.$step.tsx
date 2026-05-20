@@ -551,6 +551,50 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "16": {
+    title: "Você está usando medicação (HRT/TRH)?",
+    options: [
+      "Sim, estou em tratamento",
+      "Já usei, mas parei",
+      "Meu médico recomendou, mas recuso",
+      "Nunca usei",
+      "Não tenho informação sobre isso",
+    ],
+    optionIcons: {
+      "Sim, estou em tratamento": "✅",
+      "Já usei, mas parei": "🛑",
+      "Meu médico recomendou, mas recuso": "⚠️",
+      "Nunca usei": "❌",
+      "Não tenho informação sobre isso": "❓",
+    },
+    popups: {
+      "Sim, estou em tratamento": {
+        icon: "✅",
+        title: "Você está com suporte médico.",
+        body: "Excelente. A rotina que vamos montar para você é\nCOMPLEMENTAR à sua medicação, não substitui.\n\nJuntos, você vai ter suporte 360°: medicina + estilo de vida.",
+      },
+      "Já usei, mas parei": {
+        icon: "🤔",
+        title: "Você experimentou, mas parou.",
+        body: "Entendemos. Talvez não tenha funcionado ou teve\nefeitos colaterais.\n\nA boa notícia? Existem MÚLTIPLAS formas de resolver isso\nsem medicação. Vamos explorar isso com você.",
+      },
+      "Meu médico recomendou, mas recuso": {
+        icon: "💡",
+        title: "Você quer tentar outras opções primeiro.",
+        body: "Completamente válido. O método que vamos montar\npara você pode resolver muitos dos seus sintomas\nSEM medicação.\n\nSe em 60 dias não funcionar, você sempre pode voltar\nà medicação com seu médico. Mas tente primeiro com a gente.",
+      },
+      "Nunca usei": {
+        icon: "🌿",
+        title: "Você prefere abordagem natural.",
+        body: "Perfeito. A maioria das mulheres consegue alívio\nsignificativo SEM medicação quando tem o método certo.\n\nVocê está na abordagem certa.",
+      },
+      "Não tenho informação sobre isso": {
+        icon: "❓",
+        title: "Vamos educar você.",
+        body: "Seu plano vai incluir informação sobre HRT/TRH,\nprós e contras, e você vai ENTENDER todas as opções\ndisponíveis.\n\nDecisão informada é a melhor decisão.",
+      },
+    },
+  },
 };
 
 function QuizStep() {
