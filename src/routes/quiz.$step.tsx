@@ -12,6 +12,7 @@ type Question = {
   title: string;
   subtitle?: string;
   options: string[];
+  toastMessage?: string;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -25,6 +26,18 @@ const QUESTIONS: Record<string, Question> = {
       "51-55 anos",
       "Acima de 55 anos",
     ],
+  },
+  "2": {
+    title: "Em qual estágio você está?",
+    subtitle: "(Isso é essencial para seu plano)",
+    options: [
+      "Pré-menopausa (ainda menstruo)",
+      "Perimenopausa (irregular)",
+      "Menopausa (parou há 1 ano)",
+      "Pós-menopausa (parou há +1 ano)",
+      "Não tenho certeza",
+    ],
+    toastMessage: "✓ Excelente! Já estamos identificando as soluções certas para você...",
   },
 };
 
