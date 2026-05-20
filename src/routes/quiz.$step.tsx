@@ -114,6 +114,55 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "5": {
+    title: "O que MAIS te frustra nos sintomas?",
+    subtitle: "(Escolha o que mais impacta sua vida)",
+    options: [
+      "A exaustão. Acordar cansada.",
+      "A irritabilidade. Estar de mau humor constante.",
+      "A insegurança. Ganho de peso.",
+      "A falta de foco. Confusão mental.",
+      "O impacto no relacionamento. Libido em queda.",
+      "Tudo junto. É um caos.",
+    ],
+    defaultPopup: {
+      icon: "💡",
+      title: "Anotado!",
+      body: "Entendemos o que mais te frustra. Vamos construir o plano certo para isso.",
+    },
+    popups: {
+      "A exaustão. Acordar cansada.": {
+        icon: "😴",
+        title: "Acordar cansada é um sinal...",
+        body: "...de que seus hormônios estão pedindo ajuda.\nO pior? Você tenta descansar mais e AINDA assim acorda morta.\n\nQuando você alinha a rotina certa com seu corpo, essa exaustão some em dias.\n\nVocê merece acordar DISPOSTA. Vamos fazer isso acontecer?",
+      },
+      "A irritabilidade. Estar de mau humor constante.": {
+        icon: "😤",
+        title: "A irritabilidade destroi relacionamentos.",
+        body: "Você sabe disso. E o pior é que você NÃO CONSEGUE CONTROLAR.\n\nNão é fraqueza sua. É química. Seus hormônios estão gritando.\n\nQuando você reequilibra, sua paciência volta.\nSeus relacionamentos melhoram. Você volta a ser VOCÊ.\n\nPronto para isso?",
+      },
+      "A insegurança. Ganho de peso.": {
+        icon: "🪞",
+        title: "Você não reconhece seu próprio corpo.",
+        body: "Dietas extremas funcionam um tempo, aí volta tudo.\nA culpa é hormonal, não sua.\n\nQuando você alinha os hormônios, seu peso normaliza naturalmente. Sem loucura. Sem fome.\n\nVocê merece se sentir confiante de novo.",
+      },
+      "A falta de foco. Confusão mental.": {
+        icon: "🧠",
+        title: "A confusão mental é aterradora.",
+        body: "Perder o fio da conversa, esquecer palavras simples, falta de concentração...\n\nVocê pensa que está enlouquecendo. MAS isso é neurohormonal.\nQuando você estabiliza os hormônios, a clareza volta rápido.\n\nSua mente ainda está lá. Apenas esperando você ativar.",
+      },
+      "O impacto no relacionamento. Libido em queda.": {
+        icon: "💕",
+        title: "A queda de libido afeta o casal.",
+        body: "Você se sente desejável? Sente desejo?\n\nQuando os hormônios estão alinhados, tudo muda.\nVolta a diversão. Volta a conexão.\n\nVocê merece uma vida sexual plena também.\nVamos recuperar isso?",
+      },
+      "Tudo junto. É um caos.": {
+        icon: "🌪️",
+        title: "Você está em um caos hormonal total.",
+        body: "Múltiplos sintomas atacando de uma vez.\nIsso é exaustivo.\n\nMAS sabe qual é a notícia BOA? Uma solução bem estruturada resolve MÚLTIPLOS sintomas de uma vez.\n\nVocê não precisa resolver um por um.\nUm reequilíbrio hormonal bem feito tira você do caos.",
+      },
+    },
+  },
 };
 
 function QuizStep() {
