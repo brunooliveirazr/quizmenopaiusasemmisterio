@@ -472,12 +472,25 @@ function QuizStep() {
         ) : (
           <>
             <h2
-              className="font-bold text-[20px] mt-8 mb-2 text-center"
+              className="font-bold text-[20px] mt-8 mb-0 text-center"
               style={{ color: q.titleColor || "#2C2C2C" }}
             >
               {q.title}
             </h2>
             {q.subtitle && (
+              <h2 className="font-bold text-[20px] text-[#E85D8C] text-center mt-0 mb-0">
+                {q.subtitle}
+              </h2>
+            )}
+            {q.titleEnd && (
+              <h2
+                className="font-bold text-[20px] text-center mt-0 mb-8"
+                style={{ color: q.titleColor || "#2C2C2C" }}
+              >
+                {q.titleEnd}
+              </h2>
+            )}
+            {!q.titleEnd && q.subtitle && (
               <p className="text-[14px] text-[#999] text-center mb-8">
                 {q.subtitle}
               </p>
