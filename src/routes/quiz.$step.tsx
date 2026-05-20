@@ -389,6 +389,51 @@ const QUESTIONS: Record<string, Question> = {
       },
     ],
   },
+  "11": {
+    title: "Quanto tempo você consegue dedicar por dia a uma rotina?",
+    gradientBg: true,
+    options: [
+      "5 minutos (só o essencial)",
+      "10-15 minutos (rotina rápida)",
+      "20-30 minutos (posso investir bem)",
+      "1 hora (sou dedicada)",
+      "Múltiplas vezes ao dia",
+    ],
+    optionIcons: {
+      "5 minutos (só o essencial)": "⏱️",
+      "10-15 minutos (rotina rápida)": "⏱️",
+      "20-30 minutos (posso investir bem)": "⏱️",
+      "1 hora (sou dedicada)": "⏱️",
+      "Múltiplas vezes ao dia": "⏱️",
+    },
+    popups: {
+      "5 minutos (só o essencial)": {
+        icon: "⚡",
+        title: "Perfeito. Ultra-rápido.",
+        body: "O método tem uma versão ULTRA-RÁPIDA.\n5 minutos é o suficiente quando é bem estruturado.\n\nQualidade > Quantidade.\n\nVamos montar sua versão de 5 minutos.",
+      },
+      "10-15 minutos (rotina rápida)": {
+        icon: "🎯",
+        title: "Esse é o SWEET SPOT.",
+        body: "10-15 minutos é o tempo ideal para rotina consistente\nque FUNCIONA.\n\nNem tão pouco que fica ineficaz.\nNem tanto que você cansa e desiste.\n\nVamos estruturar exatamente para isso.",
+      },
+      "20-30 minutos (posso investir bem)": {
+        icon: "📈",
+        title: "Você está investindo DIREITO.",
+        body: "20-30 minutos permite aprofundamento real.\n\nCom esse tempo, você consegue combinar meditação,\nexercício, nutrição e mindfulness.\n\nSeu resultado vai ser MULTIPLICADO.",
+      },
+      "1 hora (sou dedicada)": {
+        icon: "💪",
+        title: "Você é DEDICADA.",
+        body: "Com 1 hora por dia, você pode ter um método\npraticamente completo, variado e sustentável.\n\nSuas chances de sucesso são altíssimas.",
+      },
+      "Múltiplas vezes ao dia": {
+        icon: "🔥",
+        title: "Você quer MÁXIMA transformação.",
+        body: "Perfeito. Vamos estruturar um método que você\nexecuta em pequenas doses ao longo do dia.\n\nMais frequência = Mais neuroplasticidade = Mais rápido\nvocê muda.",
+      },
+    },
+  },
 };
 
 function QuizStep() {
