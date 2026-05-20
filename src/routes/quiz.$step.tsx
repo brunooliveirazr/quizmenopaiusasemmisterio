@@ -46,13 +46,14 @@ type Question = {
   gradientBg?: boolean;
   popups?: Record<string, Popup>;
   defaultPopup?: Popup;
-  type?: 'scale' | 'text';
+  type?: 'scale' | 'text' | 'select';
   scalePopupRanges?: ScaleRangePopup[];
   countPopupRanges?: CountRangePopup[];
   optionIcons?: Record<string, string>;
   titleColor?: string;
   optionSubtitles?: Record<string, string>;
   textConfig?: TextQuestionConfig;
+  optional?: boolean;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -633,6 +634,20 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "18": {
+    title: "Como você nos conheceu?",
+    subtitle: "(Seu nome e como chegou aqui)",
+    type: 'select',
+    optional: true,
+    options: [
+      "Anúncio do Instagram",
+      "Anúncio do Facebook",
+      "Google Search",
+      "Indicação de amiga",
+      "Email/Newsletter",
+      "Outro",
+    ],
+  },
 };
 
 function QuizStep() {
@@ -754,7 +769,7 @@ function QuizStep() {
   };
 
   const hasSelection =
-    q.type === 'scale' || q.multiSelectOptional
+    q.type === 'scale' || q.multiSelectOptional || q.optional || q.type === 'select'
       ? true
       : q.type === 'text'
       ? textValue.trim().length > 0
@@ -942,6 +957,31 @@ function QuizStep() {
                 </p>
               )}
             </div>
+          ) : q.type === 'select' ? (
+            <div className="flex flex-col flex-1">
+              <div className="relative">
+                <select
+                  value={selectedSingle ?? ''}
+                  onChange={(e) => handleSelectSingle(e.target.value)}
+                  className={`w-full h-14 px-4 pr-12 rounded-xl border-2 bg-white text-[16px] text-[#2C2C2C] appearance-none outline-none transition-all duration-200 cursor-pointer ${
+                    selectedSingle
+                      ? "border-[#E85D8C]"
+                      : "border-[#E0E0E0]"
+                  }`}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 16px center',
+                    backgroundSize: '20px',
+                  }}
+                >
+                  <option value="" disabled>Selecione uma opção</option>
+                  {q.options.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col gap-3 flex-1">
               {q.options.map((opt) => {
@@ -1039,7 +1079,7 @@ function QuizStep() {
                 : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
             }`}
           >
-            {q.type === 'scale' || isMulti || q.type === 'text' ? "CONTINUAR →" : "PRÓXIMO →"}
+            {q.type === 'scale' || isMulti || q.type === 'text' || q.type === 'select' ? "CONTINUAR →" : "PRÓXIMO →"}
           </button>
         </div>
 
