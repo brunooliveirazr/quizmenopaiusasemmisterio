@@ -1859,9 +1859,8 @@ function SalesPage() {
                 background: plan.cardBg,
                 border: `${plan.borderWidth}px solid ${plan.borderColor}`,
                 borderRadius: 16,
-                padding: 24,
+                padding: 20,
                 boxShadow: plan.shadow,
-                transform: plan.scale ? `scale(${plan.scale})` : undefined,
                 transition: "all 0.3s ease",
               }}
             >
