@@ -722,6 +722,11 @@ function QuizStep() {
 
         {/* Sticky Continue button (always visible) */}
         <div className="sticky bottom-0 bg-white pt-4 pb-2 -mx-4 px-4">
+          {showMultiHint && (
+            <p className="text-[12px] text-[#999] text-center mb-2">
+              Selecione pelo menos 2-3 para melhor personalização
+            </p>
+          )}
           <button
             onClick={handleContinue}
             disabled={!hasSelection}
