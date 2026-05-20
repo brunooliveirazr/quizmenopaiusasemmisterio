@@ -224,9 +224,12 @@ function QuizStep() {
   const [showError, setShowError] = useState(false);
   const [activePopup, setActivePopup] = useState<Popup | null>(null);
 
+  const [scaleValue, setScaleValue] = useState(5);
+
   useEffect(() => {
     setSelectedSingle(null);
     setSelectedMulti([]);
+    setScaleValue(5);
     setShowToast(false);
     setShowError(false);
     setActivePopup(null);
