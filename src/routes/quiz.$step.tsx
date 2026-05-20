@@ -1732,6 +1732,7 @@ function SalesPage() {
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         color: "#2C2C2C",
+        overflowX: "hidden",
       }}
     >
       {/* Sticky top bar */}
