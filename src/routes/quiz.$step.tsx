@@ -656,6 +656,7 @@ function QuizStep() {
   const stepNum = parseInt(step, 10) || 1;
   if (step === "19") return <ProcessingPage />;
   if (step === "20") return <ResultsPage />;
+  if (step === "21") return <SalesPage />;
   const q = QUESTIONS[step] ?? QUESTIONS["1"];
 
   const progress = (stepNum / TOTAL) * 100;
@@ -1326,20 +1327,10 @@ function ResultsPage() {
   const totalAnswered = Object.keys(answers).length;
 
   const handleSeeOffer = () => {
-    // TODO: Substituir pela URL real da página de vendas
-    const params = new URLSearchParams({
-      age: String(age),
-      stage: String(stage),
-      symptoms: symptoms.join("|"),
-      impact: String(impact),
-      time: String(time),
-      style: String(style),
-    });
     try {
       sessionStorage.setItem("quizAnswers", JSON.stringify(answers));
     } catch {}
-    console.log("Redirect to sales page with:", params.toString());
-    alert("Página de vendas em breve!");
+    navigate({ to: "/quiz/$step", params: { step: "21" } });
   };
 
   const handleRestart = () => {
@@ -1527,6 +1518,402 @@ function ResultsPage() {
         >
           Voltar e refazer
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ============= TELA 21: PÁGINA DE VENDAS INTEGRADA =============
+type Plan = {
+  id: string;
+  name: string;
+  badge?: string;
+  oldPrice: string;
+  price: string;
+  installments: string;
+  perks: string[];
+  highlight?: boolean;
+  checkoutUrl: string;
+};
+
+const PLANS: Plan[] = [
+  {
+    id: "basic",
+    name: "BÁSICO",
+    oldPrice: "R$ 197",
+    price: "R$ 97",
+    installments: "ou 3x R$ 33,90",
+    perks: [
+      "Método completo Menopausa Sem Mistério",
+      "Plano alimentar personalizado",
+      "Acesso por 6 meses",
+    ],
+    checkoutUrl: "https://menopausasemmisterio.com.br/",
+  },
+  {
+    id: "premium",
+    name: "PREMIUM",
+    badge: "MAIS ESCOLHIDO",
+    oldPrice: "R$ 397",
+    price: "R$ 197",
+    installments: "ou 12x R$ 19,90",
+    perks: [
+      "Tudo do plano Básico",
+      "Acesso vitalício ao método",
+      "Grupo exclusivo de suporte no WhatsApp",
+      "Bônus: 30 receitas anti-inflamatórias",
+      "Bônus: e-book 'Sono Reparador'",
+    ],
+    highlight: true,
+    checkoutUrl: "https://menopausasemmisterio.com.br/",
+  },
+  {
+    id: "vip",
+    name: "VIP",
+    oldPrice: "R$ 997",
+    price: "R$ 497",
+    installments: "ou 12x R$ 49,90",
+    perks: [
+      "Tudo do plano Premium",
+      "3 consultas individuais com especialista",
+      "Acompanhamento 1:1 por 90 dias",
+      "Suporte prioritário",
+    ],
+    checkoutUrl: "https://menopausasemmisterio.com.br/",
+  },
+];
+
+function SalesPage() {
+  const navigate = useNavigate();
+  const [answers, setAnswers] = useState<StoredAnswers>({});
+  const [orderBump, setOrderBump] = useState(false);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(
+        sessionStorage.getItem("quizAnswers") ||
+          localStorage.getItem("quizAnswers") ||
+          "{}",
+      );
+      setAnswers(stored);
+    } catch {}
+    window.scrollTo(0, 0);
+  }, []);
+
+  const symptoms = answers["3"]?.multi ?? [];
+  const mainSymptom = symptoms[0] ?? "seus sintomas";
+  const time = answers["11"]?.single ?? "diária";
+  const style = answers["12"]?.single ?? "personalizado";
+
+  const buildCheckoutUrl = (plan: Plan) => {
+    const params = new URLSearchParams({
+      plan: plan.id,
+      bump: orderBump ? "1" : "0",
+      age: String(answers["1"]?.single ?? ""),
+      stage: String(answers["2"]?.single ?? ""),
+      symptoms: symptoms.join("|"),
+      impact: String(answers["6"]?.scale ?? ""),
+      time: String(time),
+      style: String(style),
+    });
+    return `${plan.checkoutUrl}?${params.toString()}`;
+  };
+
+  const handleBuy = (plan: Plan) => {
+    window.location.href = buildCheckoutUrl(plan);
+  };
+
+  const Check = () => (
+    <span style={{ color: "#4CAF50", marginRight: 8, fontWeight: 700 }}>✓</span>
+  );
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(180deg, #FFE5ED 0%, #FFFFFF 40%)",
+        paddingBottom: 48,
+      }}
+    >
+      <div className="sticky top-0 z-10 bg-white pb-2 px-4 pt-4 border-b border-[#F0E0E8]">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+            aria-label="Voltar"
+            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+          >
+            ←
+          </button>
+          <div className="flex-1 text-center text-[12px] font-semibold text-[#E85D8C] tracking-wide">
+            🔒 OFERTA ESPECIAL — APENAS HOJE
+          </div>
+          <span className="w-6" />
+        </div>
+      </div>
+
+      <div style={{ padding: "24px 16px" }}>
+        {/* Recap */}
+        <div
+          style={{
+            background: "#FFF5F8",
+            border: "2px solid #E85D8C",
+            borderRadius: 16,
+            padding: 20,
+            marginBottom: 24,
+          }}
+        >
+          <div style={{ fontSize: 12, color: "#E85D8C", fontWeight: 700, marginBottom: 8 }}>
+            SEU DIAGNÓSTICO
+          </div>
+          <p style={{ fontSize: 14, color: "#2C2C2C", lineHeight: 1.6, margin: 0 }}>
+            Você precisa de um método com rotina <b>{time}</b>, foco em{" "}
+            <b>{mainSymptom}</b> e abordagem <b>{style}</b>. Encontramos a solução
+            exata para o seu perfil.
+          </p>
+        </div>
+
+        {/* Headline */}
+        <h1
+          style={{
+            fontSize: 24,
+            fontWeight: 800,
+            color: "#2C2C2C",
+            lineHeight: 1.3,
+            textAlign: "center",
+            marginBottom: 8,
+          }}
+        >
+          Apresentamos o <span style={{ color: "#E85D8C" }}>Menopausa Sem Mistério</span>
+        </h1>
+        <p
+          style={{
+            fontSize: 14,
+            color: "#666",
+            textAlign: "center",
+            marginBottom: 24,
+          }}
+        >
+          O método 100% personalizado para mulheres como você
+        </p>
+
+        {/* VSL placeholder */}
+        <div
+          style={{
+            background: "#2C2C2C",
+            borderRadius: 12,
+            aspectRatio: "16 / 9",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#FFF",
+            marginBottom: 24,
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 48, marginBottom: 8 }}>▶</div>
+            <div style={{ fontSize: 13, opacity: 0.85 }}>Assista o vídeo (2 min)</div>
+          </div>
+        </div>
+
+        {/* Benefits */}
+        <div
+          style={{
+            background: "#FFFFFF",
+            border: "1px solid #E0E0E0",
+            borderRadius: 12,
+            padding: 20,
+            marginBottom: 32,
+            fontSize: 14,
+            color: "#2C2C2C",
+            lineHeight: 1.8,
+          }}
+        >
+          <div style={{ fontWeight: 700, marginBottom: 12, color: "#E85D8C" }}>
+            O QUE VOCÊ VAI RECEBER:
+          </div>
+          <div><Check />Plano alimentar 100% personalizado</div>
+          <div><Check />Rotina de exercícios para sua fase</div>
+          <div><Check />Protocolo para alívio de {mainSymptom}</div>
+          <div><Check />Comunidade exclusiva de mulheres</div>
+          <div><Check />Acompanhamento mensal de progresso</div>
+        </div>
+
+        {/* Planos */}
+        <h2
+          style={{
+            fontSize: 18,
+            fontWeight: 700,
+            color: "#2C2C2C",
+            textAlign: "center",
+            marginBottom: 16,
+          }}
+        >
+          Escolha seu plano
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
+          {PLANS.map((plan) => (
+            <div
+              key={plan.id}
+              style={{
+                background: "#FFFFFF",
+                border: plan.highlight ? "3px solid #E85D8C" : "1px solid #E0E0E0",
+                borderRadius: 16,
+                padding: 20,
+                position: "relative",
+                boxShadow: plan.highlight ? "0 6px 20px rgba(232,93,140,0.2)" : "none",
+              }}
+            >
+              {plan.badge && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: -12,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "#E85D8C",
+                    color: "#FFF",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: "4px 12px",
+                    borderRadius: 999,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  {plan.badge}
+                </div>
+              )}
+              <div
+                style={{
+                  fontSize: 16,
+                  fontWeight: 800,
+                  color: plan.highlight ? "#E85D8C" : "#2C2C2C",
+                  marginBottom: 8,
+                }}
+              >
+                {plan.name}
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "#999",
+                  textDecoration: "line-through",
+                }}
+              >
+                De {plan.oldPrice}
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 28, fontWeight: 800, color: "#2C2C2C" }}>
+                  {plan.price}
+                </span>
+              </div>
+              <div style={{ fontSize: 12, color: "#666", marginBottom: 16 }}>
+                {plan.installments}
+              </div>
+              <div style={{ fontSize: 13, color: "#2C2C2C", lineHeight: 1.7, marginBottom: 16 }}>
+                {plan.perks.map((p) => (
+                  <div key={p}><Check />{p}</div>
+                ))}
+              </div>
+              <button
+                onClick={() => handleBuy(plan)}
+                style={{
+                  width: "100%",
+                  height: 50,
+                  background: plan.highlight ? "#E85D8C" : "#FFFFFF",
+                  color: plan.highlight ? "#FFFFFF" : "#E85D8C",
+                  border: plan.highlight ? "none" : "2px solid #E85D8C",
+                  borderRadius: 12,
+                  fontSize: 14,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                QUERO ESTE PLANO →
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Order bump */}
+        <label
+          style={{
+            display: "flex",
+            gap: 12,
+            background: "#FFFBEA",
+            border: "2px dashed #FFC107",
+            borderRadius: 12,
+            padding: 16,
+            marginBottom: 24,
+            cursor: "pointer",
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={orderBump}
+            onChange={(e) => setOrderBump(e.target.checked)}
+            style={{ marginTop: 2, width: 18, height: 18, accentColor: "#E85D8C" }}
+          />
+          <div style={{ fontSize: 13, color: "#2C2C2C", lineHeight: 1.5 }}>
+            <b>SIM, adicione o e-book "Hormônios em Equilíbrio"</b> por apenas{" "}
+            <span style={{ color: "#E85D8C", fontWeight: 700 }}>+ R$ 27</span> (de R$ 97).
+          </div>
+        </label>
+
+        {/* Garantia */}
+        <div
+          style={{
+            background: "#FFFFFF",
+            border: "1px solid #4CAF50",
+            borderRadius: 12,
+            padding: 20,
+            textAlign: "center",
+            marginBottom: 32,
+          }}
+        >
+          <div style={{ fontSize: 32, marginBottom: 8 }}>🛡️</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: "#4CAF50", marginBottom: 4 }}>
+            GARANTIA DE 7 DIAS
+          </div>
+          <p style={{ fontSize: 13, color: "#666", lineHeight: 1.5, margin: 0 }}>
+            Teste por 7 dias. Se não amar, devolvemos 100% do seu dinheiro. Sem perguntas.
+          </p>
+        </div>
+
+        {/* FAQ */}
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#2C2C2C", marginBottom: 12 }}>
+          Perguntas frequentes
+        </h3>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
+          {[
+            { q: "Como recebo o acesso?", a: "Por e-mail, em até 5 minutos após a compra." },
+            { q: "Funciona para qualquer idade?", a: "Sim, o método é adaptado para perimenopausa, menopausa e pós-menopausa." },
+            { q: "E se eu não gostar?", a: "Você tem 7 dias de garantia incondicional." },
+          ].map((item) => (
+            <details
+              key={item.q}
+              style={{
+                background: "#F9F9F9",
+                borderRadius: 8,
+                padding: "12px 16px",
+                fontSize: 14,
+                color: "#2C2C2C",
+              }}
+            >
+              <summary style={{ fontWeight: 600, cursor: "pointer" }}>{item.q}</summary>
+              <p style={{ marginTop: 8, marginBottom: 0, color: "#666", lineHeight: 1.6 }}>
+                {item.a}
+              </p>
+            </details>
+          ))}
+        </div>
+
+        <p style={{ fontSize: 12, color: "#999", textAlign: "center" }}>
+          Pagamento 100% seguro · Checkout via menopausasemmisterio.com.br
+        </p>
       </div>
     </div>
   );
