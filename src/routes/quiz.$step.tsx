@@ -23,6 +23,7 @@ type ScaleRangePopup = {
 type Question = {
   title: string;
   subtitle?: string;
+  titleEnd?: string;
   options: string[];
   multiSelect?: boolean;
   toastMessage?: string;
@@ -299,6 +300,40 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "9": {
+    title: "Se você tivesse um método que se",
+    subtitle: "adaptasse EXATAMENTE ao seu perfil,",
+    titleEnd: "você seguiria?",
+    gradientBg: true,
+    options: [
+      "Sim, com certeza",
+      "Depende, como funciona?",
+      "Talvez, se fosse fácil",
+      "Não acredito que funcione para mim",
+    ],
+    popups: {
+      "Sim, com certeza": {
+        icon: "🎯",
+        title: "PERFEITO!",
+        body: "Você é exatamente o tipo de pessoa que tem sucesso.\n\nPessoas que sabem que precisam de algo personalizado\n(não genérico) são as que MAIS conseguem resultados.\n\nVocê está no caminho certo. Vamos continuar?",
+      },
+      "Talvez, se fosse fácil": {
+        icon: "💡",
+        title: "Você quer algo que FUNCIONE mas que NÃO EXIJA MUITO.",
+        body: "Ótima notícia: o método que estamos montando para você\né feito para ser executável em 10-15 minutos por dia.\n\nSimples. Eficaz. Sustentável.\n\nVamos?",
+      },
+      "Depende, como funciona?": {
+        icon: "🤔",
+        title: "Pergunta inteligente.",
+        body: "Você quer saber COMO funciona antes de comprometer.\n\nExcelente. Suas respostas estão nos ajudando a construir\nexatamente o método que faz sentido para você.\n\nContinue respondendo. Logo te mostramos tudo.",
+      },
+      "Não acredito que funcione para mim": {
+        icon: "🤝",
+        title: "Você foi decepcionada antes. EU ENTENDO.",
+        body: "Mas pense comigo: você já viu alguém com sucesso\nusando uma estratégia GENÉRICA que não foi feita para eles?\n\nClaro que não. Sucesso sempre vem de personalização.\n\nVocê merece tentar algo que foi FEITO para você, não para\n'todo mundo'.\n\nVamos ver se dessa vez é diferente?",
+      },
+    },
+  },
 };
 
 function QuizStep() {
@@ -437,12 +472,25 @@ function QuizStep() {
         ) : (
           <>
             <h2
-              className="font-bold text-[20px] mt-8 mb-2 text-center"
+              className="font-bold text-[20px] mt-8 mb-0 text-center"
               style={{ color: q.titleColor || "#2C2C2C" }}
             >
               {q.title}
             </h2>
             {q.subtitle && (
+              <h2 className="font-bold text-[20px] text-[#E85D8C] text-center mt-0 mb-0">
+                {q.subtitle}
+              </h2>
+            )}
+            {q.titleEnd && (
+              <h2
+                className="font-bold text-[20px] text-center mt-0 mb-8"
+                style={{ color: q.titleColor || "#2C2C2C" }}
+              >
+                {q.titleEnd}
+              </h2>
+            )}
+            {!q.titleEnd && q.subtitle && (
               <p className="text-[14px] text-[#999] text-center mb-8">
                 {q.subtitle}
               </p>
