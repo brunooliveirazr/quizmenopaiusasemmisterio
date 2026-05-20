@@ -170,6 +170,41 @@ const QUESTIONS: Record<string, Question> = {
         body: "Múltiplos sintomas atacando de uma vez.\nIsso é exaustivo.\n\nMAS sabe qual é a notícia BOA? Uma solução bem estruturada resolve MÚLTIPLOS sintomas de uma vez.\n\nVocê não precisa resolver um por um.\nUm reequilíbrio hormonal bem feito tira você do caos.",
       },
     },
+  "6": {
+    title: "De 1 a 10: Quanto os sintomas",
+    subtitle: "impactam seu dia a dia?",
+    type: 'scale',
+    gradientBg: true,
+    options: [],
+    scalePopupRanges: [
+      {
+        min: 1,
+        max: 3,
+        popup: {
+          icon: "✨",
+          title: "Ainda está leve, MAS...",
+          body: "Você está aqui porque sabe que pode piorar.\nMelhor agir AGORA antes que fique insuportável.\n\nVocê está sendo inteligente. Vamos prevenir o pior.",
+        },
+      },
+      {
+        min: 4,
+        max: 6,
+        popup: {
+          icon: "📈",
+          title: "Isso está impactando sua qualidade de vida.",
+          body: "Você merece estar melhor.\n\nA boa notícia? No seu nível, as soluções funcionam RÁPIDO.\nEm 2-3 semanas você já nota diferença.",
+        },
+      },
+      {
+        min: 7,
+        max: 10,
+        popup: {
+          icon: "🆘",
+          title: "Você está sofrendo.",
+          body: "E isso HÁ QUANTO TEMPO?\n\nIsso acaba agora.\n\nAs mulheres que estavam no seu patamar reportam alívio significativo em 7-14 dias depois de começar.\n\nVocê TEM solução. E está bem aqui.",
+        },
+      },
+    ],
   },
 };
 
