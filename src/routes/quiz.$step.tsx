@@ -1361,11 +1361,23 @@ function ResultsPage() {
         paddingBottom: 24,
       }}
     >
-      <QuizHeader
-        progress={100}
-        stepText="20 / 20"
-        onBack={() => navigate({ to: "/quiz/$step", params: { step: "19" } })}
-      />
+      <div className="sticky top-0 z-10 bg-white pb-2 px-4 pt-4">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/quiz/$step", params: { step: "19" } })}
+            aria-label="Voltar"
+            className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+          >
+            ←
+          </button>
+          <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
+            <div className="h-full bg-[#E85D8C]" style={{ width: "100%" }} />
+          </div>
+          <span className="text-[12px] text-[#999] tabular-nums">20 / 20</span>
+        </div>
+      </div>
+      <QuizHeader />
 
       <div style={{ padding: "24px 16px" }}>
         <div style={{ textAlign: "center" }}>
