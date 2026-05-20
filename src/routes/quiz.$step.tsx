@@ -682,6 +682,10 @@ function QuizStep() {
     setShowToast(false);
     setShowError(false);
     setActivePopup(null);
+    if (autoAdvanceTimer.current) {
+      window.clearTimeout(autoAdvanceTimer.current);
+      autoAdvanceTimer.current = null;
+    }
   }, [step]);
 
   const saveAnswer = () => {
@@ -705,13 +709,35 @@ function QuizStep() {
     }
   };
 
-  // Single-select handler (no auto-advance — user clicks PRÓXIMO)
+  // Single-select handler — auto-advances after 1s
+  const autoAdvanceTimer = useRef<number | null>(null);
   const handleSelectSingle = (opt: string) => {
     setSelectedSingle(opt);
-    if (!q.popups && !q.defaultPopup) {
-      setShowToast(true);
-      window.setTimeout(() => setShowToast(false), 1800);
+    if (autoAdvanceTimer.current) {
+      window.clearTimeout(autoAdvanceTimer.current);
     }
+    // Only auto-advance for plain single-choice (not select/scale/text/multi)
+    if (q.type === 'select' || q.type === 'scale' || q.type === 'text' || isMulti) {
+      return;
+    }
+    autoAdvanceTimer.current = window.setTimeout(() => {
+      // Show contextual popup if defined
+      const popup = q.popups?.[opt] ?? q.defaultPopup;
+      if (popup) {
+        setActivePopup(popup);
+        return;
+      }
+      // Persist answer with the just-selected value and navigate
+      try {
+        const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+        stored[step] = { single: opt, multi: [], scale: scaleValue, text: textValue };
+        localStorage.setItem("quizAnswers", JSON.stringify(stored));
+      } catch {}
+      const next = stepNum + 1;
+      if (next <= TOTAL) {
+        navigate({ to: "/quiz/$step", params: { step: String(next) } });
+      }
+    }, 1000);
   };
 
   // Multi-select handlers
