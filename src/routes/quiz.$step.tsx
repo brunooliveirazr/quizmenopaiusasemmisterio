@@ -8,6 +8,9 @@ export const Route = createFileRoute("/quiz/$step")({
 
 const TOTAL = 20;
 
+// Apenas 8 popups estratégicos distribuídos nas 18 perguntas iniciais
+const POPUP_STEPS = new Set(["4", "6", "7", "8", "10", "12", "15", "17"]);
+
 type Popup = {
   icon: string;
   title: string;
