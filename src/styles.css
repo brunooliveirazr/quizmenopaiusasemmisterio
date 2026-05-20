@@ -103,6 +103,14 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --quiz-primary: oklch(0.668 0.177 2.07);
+  --quiz-secondary: oklch(0.805 0.097 3.91);
+  --quiz-accent: oklch(0.945 0.030 356.93);
+  --quiz-dark: oklch(0.293 0.000 263.28);
+  --quiz-light: oklch(0.982 0.000 263.28);
+  --quiz-success: oklch(0.673 0.162 144.23);
+  --quiz-warning: oklch(0.844 0.172 84.94);
+  --quiz-border: oklch(0.907 0.000 263.28);
 }
 
 .dark {
