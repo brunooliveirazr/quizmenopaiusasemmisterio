@@ -795,7 +795,7 @@ function QuizStep() {
                         <span>{opt}</span>
                       </span>
                       {subtitle && (
-                        <span className="text-[13px] text-[#999] font-normal pl-[${icon ? '32px' : '0px'}]`}>
+                        <span className={`text-[13px] text-[#999] font-normal ${icon ? 'pl-8' : ''}`}>
                           {subtitle}
                         </span>
                       )}
