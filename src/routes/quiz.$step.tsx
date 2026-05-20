@@ -23,6 +23,7 @@ type ScaleRangePopup = {
 type Question = {
   title: string;
   subtitle?: string;
+  titleEnd?: string;
   options: string[];
   multiSelect?: boolean;
   toastMessage?: string;
@@ -296,6 +297,40 @@ const QUESTIONS: Record<string, Question> = {
         icon: "🦋",
         title: "Você está certa. Nunca mais será a mesma.",
         body: "Porque você vai ser MELHOR.\n\nVocê vai ser mais sábia, mais confiante, mais você mesma.\nA menopausa não é morte de identidade. É transformação.\n\nE transformação, quando bem guiada, é libertadora.\n\nVamos transformar você em algo melhor?",
+      },
+    },
+  },
+  "9": {
+    title: "Se você tivesse um método que se",
+    subtitle: "adaptasse EXATAMENTE ao seu perfil,",
+    titleEnd: "você seguiria?",
+    gradientBg: true,
+    options: [
+      "Sim, com certeza",
+      "Depende, como funciona?",
+      "Talvez, se fosse fácil",
+      "Não acredito que funcione para mim",
+    ],
+    popups: {
+      "Sim, com certeza": {
+        icon: "🎯",
+        title: "PERFEITO!",
+        body: "Você é exatamente o tipo de pessoa que tem sucesso.\n\nPessoas que sabem que precisam de algo personalizado\n(não genérico) são as que MAIS conseguem resultados.\n\nVocê está no caminho certo. Vamos continuar?",
+      },
+      "Talvez, se fosse fácil": {
+        icon: "💡",
+        title: "Você quer algo que FUNCIONE mas que NÃO EXIJA MUITO.",
+        body: "Ótima notícia: o método que estamos montando para você\né feito para ser executável em 10-15 minutos por dia.\n\nSimples. Eficaz. Sustentável.\n\nVamos?",
+      },
+      "Depende, como funciona?": {
+        icon: "🤔",
+        title: "Pergunta inteligente.",
+        body: "Você quer saber COMO funciona antes de comprometer.\n\nExcelente. Suas respostas estão nos ajudando a construir\nexatamente o método que faz sentido para você.\n\nContinue respondendo. Logo te mostramos tudo.",
+      },
+      "Não acredito que funcione para mim": {
+        icon: "🤝",
+        title: "Você foi decepcionada antes. EU ENTENDO.",
+        body: "Mas pense comigo: você já viu alguém com sucesso\nusando uma estratégia GENÉRICA que não foi feita para eles?\n\nClaro que não. Sucesso sempre vem de personalização.\n\nVocê merece tentar algo que foi FEITO para você, não para\n'todo mundo'.\n\nVamos ver se dessa vez é diferente?",
       },
     },
   },
