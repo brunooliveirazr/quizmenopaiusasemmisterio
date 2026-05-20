@@ -122,7 +122,6 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <DevQuizNav />
     </QueryClientProvider>
   );
 }
