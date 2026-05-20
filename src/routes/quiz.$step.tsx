@@ -64,9 +64,8 @@ const QUESTIONS: Record<string, Question> = {
       "Dores nas articulações",
     ],
   },
-};
-
   "4": {
+
     title: "Você já tentou resolver isso antes?",
     gradientBg: true,
     options: [
