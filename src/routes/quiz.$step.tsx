@@ -881,14 +881,6 @@ function QuizStep() {
                 {q.titleEnd}
               </h2>
             )}
-            {!q.titleEnd && q.subtitle && (
-              <p
-                className="text-[14px] text-center mb-8"
-                style={{ color: q.subtitleColor || "#999" }}
-              >
-                {q.subtitle}
-              </p>
-            )}
           </>
         )}
 
