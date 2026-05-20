@@ -85,13 +85,11 @@ function QuizStep() {
     }
   };
 
-  // Single-select handlers (auto-advance)
+  // Single-select handler (no auto-advance — user clicks PRÓXIMO)
   const handleSelectSingle = (opt: string) => {
-    if (selectedSingle) return;
     setSelectedSingle(opt);
     setShowToast(true);
-    window.setTimeout(() => setShowToast(false), 2000);
-    window.setTimeout(() => goNext(), 2500);
+    window.setTimeout(() => setShowToast(false), 1800);
   };
 
   // Multi-select handlers
@@ -103,12 +101,20 @@ function QuizStep() {
   };
 
   const handleContinue = () => {
-    if (selectedMulti.length === 0) {
+    if (!hasSelection) {
       setShowError(true);
       window.setTimeout(() => setShowError(false), 2500);
       return;
     }
     goNext();
+  };
+
+  const goBack = () => {
+    if (stepNum > 1) {
+      navigate({ to: "/quiz/$step", params: { step: String(stepNum - 1) } });
+    } else {
+      navigate({ to: "/" });
+    }
   };
 
   const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
