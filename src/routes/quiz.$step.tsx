@@ -8,12 +8,21 @@ export const Route = createFileRoute("/quiz/$step")({
 
 const TOTAL = 20;
 
+type Popup = {
+  icon: string;
+  title: string;
+  body: string;
+};
+
 type Question = {
   title: string;
   subtitle?: string;
   options: string[];
   multiSelect?: boolean;
   toastMessage?: string;
+  gradientBg?: boolean;
+  popups?: Record<string, Popup>;
+  defaultPopup?: Popup;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -55,6 +64,56 @@ const QUESTIONS: Record<string, Question> = {
       "Dores nas articulações",
     ],
   },
+  "4": {
+
+    title: "Você já tentou resolver isso antes?",
+    gradientBg: true,
+    options: [
+      "Nunca tentei nada",
+      "Tentei chás/vitaminas soltas",
+      "Tentei academia/dieta",
+      "Tentei medicação (HRT)",
+      "Tentei TUDO. Nada funcionou.",
+      "Testo coisas, mas desisto rápido",
+    ],
+    defaultPopup: {
+      icon: "💡",
+      title: "Anotado!",
+      body: "Cada tentativa anterior nos ajuda a entender o que NÃO funciona para você — e a montar o plano certo a partir daqui.\n\nVamos continuar?",
+    },
+    popups: {
+      "Nunca tentei nada": {
+        icon: "✨",
+        title: "Ótimo!",
+        body: "Você ainda está no ponto zero.\nIsso significa que quando você implementar a solução certa, os resultados vão aparecer RÁPIDO.\n\nA maioria das mulheres que começa aqui vê mudanças em 7-14 dias. Você pode ser a próxima.\n\nVamos lá?",
+      },
+      "Tentei chás/vitaminas soltas": {
+        icon: "🌿",
+        title: "Faz sentido tentar...",
+        body: "Chás e vitaminas isoladas até ajudam, mas raramente atacam a raiz hormonal.\n\nQuando a gente combina os elementos certos NA ORDEM CERTA, o efeito muda completamente.\n\nVamos descobrir sua combinação?",
+      },
+      "Tentei academia/dieta": {
+        icon: "💪",
+        title: "Academia e dieta são ótimos... MAS",
+        body: "...quando a culpa é hormonal, nenhum agachamento do mundo resolve.\n\nA boa notícia? Quando você ALINHA os hormônios, tudo o mais fica fácil.\n\nVamos descobrir como fazer isso para VOCÊ especificamente. Continua?",
+      },
+      "Tentei medicação (HRT)": {
+        icon: "💊",
+        title: "Você já deu um passo grande.",
+        body: "HRT funciona para muitas mulheres — mas precisa estar acompanhada de rotina, alimentação e suporte específico para você.\n\nVamos descobrir o que está faltando no seu plano.",
+      },
+      "Tentei TUDO. Nada funcionou.": {
+        icon: "💔",
+        title: "Eu entendo.",
+        body: "Você já investiu tempo, dinheiro e esperança.\nE mesmo assim... nada colou.\n\nMas sabe o que descobri? O problema não é VOCÊ.\nÉ que você estava tentando soluções genéricas.\nVocê precisa de algo PERSONALIZADO.\n\nÉ exatamente isso que estamos montando agora. Vamos continuar?",
+      },
+      "Testo coisas, mas desisto rápido": {
+        icon: "🌀",
+        title: "Você não é \"sem força de vontade\".",
+        body: "Você só nunca teve um plano simples o bastante para seguir.\n\nO que vamos montar aqui cabe na sua rotina — sem dietas malucas, sem 2h de academia, sem culpa.\n\nVamos continuar?",
+      },
+    },
+  },
 };
 
 function QuizStep() {
@@ -70,12 +129,14 @@ function QuizStep() {
   const [selectedMulti, setSelectedMulti] = useState<string[]>([]);
   const [showToast, setShowToast] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [activePopup, setActivePopup] = useState<Popup | null>(null);
 
   useEffect(() => {
     setSelectedSingle(null);
     setSelectedMulti([]);
     setShowToast(false);
     setShowError(false);
+    setActivePopup(null);
   }, [step]);
 
   const goNext = () => {
@@ -88,8 +149,10 @@ function QuizStep() {
   // Single-select handler (no auto-advance — user clicks PRÓXIMO)
   const handleSelectSingle = (opt: string) => {
     setSelectedSingle(opt);
-    setShowToast(true);
-    window.setTimeout(() => setShowToast(false), 1800);
+    if (!q.popups && !q.defaultPopup) {
+      setShowToast(true);
+      window.setTimeout(() => setShowToast(false), 1800);
+    }
   };
 
   // Multi-select handlers
@@ -106,6 +169,19 @@ function QuizStep() {
       window.setTimeout(() => setShowError(false), 2500);
       return;
     }
+    // If this question has popups, show the contextual popup instead of advancing
+    if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
+      const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
+      if (popup) {
+        setActivePopup(popup);
+        return;
+      }
+    }
+    goNext();
+  };
+
+  const closePopupAndAdvance = () => {
+    setActivePopup(null);
     goNext();
   };
 
@@ -120,7 +196,11 @@ function QuizStep() {
   const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
 
   return (
-    <div className="min-h-screen w-full bg-white flex justify-center">
+    <div
+      className={`min-h-screen w-full flex justify-center ${
+        q.gradientBg ? "bg-gradient-to-b from-white to-[#FFE5ED]" : "bg-white"
+      }`}
+    >
       <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-6 pb-4">
         {/* Sticky progress + back */}
         <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
@@ -254,6 +334,35 @@ function QuizStep() {
             style={{ opacity: 0.95 }}
           >
             {isMulti ? "Selecione pelo menos um sintoma" : "Selecione uma opção para continuar"}
+          </div>
+        )}
+
+        {/* Contextual popup modal */}
+        {activePopup && (
+          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-6">
+            <div
+              role="dialog"
+              aria-modal="true"
+              className="bg-white border-2 border-[#E85D8C] rounded-xl p-5 max-w-[320px] w-full shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-center animate-fade-in"
+              style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}
+            >
+              <div className="text-4xl mb-2">{activePopup.icon}</div>
+              <h3 className="font-bold text-[18px] text-[#2C2C2C] mb-3">
+                {activePopup.title}
+              </h3>
+              <p
+                className="text-[14px] text-[#2C2C2C] whitespace-pre-line mb-5"
+                style={{ lineHeight: 1.6 }}
+              >
+                {activePopup.body}
+              </p>
+              <button
+                onClick={closePopupAndAdvance}
+                className="w-full h-12 rounded-lg bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[15px] transition-colors"
+              >
+                OK, Continuar →
+              </button>
+            </div>
           </div>
         )}
       </div>
