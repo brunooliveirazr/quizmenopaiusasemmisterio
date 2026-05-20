@@ -14,7 +14,7 @@ export function QuizHeader({ size = "sm" }: { size?: "sm" | "lg" }) {
       <p
         className={
           isLg
-            ? "mt-2 text-[22px] tracking-[0.18em] uppercase text-[#B86A85] font-semibold"
+            ? "mt-2 tracking-[0.18em] uppercase text-[#B86A85] font-sans text-center font-normal text-lg"
             : "mt-1 text-[11px] tracking-[0.18em] uppercase text-[#B86A85] font-semibold"
         }
       >
