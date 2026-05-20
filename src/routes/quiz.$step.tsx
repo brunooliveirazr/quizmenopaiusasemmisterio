@@ -1307,7 +1307,7 @@ function ProcessingPage() {
         {done && (
           <div className="pb-6 animate-fade-in">
             <button
-              onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+              onClick={() => navigate({ to: "/quiz/$step", params: { step: "22" } })}
               className="w-full h-14 rounded-xl bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-colors"
             >
               VER MEU RESULTADO PERSONALIZADO →
