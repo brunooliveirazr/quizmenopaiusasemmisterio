@@ -1325,7 +1325,7 @@ function TimelinePage() {
   const [chartDone, setChartDone] = useState(false);
   const [countdown, setCountdown] = useState(10);
 
-  const CHART_MS = 8000;
+  const CHART_MS = 5000;
   const STATIC_MS = 10000;
 
   const milestones = [
