@@ -772,30 +772,32 @@ function QuizStep() {
       return;
     }
     // If this question has popups, show the contextual popup instead of advancing
-    if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
-      const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
-      if (popup) {
-        setActivePopup(popup);
-        return;
+    if (POPUP_STEPS.has(step)) {
+      if (!isMulti && selectedSingle && (q.popups || q.defaultPopup)) {
+        const popup = q.popups?.[selectedSingle] ?? q.defaultPopup;
+        if (popup) {
+          setActivePopup(popup);
+          return;
+        }
       }
-    }
-    // Multi-select with count-based popups
-    if (isMulti && q.countPopupRanges) {
-      const count = selectedMulti.length;
-      const range = q.countPopupRanges.find((r) => count >= r.min && count <= r.max);
-      if (range) {
-        setActivePopup(range.popup(count));
-        return;
+      // Multi-select with count-based popups
+      if (isMulti && q.countPopupRanges) {
+        const count = selectedMulti.length;
+        const range = q.countPopupRanges.find((r) => count >= r.min && count <= r.max);
+        if (range) {
+          setActivePopup(range.popup(count));
+          return;
+        }
       }
-    }
-    // If this question has scale popup ranges, show the matching popup
-    if (q.type === 'scale' && q.scalePopupRanges) {
-      const range = q.scalePopupRanges.find(
-        (r) => scaleValue >= r.min && scaleValue <= r.max
-      );
-      if (range) {
-        setActivePopup(range.popup);
-        return;
+      // If this question has scale popup ranges, show the matching popup
+      if (q.type === 'scale' && q.scalePopupRanges) {
+        const range = q.scalePopupRanges.find(
+          (r) => scaleValue >= r.min && scaleValue <= r.max
+        );
+        if (range) {
+          setActivePopup(range.popup);
+          return;
+        }
       }
     }
     goNext();
