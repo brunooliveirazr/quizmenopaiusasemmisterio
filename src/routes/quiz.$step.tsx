@@ -1856,6 +1856,16 @@ function SalesPage() {
   const [answers, setAnswers] = useState<StoredAnswers>({});
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const cardsRef = useRef<HTMLDivElement | null>(null);
+  const [secondsLeft, setSecondsLeft] = useState(10 * 60);
+
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(iv);
+  }, []);
+
+  const countdownLabel = `${String(Math.floor(secondsLeft / 60)).padStart(2, "0")}:${String(secondsLeft % 60).padStart(2, "0")}`;
 
   useEffect(() => {
     try {
