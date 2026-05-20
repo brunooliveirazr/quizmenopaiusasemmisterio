@@ -31,6 +31,8 @@ type Question = {
   defaultPopup?: Popup;
   type?: 'scale';
   scalePopupRanges?: ScaleRangePopup[];
+  optionIcons?: Record<string, string>;
+  titleColor?: string;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -244,6 +246,59 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "8": {
+    title: "Qual é seu maior MEDO em relação à menopausa?",
+    gradientBg: true,
+    titleColor: "#E85D8C",
+    options: [
+      "Que nunca vai passar",
+      "Que vou ficar gorda/desatraente",
+      "Que perdi meu 'auge'",
+      "Que vou ficar louca/deprimida",
+      "Que vou precisar de medicação",
+      "Que nunca mais serei a mesma",
+    ],
+    optionIcons: {
+      "Que nunca vai passar": "⏰",
+      "Que vou ficar gorda/desatraente": "🪞",
+      "Que perdi meu 'auge'": "👑",
+      "Que vou ficar louca/deprimida": "🧠",
+      "Que vou precisar de medicação": "💊",
+      "Que nunca mais serei a mesma": "😔",
+    },
+    popups: {
+      "Que nunca vai passar": {
+        icon: "💫",
+        title: "Medo de ser PERMANENTE.",
+        body: "Mas aqui está a verdade: menopausa é uma TRANSIÇÃO.\nNão é uma prisão.\n\nQuando você ALINHA seu corpo com um método estruturado,\nvocê atravessa essa transição com alívio, não com sofrimento.\n\nMulheres saem desse estado em semanas, não em anos.\nVocê também pode.",
+      },
+      "Que vou ficar gorda/desatraente": {
+        icon: "💗",
+        title: "Medo de perder sua sexualidade e atratividade.",
+        body: "Aqui está a realidade: mulheres na menopausa são LINDAS.\nO problema não é a idade. É o DESEQUILÍBRIO hormonal.\n\nQuando você reequilibra, você volta a se sentir\nsexy, confiante e DESEJÁVEL.\n\nSeu corpo continua seu. Você apenas volta a ter controle.",
+      },
+      "Que perdi meu 'auge'": {
+        icon: "✨",
+        title: "O mito de que mulheres 'viram velhas' é FALSO.",
+        body: "Você não perdeu seu auge. Você está entrando em um NOVO capítulo.\n\nMulheres depois de 45-50 anos dizem que se sentem mais\nCONFIANTES, mais CERTAS DE SI MESMAS e mais VIVAS.\n\nEsse é o auge REAL.\n\nVamos te levar até lá?",
+      },
+      "Que vou ficar louca/deprimida": {
+        icon: "🌈",
+        title: "O medo de perder o controle emocional é real.",
+        body: "Mas é justamente porque é hormonal que EXISTE solução.\n\nQuando você reequilibra, a estabilidade emocional volta.\nSeu humor volta. Você volta a se reconhecer.\n\nEsse não é um caminho sem volta. É um caminho com saída.",
+      },
+      "Que vou precisar de medicação": {
+        icon: "🌿",
+        title: "Medo de virar dependente de hormônios sintéticos.",
+        body: "Entendo o medo. MAS existem muitas outras formas\nde reequilibrar sem medicação pesada.\n\nMétodo estruturado, rotina, nutrição, sono, estresse...\nTudo isso muda os hormônios NATURALMENTE.\n\nMedicação é uma opção. Existem outras. Você escolhe.",
+      },
+      "Que nunca mais serei a mesma": {
+        icon: "🦋",
+        title: "Você está certa. Nunca mais será a mesma.",
+        body: "Porque você vai ser MELHOR.\n\nVocê vai ser mais sábia, mais confiante, mais você mesma.\nA menopausa não é morte de identidade. É transformação.\n\nE transformação, quando bem guiada, é libertadora.\n\nVamos transformar você em algo melhor?",
+      },
+    },
+  },
 };
 
 function QuizStep() {
@@ -381,7 +436,10 @@ function QuizStep() {
           </>
         ) : (
           <>
-            <h2 className="font-bold text-[20px] text-[#2C2C2C] mt-8 mb-2 text-center">
+            <h2
+              className="font-bold text-[20px] mt-8 mb-2 text-center"
+              style={{ color: q.titleColor || "#2C2C2C" }}
+            >
               {q.title}
             </h2>
             {q.subtitle && (
@@ -516,6 +574,7 @@ function QuizStep() {
                 }
 
                 const isSelected = selectedSingle === opt;
+                const icon = q.optionIcons?.[opt];
                 return (
                   <button
                     key={opt}
@@ -526,7 +585,10 @@ function QuizStep() {
                         : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    <span>{opt}</span>
+                    <span className="flex items-center gap-3">
+                      {icon && <span className="text-[20px]">{icon}</span>}
+                      <span>{opt}</span>
+                    </span>
                     {isSelected && (
                       <span className="text-[#E85D8C] text-lg font-bold">✓</span>
                     )}
