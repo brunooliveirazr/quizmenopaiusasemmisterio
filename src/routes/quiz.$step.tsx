@@ -1628,11 +1628,11 @@ function ResultsPage() {
           }}
         >
           {[
-            { name: "Marina", age: 52, label: "VÍDEO 1" },
-            { name: "Cláudia", age: 49, label: "VÍDEO 2" },
-            { name: "Renata", age: 55, label: "VÍDEO 3" },
+            { name: "Marina", age: 52, src: "/videos/depoimento-1.mp4" },
+            { name: "Cláudia", age: 49, src: "/videos/depoimento-2.mp4" },
+            { name: "Renata", age: 55, src: "/videos/depoimento-3.mp4" },
           ].map((s) => (
-            <div key={s.label} className="story-card">
+            <div key={s.src} className="story-card">
               <div
                 style={{
                   position: "relative",
@@ -1643,27 +1643,37 @@ function ResultsPage() {
                   boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                   cursor: "pointer",
                 }}
+                onClick={(e) => {
+                  const video = e.currentTarget.querySelector("video") as HTMLVideoElement | null;
+                  const overlay = e.currentTarget.querySelector(".play-overlay") as HTMLElement | null;
+                  if (!video) return;
+                  if (video.paused) {
+                    video.play();
+                    if (overlay) overlay.style.opacity = "0";
+                  } else {
+                    video.pause();
+                    if (overlay) overlay.style.opacity = "1";
+                  }
+                }}
               >
-                {/* Placeholder background */}
-                <div
+                <video
+                  src={s.src}
+                  playsInline
+                  preload="metadata"
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "#F5F5F5",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#999",
-                    fontSize: 12,
-                    textAlign: "center",
-                    padding: 12,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
-                >
-                  Vídeo de depoimento
-                  <br />
-                  (adicionar na Lovable)
-                </div>
-                {/* Play overlay */}
+                  onEnded={(e) => {
+                    const overlay = e.currentTarget.parentElement?.querySelector(
+                      ".play-overlay"
+                    ) as HTMLElement | null;
+                    if (overlay) overlay.style.opacity = "1";
+                  }}
+                />
                 <div
                   className="play-overlay"
                   style={{
@@ -1674,12 +1684,14 @@ function ResultsPage() {
                     width: 72,
                     height: 72,
                     borderRadius: "50%",
-                    background: "rgba(0,0,0,0.3)",
+                    background: "rgba(0,0,0,0.45)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     color: "#FFFFFF",
                     fontSize: 28,
+                    transition: "opacity 0.2s ease",
+                    pointerEvents: "none",
                   }}
                 >
                   ▶
