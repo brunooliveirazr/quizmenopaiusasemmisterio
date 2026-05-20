@@ -43,6 +43,7 @@ type Question = {
   countPopupRanges?: CountRangePopup[];
   optionIcons?: Record<string, string>;
   titleColor?: string;
+  optionSubtitles?: Record<string, string>;
 };
 
 const QUESTIONS: Record<string, Question> = {
@@ -434,6 +435,41 @@ const QUESTIONS: Record<string, Question> = {
       },
     },
   },
+  "12": {
+    title: "Você prefere:",
+    options: [
+      "Um plano RÁPIDO/AÇÃO",
+      "Um plano COMPLETO/EDUCAÇÃO",
+      "Um plano BALANCEADO",
+    ],
+    optionIcons: {
+      "Um plano RÁPIDO/AÇÃO": "🚀",
+      "Um plano COMPLETO/EDUCAÇÃO": "📚",
+      "Um plano BALANCEADO": "⚖️",
+    },
+    optionSubtitles: {
+      "Um plano RÁPIDO/AÇÃO": "(protocolos diretos e práticos)",
+      "Um plano COMPLETO/EDUCAÇÃO": "(entender tudo de trás pra frente)",
+      "Um plano BALANCEADO": "(pouco de tudo)",
+    },
+    popups: {
+      "Um plano RÁPIDO/AÇÃO": {
+        icon: "⚡",
+        title: "Você é prática.",
+        body: "Quer resultados RÁPIDO. Sem enrolação.\n\nSeu plano personalizado vai ser estruturado\nEXATAMENTE assim: protocolos diretos, sem conteúdo\ndesnecessário.\n\nNada de encher linguiça. Só ação.",
+      },
+      "Um plano COMPLETO/EDUCAÇÃO": {
+        icon: "🧠",
+        title: "Você quer ENTENDER.",
+        body: "Não quer apenas seguir. Quer saber o POR QUE.\n\nSeu plano vai incluir toda a educação hormonal,\nciência por trás dos protocolos, e contexto completo.\n\nVocê vai ser uma ESPECIALISTA em sua própria saúde.",
+      },
+      "Um plano BALANCEADO": {
+        icon: "⚖️",
+        title: "Você quer o melhor dos dois mundos.",
+        body: "Excelente. Seu plano vai ter:\n- Educação suficiente para entender\n- Ação suficiente para executar rapidamente\n\nBalanceado. Eficiente. Sustentável.",
+      },
+    },
+  },
 };
 
 function QuizStep() {
@@ -741,19 +777,28 @@ function QuizStep() {
 
                 const isSelected = selectedSingle === opt;
                 const icon = q.optionIcons?.[opt];
+                const subtitle = q.optionSubtitles?.[opt];
+                const btnHeight = subtitle ? "min-h-[70px] py-3" : "h-14";
                 return (
                   <button
                     key={opt}
                     onClick={() => handleSelectSingle(opt)}
-                    className={`w-full h-14 px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
+                    className={`w-full ${btnHeight} px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
                       isSelected
                         ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
                         : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    <span className="flex items-center gap-3">
-                      {icon && <span className="text-[20px]">{icon}</span>}
-                      <span>{opt}</span>
+                    <span className="flex flex-col items-start gap-0.5">
+                      <span className="flex items-center gap-3">
+                        {icon && <span className="text-[20px]">{icon}</span>}
+                        <span>{opt}</span>
+                      </span>
+                      {subtitle && (
+                        <span className="text-[13px] text-[#999] font-normal pl-[${icon ? '32px' : '0px'}]`}>
+                          {subtitle}
+                        </span>
+                      )}
                     </span>
                     {isSelected && (
                       <span className="text-[#E85D8C] text-lg font-bold">✓</span>
