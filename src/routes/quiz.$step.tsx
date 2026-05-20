@@ -1238,8 +1238,8 @@ function ProcessingPage() {
             <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
               <div className="h-full bg-[#E85D8C] transition-all" style={{ width: "95%" }} />
             </div>
-            <span className="text-[12px] text-[#999] tabular-nums">19 / 20</span>
           </div>
+
         </div>
 
         {/* Heading */}
@@ -1503,7 +1503,7 @@ function ResultsPage() {
           <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
             <div className="h-full bg-[#E85D8C]" style={{ width: "100%" }} />
           </div>
-          <span className="text-[12px] text-[#999] tabular-nums">20 / 20</span>
+          
         </div>
       </div>
       <QuizHeader />
