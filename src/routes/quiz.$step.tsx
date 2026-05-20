@@ -85,13 +85,11 @@ function QuizStep() {
     }
   };
 
-  // Single-select handlers (auto-advance)
+  // Single-select handler (no auto-advance — user clicks PRÓXIMO)
   const handleSelectSingle = (opt: string) => {
-    if (selectedSingle) return;
     setSelectedSingle(opt);
     setShowToast(true);
-    window.setTimeout(() => setShowToast(false), 2000);
-    window.setTimeout(() => goNext(), 2500);
+    window.setTimeout(() => setShowToast(false), 1800);
   };
 
   // Multi-select handlers
@@ -103,7 +101,7 @@ function QuizStep() {
   };
 
   const handleContinue = () => {
-    if (selectedMulti.length === 0) {
+    if (!hasSelection) {
       setShowError(true);
       window.setTimeout(() => setShowError(false), 2500);
       return;
@@ -111,14 +109,30 @@ function QuizStep() {
     goNext();
   };
 
+  const goBack = () => {
+    if (stepNum > 1) {
+      navigate({ to: "/quiz/$step", params: { step: String(stepNum - 1) } });
+    } else {
+      navigate({ to: "/" });
+    }
+  };
+
   const hasSelection = isMulti ? selectedMulti.length > 0 : !!selectedSingle;
 
   return (
     <div className="min-h-screen w-full bg-white flex justify-center">
       <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-6 pb-4">
-        {/* Sticky progress */}
+        {/* Sticky progress + back */}
         <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={goBack}
+              aria-label="Voltar"
+              className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+            >
+              ←
+            </button>
             <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#E85D8C] transition-all duration-500"
@@ -208,22 +222,20 @@ function QuizStep() {
           })}
         </div>
 
-        {/* Sticky Continue button for multi-select */}
-        {isMulti && (
-          <div className="sticky bottom-0 bg-white pt-4 pb-2 -mx-4 px-4">
-            <button
-              onClick={handleContinue}
-              disabled={!hasSelection}
-              className={`w-full h-14 rounded-xl font-bold text-[16px] text-white transition-all ${
-                hasSelection
-                  ? "bg-[#E85D8C] hover:bg-[#D64B7A]"
-                  : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
-              }`}
-            >
-              CONTINUAR →
-            </button>
-          </div>
-        )}
+        {/* Sticky Continue button (always visible) */}
+        <div className="sticky bottom-0 bg-white pt-4 pb-2 -mx-4 px-4">
+          <button
+            onClick={handleContinue}
+            disabled={!hasSelection}
+            className={`w-full h-14 rounded-xl font-bold text-[16px] text-white transition-all ${
+              hasSelection
+                ? "bg-[#E85D8C] hover:bg-[#D64B7A]"
+                : "bg-[#E85D8C] opacity-50 cursor-not-allowed"
+            }`}
+          >
+            {isMulti ? "CONTINUAR →" : "PRÓXIMO →"}
+          </button>
+        </div>
 
         {/* Toast (single select) */}
         {showToast && !isMulti && (
@@ -235,13 +247,13 @@ function QuizStep() {
           </div>
         )}
 
-        {/* Error tooltip (multi-select) */}
+        {/* Error tooltip */}
         {showError && (
           <div
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FF5252] text-white px-5 py-4 rounded-lg text-[14px] shadow-lg animate-fade-in"
             style={{ opacity: 0.95 }}
           >
-            Selecione pelo menos um sintoma
+            {isMulti ? "Selecione pelo menos um sintoma" : "Selecione uma opção para continuar"}
           </div>
         )}
       </div>
