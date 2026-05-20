@@ -1078,30 +1078,29 @@ function QuizStep() {
                 const isSelected = selectedSingle === opt;
                 const icon = q.optionIcons?.[opt];
                 const subtitle = q.optionSubtitles?.[opt];
-                const btnHeight = subtitle ? "min-h-[70px] py-3" : "h-14";
                 return (
                   <button
                     key={opt}
                     onClick={() => handleSelectSingle(opt)}
-                    className={`w-full ${btnHeight} px-5 rounded-xl border-2 transition-all duration-300 flex items-center justify-between text-[16px] text-[#2C2C2C] ${
+                    className={`w-full min-h-14 px-4 py-3 rounded-xl border-2 transition-all duration-300 flex items-center justify-between gap-3 text-[15px] sm:text-[16px] text-[#2C2C2C] leading-snug ${
                       isSelected
                         ? "border-[#E85D8C] bg-[#FFE5ED] font-bold"
                         : "border-[#E0E0E0] bg-white hover:border-[#E85D8C] hover:bg-[#FFF5F8]"
                     }`}
                   >
-                    <span className="flex flex-col items-start gap-0.5">
-                      <span className="flex items-center gap-3">
-                        {icon && <span className="text-[20px]">{icon}</span>}
-                        <span>{opt}</span>
+                    <span className="flex flex-col items-start gap-0.5 text-left flex-1 min-w-0">
+                      <span className="flex items-center gap-2 w-full">
+                        {icon && <span className="text-[20px] shrink-0">{icon}</span>}
+                        <span className="flex-1">{opt}</span>
                       </span>
                       {subtitle && (
-                        <span className={`text-[13px] text-[#999] font-normal ${icon ? 'pl-8' : ''}`}>
+                        <span className={`text-[12px] sm:text-[13px] text-[#999] font-normal ${icon ? 'pl-7' : ''}`}>
                           {subtitle}
                         </span>
                       )}
                     </span>
                     {isSelected && (
-                      <span className="text-[#E85D8C] text-lg font-bold">✓</span>
+                      <span className="text-[#E85D8C] text-lg font-bold shrink-0">✓</span>
                     )}
                   </button>
                 );
