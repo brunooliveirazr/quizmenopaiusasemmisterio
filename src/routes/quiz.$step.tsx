@@ -1900,7 +1900,7 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     labelColor: "#E85D8C",
     name: "Básico",
     price: "R$ 1,99",
-    priceColor: "#2C2C2C",
+    priceColor: "#E85D8C",
     description:
       "Acesso ao app. Sem compromisso. Perfeito para entender como funciona.",
     features: [
@@ -1912,12 +1912,12 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     cta: "COMEÇAR COM BÁSICO",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/9NVEioxO8XP9XuebnhBn",
     cardBg: "#FFFFFF",
-    border: "#E85D8C",
+    border: "#E0E0E0",
     borderWidth: 2,
-    shadow: "0 2px 10px rgba(232,93,140,0.10)",
+    shadow: "0 2px 8px rgba(0,0,0,0.05)",
     divider: "#FFE5ED",
-    btnBg: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 100%)",
-    btnHover: "linear-gradient(135deg,#D64B7A 0%,#E85D8C 100%)",
+    btnBg: "#E85D8C",
+    btnHover: "#D64B7A",
   },
   {
     id: "premium",
@@ -1926,7 +1926,7 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     name: "Premium",
     subheading: "Para transformação real",
     price: "R$ 9,89",
-    priceColor: "#2C2C2C",
+    priceColor: "#E85D8C",
     description:
       "O plano completo. Tudo que você precisa para transformar. 67% das mulheres escolhem este.",
     features: [
@@ -1938,13 +1938,13 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     ],
     cta: "ESCOLHER PREMIUM",
     checkoutUrl: "https://ggcheckout.app/checkout/v2/3B8zcUXZYtwguGI98R0f",
-    cardBg: "linear-gradient(180deg,#FFF5F8 0%,#FFE5ED 100%)",
-    border: "#E85D8C",
-    borderWidth: 3,
-    shadow: "0 8px 24px rgba(232,93,140,0.28)",
+    cardBg: "#FFFFFF",
+    border: "#E0E0E0",
+    borderWidth: 2,
+    shadow: "0 2px 8px rgba(0,0,0,0.05)",
     divider: "#F5A5B8",
-    btnBg: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 50%,#E85D8C 100%)",
-    btnHover: "linear-gradient(135deg,#D64B7A 0%,#E85D8C 50%,#D64B7A 100%)",
+    btnBg: "#E85D8C",
+    btnHover: "#D64B7A",
   },
   {
     id: "vip",
@@ -1953,7 +1953,7 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     name: "VIP Total",
     subheading: "Transformação com acompanhamento",
     price: "R$ 29,90",
-    priceColor: "#2C2C2C",
+    priceColor: "#E85D8C",
     description:
       "Tudo do Premium + comunidade + consultora. Para quando você quer ajuda no caminho.",
     features: [
@@ -1966,12 +1966,12 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     cta: "ESCOLHER VIP",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
     cardBg: "#FFFFFF",
-    border: "#9333EA",
+    border: "#E0E0E0",
     borderWidth: 2,
-    shadow: "0 4px 16px rgba(147,51,234,0.18)",
+    shadow: "0 2px 8px rgba(0,0,0,0.05)",
     divider: "#EDE4FB",
-    btnBg: "linear-gradient(135deg,#9333EA 0%,#A78BFA 100%)",
-    btnHover: "linear-gradient(135deg,#7E22CE 0%,#9333EA 100%)",
+    btnBg: "#E85D8C",
+    btnHover: "#D64B7A",
   },
 ];
 
