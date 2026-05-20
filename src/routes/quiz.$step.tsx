@@ -2142,22 +2142,22 @@ function SalesPage() {
                 background: plan.cardBg,
                 border: `${plan.borderWidth}px solid ${plan.border}`,
                 borderRadius: 12,
-                padding: plan.id === "premium" ? 24 : 20,
-                paddingTop: plan.id === "premium" ? 40 : 20,
+                padding: plan.id === "premium" || plan.id === "vip" ? 24 : 20,
+                paddingTop: plan.id === "premium" || plan.id === "vip" ? 40 : 20,
                 boxShadow: plan.shadow,
                 display: "flex",
                 flexDirection: "column",
                 overflow: "hidden",
               }}
             >
-              {plan.id === "premium" && (
+              {(plan.id === "premium" || plan.id === "vip") && (
                 <div
                   style={{
                     position: "absolute",
                     top: 0,
                     left: 0,
                     right: 0,
-                    background: "#E85D8C",
+                    background: plan.id === "vip" ? "#9333EA" : "#E85D8C",
                     color: "#FFFFFF",
                     fontSize: 11,
                     fontWeight: 800,
@@ -2167,10 +2167,10 @@ function SalesPage() {
                     textTransform: "uppercase",
                   }}
                 >
-                  ⭐ MAIS POPULAR
+                  {plan.id === "vip" ? "👑 TRANSFORMAÇÃO TOTAL" : "⭐ MAIS POPULAR"}
                 </div>
               )}
-              {plan.id !== "premium" && (
+              {plan.id !== "premium" && plan.id !== "vip" && (
                 <div
                   style={{
                     fontSize: 11,
