@@ -1313,7 +1313,7 @@ function ProcessingPage() {
         {done && (
           <div className="pb-6 animate-fade-in">
             <button
-              onClick={() => navigate({ to: "/quiz/$step", params: { step: "22" } })}
+              onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
               className="w-full h-14 rounded-xl bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-colors"
             >
               VER MEU RESULTADO PERSONALIZADO →
@@ -1343,7 +1343,7 @@ function TimelinePage() {
   useEffect(() => {
     const t1 = setTimeout(() => setChartDone(true), CHART_MS);
     const t2 = setTimeout(() => {
-      navigate({ to: "/quiz/$step", params: { step: "20" } });
+      navigate({ to: "/quiz/$step", params: { step: "21" } });
     }, CHART_MS + STATIC_MS);
     return () => {
       clearTimeout(t1);
