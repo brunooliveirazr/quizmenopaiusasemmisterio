@@ -1948,12 +1948,12 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
   },
   {
     id: "vip",
-    label: "Para quem quer máximo suporte",
-    labelColor: "#9333EA",
+    label: "👑 TRANSFORMAÇÃO TOTAL",
+    labelColor: "#FFFFFF",
     name: "VIP Total",
     subheading: "Transformação com acompanhamento",
     price: "R$ 29,90",
-    priceColor: "#E85D8C",
+    priceColor: "#9333EA",
     description:
       "Tudo do Premium + comunidade + consultora. Para quando você quer ajuda no caminho.",
     features: [
@@ -1965,15 +1965,14 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     ],
     cta: "ESCOLHER VIP",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
-    cardBg: "#FFFFFF",
-    border: "#E85D8C",
+    cardBg: "linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 100%)",
+    border: "#9333EA",
     borderWidth: 3,
-    shadow: "0 4px 16px rgba(232,93,140,0.15)",
-    divider: "#EDE4FB",
-    btnBg: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 100%)",
-    btnHover: "linear-gradient(135deg,#D64B7A 0%,#E85D8C 100%)",
+    shadow: "0 4px 16px rgba(147,51,234,0.15)",
+    divider: "#D8B4FE",
+    btnBg: "#9333EA",
+    btnHover: "#7E22CE",
   },
-];
 
 const CONSULTIVE_FAQ = [
   {
