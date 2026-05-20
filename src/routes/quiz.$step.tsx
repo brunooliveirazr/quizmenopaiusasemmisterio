@@ -682,7 +682,21 @@ function QuizStep() {
     setActivePopup(null);
   }, [step]);
 
+  const saveAnswer = () => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+      stored[step] = {
+        single: selectedSingle,
+        multi: selectedMulti,
+        scale: scaleValue,
+        text: textValue,
+      };
+      localStorage.setItem("quizAnswers", JSON.stringify(stored));
+    } catch {}
+  };
+
   const goNext = () => {
+    saveAnswer();
     const next = stepNum + 1;
     if (next <= TOTAL) {
       navigate({ to: "/quiz/$step", params: { step: String(next) } });
