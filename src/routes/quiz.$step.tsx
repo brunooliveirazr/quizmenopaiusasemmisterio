@@ -336,6 +336,35 @@ function QuizStep() {
             {isMulti ? "Selecione pelo menos um sintoma" : "Selecione uma opção para continuar"}
           </div>
         )}
+
+        {/* Contextual popup modal */}
+        {activePopup && (
+          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-6">
+            <div
+              role="dialog"
+              aria-modal="true"
+              className="bg-white border-2 border-[#E85D8C] rounded-xl p-5 max-w-[320px] w-full shadow-[0_4px_12px_rgba(0,0,0,0.1)] text-center animate-fade-in"
+              style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}
+            >
+              <div className="text-4xl mb-2">{activePopup.icon}</div>
+              <h3 className="font-bold text-[18px] text-[#2C2C2C] mb-3">
+                {activePopup.title}
+              </h3>
+              <p
+                className="text-[14px] text-[#2C2C2C] whitespace-pre-line mb-5"
+                style={{ lineHeight: 1.6 }}
+              >
+                {activePopup.body}
+              </p>
+              <button
+                onClick={closePopupAndAdvance}
+                className="w-full h-12 rounded-lg bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[15px] transition-colors"
+              >
+                OK, Continuar →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
