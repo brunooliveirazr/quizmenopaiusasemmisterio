@@ -2951,9 +2951,11 @@ function SalesPage() {
               margin: "0 0 20px",
             }}
           >
-            Você pode continuar como está.
+            Você pode continuar como está. Acordando cansada. Sem reconhecer a si mesma.
+            <br />
             <br />
             Ou começar SUA transformação AGORA.
+            <br />
             <br />
             Os primeiros passos são os mais importantes.
           </p>
