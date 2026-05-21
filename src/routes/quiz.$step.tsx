@@ -2778,12 +2778,12 @@ function SalesPage() {
             </thead>
             <tbody>
               {[
-                ["Acesso ao app", "✓", "✓"],
-                ["Rotina diária", "✓", "✓"],
-                ["Módulos Premium", "✓", "✓"],
+                ["Acesso app completo", "✓", "✓"],
+                ["Rotina personalizada", "✓", "✓"],
+                ["Módulos premium", "✓", "✓"],
                 ["Comunidade 24h", "—", "✓"],
                 ["Consultora VIP", "—", "✓"],
-                ["Relatório médico", "—", "✓"],
+                ["Acompanhamento mensal", "—", "✓"],
               ].map((row, i) => (
                 <tr key={i} style={{ borderBottom: "1px solid #F5F5F5" }}>
                   <td style={{ textAlign: "left", padding: 8 }}>{row[0]}</td>
