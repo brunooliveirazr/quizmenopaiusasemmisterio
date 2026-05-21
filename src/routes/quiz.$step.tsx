@@ -1627,7 +1627,7 @@ function ResultsPage() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+            onClick={() => navigate({ to: "/quiz/$step", params: { step: "21" } })}
             aria-label="Voltar"
             className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
           >
