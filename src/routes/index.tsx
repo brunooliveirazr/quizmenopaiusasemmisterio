@@ -31,15 +31,20 @@ function Index() {
         <QuizHeader size="lg" />
 
         {/* Hero image */}
-        <img
-          src={heroMockup}
-          alt="App Menopausa Sem Mistério"
-          width={1024}
-          height={1820}
-          fetchPriority="high"
-          decoding="async"
-          className="w-full h-[55vh] object-contain mt-2 bg-white"
-        />
+        <div className="px-5 mt-4">
+          <div className="relative overflow-hidden rounded-2xl shadow-[0_20px_45px_-20px_rgba(184,106,133,0.45)] ring-1 ring-[#F5D6E0]/60">
+            <img
+              src={heroMockup}
+              alt="App Menopausa Sem Mistério"
+              width={1024}
+              height={1820}
+              fetchPriority="high"
+              decoding="async"
+              className="w-full h-[42vh] object-cover"
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#FFE5ED] to-transparent" />
+          </div>
+        </div>
 
 
         {/* Content */}
