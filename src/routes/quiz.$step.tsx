@@ -909,11 +909,14 @@ function QuizQuestionPage({ step, stepNum }: { step: string; stepNum: number }) 
             >
               ←
             </button>
-            <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#E85D8C] transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
+            <div className="flex flex-col flex-1 gap-1">
+              <div className="h-1 w-full bg-[#E0E0E0] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#E85D8C] transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <span className="text-[11px] text-[#999]">Pergunta {Math.min(stepNum, 18)} de 18</span>
             </div>
           </div>
         </div>
