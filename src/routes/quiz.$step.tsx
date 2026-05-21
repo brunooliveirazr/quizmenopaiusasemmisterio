@@ -1586,7 +1586,279 @@ type StoredAnswers = Record<
   { single: string | null; multi: string[]; scale: number; text: string }
 >;
 
-// ============= TELA 21: EDUCAÇÃO + PROVA SOCIAL =============
+// ============= TELA 21: DIAGNÓSTICO + PROVA SOCIAL + GARANTIA =============
+function DiagnosticPage() {
+  const navigate = useNavigate();
+  const [answers, setAnswers] = useState<StoredAnswers>({});
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+      setAnswers(stored);
+    } catch {}
+  }, []);
+
+  const NA = "Não informado";
+  const sintomaPrincipal = answers["1"]?.single ?? NA;
+  const faixaEtaria = answers["2"]?.single ?? NA;
+  const outrosArr = answers["3"]?.multi ?? [];
+  const outrosSintomas =
+    outrosArr.length === 0
+      ? NA
+      : outrosArr.slice(0, 3).join(", ") +
+        (outrosArr.length > 3 ? ` +${outrosArr.length - 3}` : "");
+  const impactoScale = answers["6"]?.scale;
+  const nivelImpacto =
+    typeof impactoScale === "number" ? `${impactoScale}/10` : NA;
+  const tipoPlano =
+    typeof impactoScale !== "number"
+      ? "Plano completo"
+      : impactoScale >= 7
+      ? "Plano intensivo"
+      : impactoScale >= 4
+      ? "Plano completo"
+      : "Plano de manutenção";
+
+  const tempoDisponivel = answers["11"]?.single ?? "Rotina flexível";
+  const focoEspecifico =
+    sintomaPrincipal !== NA ? sintomaPrincipal : "Alívio dos sintomas-chave";
+  const abordagem = answers["12"]?.single ?? "Método guiado";
+  const suporte = answers["17"]?.single ?? "Acompanhamento contínuo";
+
+  const recap = [
+    { label: "Faixa etária", value: faixaEtaria },
+    { label: "Sintoma principal", value: sintomaPrincipal },
+    { label: "Outros sintomas", value: outrosSintomas },
+    { label: "Nível de impacto", value: nivelImpacto },
+    { label: "Tipo de plano ideal", value: tipoPlano },
+  ];
+
+  const recomendacao = [
+    { label: "Tempo disponível", value: tempoDisponivel },
+    { label: "Foco específico", value: focoEspecifico },
+    { label: "Abordagem", value: abordagem },
+    { label: "Suporte estruturado", value: suporte },
+  ];
+
+  const stats = [
+    { n: "8.247", d: "mulheres já descobriram seu plano", color: "#E85D8C" },
+    { n: "82%", d: "veem alívio em 7 dias", color: "#4CAF50" },
+    { n: "21", d: "dias transformação média", color: "#E85D8C" },
+  ];
+
+  const testimonials = [
+    {
+      quote: "Dormi a noite inteira pela primeira vez em 3 anos",
+      name: "Marina, 52 anos",
+    },
+    {
+      quote:
+        "Meu marido perguntou o que eu tinha mudado. Disse que eu tinha voltado",
+      name: "Beatriz, 48 anos",
+    },
+    {
+      quote:
+        "Recuperei minha libido. Nunca pensei que fosse possível depois dos 50",
+      name: "Carla, 51 anos",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen w-full flex justify-center bg-gradient-to-b from-white to-[#FFE5ED] animate-fade-in">
+      <div className="w-full max-w-[480px] min-h-screen flex flex-col px-4 pt-4 pb-8">
+        {/* Top bar */}
+        <div className="sticky top-0 z-10 bg-white pb-2 -mx-4 px-4">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/quiz/$step", params: { step: "20" } })}
+              aria-label="Voltar"
+              className="text-[#999] hover:text-[#E85D8C] text-xl leading-none w-6 h-6 flex items-center justify-center"
+            >
+              ←
+            </button>
+            <div className="h-1 flex-1 bg-[#E0E0E0] rounded-full overflow-hidden">
+              <div className="h-full bg-[#E85D8C]" style={{ width: "100%" }} />
+            </div>
+          </div>
+        </div>
+
+        <QuizHeader />
+
+        {/* SEÇÃO 1 — Header */}
+        <div className="text-center mt-6 mb-6">
+          <div className="text-[40px] leading-none mb-2">🎉</div>
+          <h1 className="font-bold text-[22px] sm:text-[26px] text-[#2C2C2C] leading-tight px-2">
+            Seu Diagnóstico Personalizado está Pronto!
+          </h1>
+          <p className="text-[13px] text-[#666] mt-2">
+            Baseado em suas respostas específicas
+          </p>
+        </div>
+
+        {/* SEÇÃO 2 — Recap */}
+        <div className="bg-[#FFF5F8] border-2 border-[#E85D8C] rounded-xl p-5 mb-8">
+          <ul className="flex flex-col gap-2.5">
+            {recap.map((it) => (
+              <li
+                key={it.label}
+                className="flex items-start gap-2 text-[14px] text-[#2C2C2C]"
+              >
+                <span className="text-[#E85D8C] font-bold shrink-0">✓</span>
+                <span>
+                  <span className="font-semibold">{it.label}:</span>{" "}
+                  <span
+                    className={
+                      it.value === NA ? "text-[#999] italic" : ""
+                    }
+                  >
+                    {it.value}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* SEÇÃO 3 — Recomendação */}
+        <div className="mb-8 px-1">
+          <h2 className="font-bold text-[16px] text-[#E85D8C] mb-1">
+            RECOMENDAÇÃO:
+          </h2>
+          <p className="text-[13px] text-[#666] mb-3">
+            Com base em seu perfil, você precisa de um método que combine:
+          </p>
+          <ul className="flex flex-col gap-2">
+            {recomendacao.map((it) => (
+              <li
+                key={it.label}
+                className="flex items-start gap-2 text-[14px] text-[#2C2C2C]"
+              >
+                <span className="text-[#E85D8C] font-bold shrink-0">✓</span>
+                <span>
+                  <span className="font-semibold">{it.label}:</span> {it.value}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-[14px] text-[#2C2C2C] mt-4 font-semibold">
+            Você descobriu como funcionava!
+          </p>
+          <p className="text-[14px] text-[#E85D8C] font-bold">
+            Agora vem a solução...
+          </p>
+        </div>
+
+        {/* SEÇÃO 4A — Números */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+          {stats.map((s) => (
+            <div
+              key={s.n}
+              className="bg-white border border-[#FFE5ED] rounded-xl py-4 px-3 text-center shadow-sm"
+            >
+              <div
+                className="text-[24px] font-bold"
+                style={{ color: s.color }}
+              >
+                {s.n}
+              </div>
+              <div className="text-[12px] text-[#666] mt-1 leading-snug">
+                {s.d}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* SEÇÃO 4B — Depoimentos */}
+        <div className="mb-6">
+          <h3 className="font-bold text-[16px] text-[#2C2C2C] mb-3">
+            O que mulheres como você dizem:
+          </h3>
+          <div className="flex flex-col gap-3">
+            {testimonials.map((t) => (
+              <div
+                key={t.name}
+                className="bg-[#FFF5F8] border border-[#E0E0E0] rounded-lg p-4"
+              >
+                <p className="italic text-[14px] text-[#2C2C2C] leading-snug">
+                  “{t.quote}”
+                </p>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-[12px] font-semibold text-[#666]">
+                    {t.name}
+                  </span>
+                  <span className="text-[14px] text-[#FFD700]">★★★★★</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* SEÇÃO 4C — Rating */}
+        <div className="text-center mb-8">
+          <div className="text-[18px] text-[#FFD700] leading-none">
+            ★★★★★
+          </div>
+          <p className="text-[13px] text-[#666] mt-1">
+            4.8/5 baseado em 2.400+ avaliações
+          </p>
+        </div>
+
+        {/* SEÇÃO 5 — Garantia */}
+        <div
+          className="bg-[#E3F2FD] rounded-lg p-5 mb-8"
+          style={{ borderLeft: "4px solid #2196F3" }}
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[24px]">🛡️</span>
+            <h3 className="font-bold text-[15px] text-[#2196F3]">
+              30 DIAS DE GARANTIA INCONDICIONAL
+            </h3>
+          </div>
+          <p className="text-[13px] text-[#2C2C2C] leading-relaxed mb-2">
+            Se em 30 dias você não sentir alívio nos seus sintomas:
+          </p>
+          <ul className="flex flex-col gap-1 text-[13px] text-[#2C2C2C]">
+            <li>✅ Devolvemos 100% do seu dinheiro</li>
+            <li>✅ Sem perguntas</li>
+            <li>✅ Sem burocracia</li>
+            <li>✅ Sem ressentimento</li>
+          </ul>
+          <p className="text-[13px] text-[#2C2C2C] mt-3 leading-relaxed">
+            O risco é TODO nosso. Você tem nada a perder.
+          </p>
+          <p className="italic text-[12px] text-[#666] mt-3">
+            Isso é nosso compromisso com você.
+          </p>
+        </div>
+
+        {/* SEÇÃO 6 — CTA */}
+        <button
+          onClick={() =>
+            navigate({ to: "/quiz/$step", params: { step: "22" } })
+          }
+          className="w-full h-14 rounded-lg bg-[#E85D8C] hover:bg-[#D64B7A] text-white font-bold text-[16px] transition-all shadow-[0_2px_8px_rgba(232,93,140,0.2)] hover:shadow-[0_4px_12px_rgba(232,93,140,0.3)]"
+        >
+          VER MINHA OFERTA PERSONALIZADA →
+        </button>
+        <p className="text-center text-[12px] text-[#999] mt-3">
+          Sem compromisso. Escolha no seu ritmo.
+        </p>
+
+        {/* SEÇÃO 7 — Footer */}
+        <button
+          type="button"
+          onClick={() => navigate({ to: "/quiz/$step", params: { step: "1" } })}
+          className="mt-4 text-[13px] text-[#E85D8C] underline hover:opacity-70 transition-opacity self-center"
+        >
+          Voltar e refazer
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============= TELA 22: EDUCAÇÃO + PROVA SOCIAL =============
 function ResultsPage() {
   const navigate = useNavigate();
 
