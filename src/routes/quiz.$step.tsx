@@ -711,7 +711,21 @@ function QuizStep() {
 
 function QuizQuestionPage({ step, stepNum }: { step: string; stepNum: number }) {
   const navigate = useNavigate();
-  const q = QUESTIONS[step] ?? QUESTIONS["1"];
+  const baseQ = QUESTIONS[step] ?? QUESTIONS["1"];
+
+  // Tela 3: filtra opções já cobertas pela Tela 1 (sintoma principal)
+  const q = (() => {
+    if (step !== "3") return baseQ;
+    try {
+      const stored = JSON.parse(localStorage.getItem("quizAnswers") || "{}");
+      const main = stored?.["1"]?.single as string | undefined;
+      const exclude = main ? SYMPTOM_TO_EXCLUDE[main] ?? [] : [];
+      if (!exclude.length) return baseQ;
+      return { ...baseQ, options: baseQ.options.filter((o) => !exclude.includes(o)) };
+    } catch {
+      return baseQ;
+    }
+  })();
 
   const progress = (stepNum / TOTAL) * 100;
   const isMulti = !!q.multiSelect;
