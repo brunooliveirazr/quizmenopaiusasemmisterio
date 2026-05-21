@@ -75,8 +75,45 @@ type Question = {
   optional?: boolean;
 };
 
+const SYMPTOM_TO_EXCLUDE: Record<string, string[]> = {
+  "Fogachos e suores noturnos": ["Fogachos/Ondas de calor"],
+  "Insônia e cansaço crônico": ["Insônia/Sono ruim", "Fadiga/Cansaço extremo"],
+  "Humor, ansiedade e irritabilidade": ["Irritabilidade/Mudanças de humor"],
+  "Ganho de peso e barriga": ["Ganho de peso"],
+  "Queda de cabelo, pele seca": [],
+  "Todos esses sintomas ao mesmo tempo": [],
+};
+
 const QUESTIONS: Record<string, Question> = {
   "1": {
+    title: "Qual desses sintomas está te incomodando mais AGORA?",
+    subtitle: "Sua resposta é importante para entender seu corpo",
+    options: [
+      "Fogachos e suores noturnos",
+      "Insônia e cansaço crônico",
+      "Humor, ansiedade e irritabilidade",
+      "Ganho de peso e barriga",
+      "Queda de cabelo, pele seca",
+      "Todos esses sintomas ao mesmo tempo",
+    ],
+    optionIcons: {
+      "Fogachos e suores noturnos": "🔥",
+      "Insônia e cansaço crônico": "😴",
+      "Humor, ansiedade e irritabilidade": "😰",
+      "Ganho de peso e barriga": "⚖️",
+      "Queda de cabelo, pele seca": "💇",
+      "Todos esses sintomas ao mesmo tempo": "🆘",
+    },
+    optionSubtitles: {
+      "Fogachos e suores noturnos": "Acordar encharcada, calor intenso",
+      "Insônia e cansaço crônico": "Dormir mal, acordar sem energia",
+      "Humor, ansiedade e irritabilidade": "Sentir emoções intensas sem razão",
+      "Ganho de peso e barriga": "Corpo mudando mesmo sem comer diferente",
+      "Queda de cabelo, pele seca": "Cabelo caindo, pele ressecada",
+      "Todos esses sintomas ao mesmo tempo": "Vários sintomas juntos me incomodam",
+    },
+  },
+  "2": {
     title: "Qual é a sua faixa etária?",
     subtitle: "(Vamos calibrar o plano ideal para você)",
     options: [
@@ -86,22 +123,11 @@ const QUESTIONS: Record<string, Question> = {
       "51-55 anos",
       "Acima de 55 anos",
     ],
-  },
-  "2": {
-    title: "Em qual estágio você está?",
-    subtitle: "(Isso é essencial para seu plano)",
-    options: [
-      "Pré-menopausa (ainda menstruo)",
-      "Perimenopausa (irregular)",
-      "Menopausa (parou há 1 ano)",
-      "Pós-menopausa (parou há +1 ano)",
-      "Não tenho certeza",
-    ],
     toastMessage: "✓ Excelente! Já estamos identificando as soluções certas para você...",
   },
   "3": {
-    title: "Selecione seus principais sintomas:",
-    subtitle: "(Quanto mais você selecionar, melhor será a personalização)",
+    title: "Além desse, quais outros sintomas você sente?",
+    subtitle: "(Selecione todos que se aplicam — quanto mais, melhor a personalização)",
     multiSelect: true,
     options: [
       "Fogachos/Ondas de calor",
