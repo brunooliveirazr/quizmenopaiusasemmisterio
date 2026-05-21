@@ -2796,8 +2796,38 @@ function SalesPage() {
         </div>
       </section>
 
+      {/* SEÇÃO 6 — Social proof */}
+      <section style={{ padding: "0 16px 24px" }}>
+        <div
+          style={{
+            background: "#FFF5F8",
+            border: "2px solid #E85D8C",
+            borderRadius: 12,
+            padding: 24,
+            textAlign: "center",
+          }}
+        >
+          <div style={{ fontSize: 18, color: "#FFD700", letterSpacing: 2 }}>
+            ⭐⭐⭐⭐⭐
+          </div>
+          <p style={{ fontSize: 13, color: "#666", margin: "12px 0 8px" }}>
+            4.8/5 baseado em 2.400+ avaliações reais
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#E85D8C",
+              fontWeight: 700,
+              margin: 0,
+            }}
+          >
+            8.247 mulheres já começaram este mês
+          </p>
+        </div>
+      </section>
 
-      {/* SEÇÃO 4 — FAQ consultivo */}
+      {/* SEÇÃO 7 — FAQ consultivo */}
+
       <section style={{ padding: "24px 16px" }}>
         <h2
           style={{
