@@ -2204,16 +2204,21 @@ function ResultsPage() {
 
 // ============= TELA 22: OPÇÕES CONSULTIVAS =============
 type ConsultivePlan = {
-  id: "basico" | "premium" | "vip";
+  id: "premium" | "vip";
   label: string;
   labelColor: string;
   name: string;
   subheading?: string;
+  oldPrice: string;
   price: string;
   priceColor: string;
+  savings: string;
+  comparison?: string;
   description: string;
   features: string[];
+  featureHighlightCount?: number;
   cta: string;
+  ctaSub: string;
   checkoutUrl: string;
   cardBg: string;
   border: string;
@@ -2226,54 +2231,31 @@ type ConsultivePlan = {
 
 const CONSULTIVE_PLANS: ConsultivePlan[] = [
   {
-    id: "basico",
-    label: "Se você quer testar primeiro",
-    labelColor: "#E85D8C",
-    name: "Básico",
-    price: "R$ 1,99",
-    priceColor: "#E85D8C",
-    description:
-      "Acesso ao app. Sem compromisso. Perfeito para entender como funciona.",
-    features: [
-      "Acesso ao app",
-      "Rotina diária",
-      "Conteúdo base",
-      "30 dias para decidir",
-    ],
-    cta: "COMEÇAR COM BÁSICO",
-    checkoutUrl: "https://ggcheckout.app/checkout/v5/9NVEioxO8XP9XuebnhBn",
-    cardBg: "#FFFFFF",
-    border: "#E85D8C",
-    borderWidth: 3,
-    shadow: "0 4px 16px rgba(232,93,140,0.15)",
-    divider: "#FFE5ED",
-    btnBg: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 100%)",
-    btnHover: "linear-gradient(135deg,#D64B7A 0%,#E85D8C 100%)",
-  },
-  {
     id: "premium",
     label: "⭐ MAIS POPULAR",
     labelColor: "#FFFFFF",
     name: "Premium",
     subheading: "Para transformação real",
-    price: "R$ 9,89",
+    oldPrice: "de R$ 67,00",
+    price: "R$ 19,90",
     priceColor: "#E85D8C",
-    description:
-      "O plano completo. Tudo que você precisa para transformar. 67% das mulheres escolhem este.",
+    savings: "Economiza R$ 47,10 (70% off)",
+    description: "Plano completo. Tudo que você precisa para transformar.",
     features: [
-      "Tudo do Básico +",
-      "Módulos Premium",
-      "Protocolos avançados",
-      "Acesso vitalício",
-      "Suporte por email",
+      "Acesso vitalício ao app",
+      "Módulos Premium desbloqueados",
+      "Protocolos avançados & aprofundamento",
+      "⭐ Mais escolhido por 67% das mulheres",
     ],
-    cta: "ESCOLHER PREMIUM",
+    featureHighlightCount: 1,
+    cta: "SIM! QUERO COMEÇAR HOJE",
+    ctaSub: "Sua primeira experiência é garantida por 30 dias.",
     checkoutUrl: "https://ggcheckout.app/checkout/v2/3B8zcUXZYtwguGI98R0f",
     cardBg: "#FFFFFF",
     border: "#E85D8C",
     borderWidth: 4,
     shadow: "0 6px 20px rgba(232,93,140,0.22)",
-    divider: "#F5A5B8",
+    divider: "#E85D8C",
     btnBg: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 50%,#E85D8C 100%)",
     btnHover: "linear-gradient(135deg,#D64B7A 0%,#E85D8C 50%,#D64B7A 100%)",
   },
@@ -2283,24 +2265,29 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     labelColor: "#FFFFFF",
     name: "VIP Total",
     subheading: "Transformação com acompanhamento",
-    price: "R$ 29,90",
+    oldPrice: "de R$ 147,00",
+    price: "R$ 47,00",
     priceColor: "#9333EA",
-    description:
-      "Tudo do Premium + comunidade + consultora. Para quando você quer ajuda no caminho.",
+    savings: "Economiza R$ 100,00 (68% off)",
+    comparison: "= 1 consulta com especialista (normalmente R$ 497)",
+    description: "Tudo do Premium + comunidade + consultora dedicada.",
     features: [
       "Tudo do Premium +",
-      "Comunidade 24h (WhatsApp)",
-      "Consultora VIP",
-      "Relatório para médico",
-      "Acompanhamento 30 dias",
+      "Comunidade 24h (WhatsApp privado)",
+      "Consultora VIP (orientação personalizada)",
+      "Relatório para levar ao médico",
+      "Plano VIP 30 dias guiado",
+      "👑 SUPORTE MÁXIMO",
     ],
-    cta: "ESCOLHER VIP",
+    featureHighlightCount: 2,
+    cta: "QUERO A TRANSFORMAÇÃO TOTAL",
+    ctaSub: "Você merece suporte máximo. Sua transformação é prioridade.",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
     cardBg: "linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 100%)",
     border: "#9333EA",
     borderWidth: 3,
     shadow: "0 4px 16px rgba(147,51,234,0.15)",
-    divider: "#D8B4FE",
+    divider: "#9333EA",
     btnBg: "#9333EA",
     btnHover: "#7E22CE",
   },
@@ -2308,28 +2295,24 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
 
 const CONSULTIVE_FAQ = [
   {
-    q: "Qual a diferença entre Básico, Premium e VIP?",
-    a: "• Plano Básico (entrada / para começar com segurança)\n\nIdeal para quem quer dar o primeiro passo, conhecer o método e iniciar a rotina sem complicação.\n\nVocê recebe: acesso ao app + jornada base, com conteúdo guiado e recursos essenciais (leitura dos módulos, progresso e rotina/check-ins).\n\nPara quem é: quem quer testar com baixo risco e começar a organizar os sintomas e a rotina.\n\n• Plano Premium (mais completo para resultado prático no dia a dia)\n\nIdeal para quem quer ir além do básico e ter materiais avançados para acelerar o progresso.\n\nVocê recebe: tudo do Básico + acesso aos conteúdos e recursos Premium (materiais extras e protocolos mais direcionados para situações do dia a dia).\n\nPara quem é: quem já sente que precisa de uma solução mais completa e quer avançar com mais ferramentas práticas.\n\n• Plano VIP (Premium + acompanhamento e pertencimento)\n\nIdeal para quem não quer passar por essa fase sozinha e quer apoio contínuo além do conteúdo.\n\nVocê recebe: tudo do Premium + benefícios VIP (como comunidade, recursos exclusivos e suporte/aconselhamento dentro do que o programa oferece).\n\nPara quem é: quem quer acompanhamento, motivação e um ecossistema completo para manter consistência e evoluir mais rápido.",
+    q: "Qual a diferença entre Premium e VIP?",
+    a: "Premium tem tudo que você precisa para transformar (módulos, protocolos).\nVIP é Premium + comunidade + consultora + acompanhamento mensal.\n67% das mulheres escolhem Premium e ficam satisfeitas.",
   },
   {
     q: "Quanto tempo até ver resultado?",
-    a: "7-14 dias você sente diferença. 21 dias a transformação fica visível.",
+    a: "7-14 dias você sente diferença. 21-30 dias transformação visível.",
   },
   {
-    q: "E se eu não gostar?",
-    a: "30 dias para decidir. Se não valer, seu dinheiro volta. Sem perguntas.",
+    q: "E se não gostar?",
+    a: "Garantia de 30 dias. Seu dinheiro volta, sem perguntas.",
   },
   {
-    q: "Como funciona depois que eu compro?",
-    a: "Você recebe email com acesso. Instala no celular em 2 min. Começa hoje.",
+    q: "Por que o Premium tem esse preço?",
+    a: 'Não é "mais caro" — é "mais justo". Antes estava abaixo do valor real.\nAgora você vê claramente: economiza R$ 47+ comparado ao valor real do serviço.',
   },
   {
-    q: "Por que é tão barato?",
-    a: "Porque alcança muita gente (economia de escala). Funciona bem = muitos clientes.",
-  },
-  {
-    q: "Qual devo escolher?",
-    a: "Se quer testar: Básico. Quer transformar: Premium. Quer suporte: VIP.",
+    q: "Posso fazer upgrade depois?",
+    a: "Sim. Compre Premium agora, depois expanda para VIP. Seus dados ficam.",
   },
 ];
 
