@@ -2752,7 +2752,7 @@ function SalesPage() {
             margin: "0 0 16px",
           }}
         >
-          Diferenças rápidas:
+          O que você recebe:
         </h3>
         <div style={{ overflowX: "auto" }}>
           <table
