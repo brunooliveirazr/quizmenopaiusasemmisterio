@@ -2413,7 +2413,7 @@ function SalesPage() {
         </div>
       </div>
 
-      {/* SEÇÃO 1 — Introdução consultiva */}
+      {/* SEÇÃO 1 — Header */}
       <section
         style={{
           background: "linear-gradient(180deg, #FFFFFF 0%, #FFE5ED 100%)",
@@ -2429,42 +2429,64 @@ function SalesPage() {
             margin: "0 0 12px",
           }}
         >
-          Três Caminhos. Escolha o Seu.
+          Escolha a opção que faz mais sentido para você
         </h1>
         <p style={{ fontSize: 14, color: "#666", lineHeight: 1.6, margin: 0 }}>
-          Cada mulher é diferente. Por isso temos 3 opções.
-          <br />
-          Escolha a que combina com você agora.
+          Cada plano é personalizado para sua jornada
         </p>
       </section>
 
-      {/* SEÇÃO 2 — 3 cards consultivos */}
+      {/* SEÇÃO 2 — Contexto consultivo */}
+      <section style={{ background: "#FFFFFF", padding: "24px 16px 8px" }}>
+        <p
+          style={{
+            fontSize: 14,
+            color: "#2C2C2C",
+            lineHeight: 1.6,
+            margin: 0,
+            textAlign: "center",
+          }}
+        >
+          Com base em seu diagnóstico, recomendamos o plano{" "}
+          <strong style={{ color: "#E85D8C" }}>Premium</strong>.
+          <br />
+          Mas cada mulher é diferente. Escolha no seu ritmo.
+        </p>
+      </section>
+
+      {/* SEÇÃO 3 — Pricing cards (Premium + VIP) */}
       <section ref={cardsRef} style={{ padding: "24px 16px" }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
             gap: 16,
           }}
         >
-          {CONSULTIVE_PLANS.map((plan) => (
-            <div
-              key={plan.id}
-              className="plan-card"
-              style={{
-                position: "relative",
-                background: plan.cardBg,
-                border: `${plan.borderWidth}px solid ${plan.border}`,
-                borderRadius: 12,
-                padding: plan.id === "premium" || plan.id === "vip" ? 24 : 20,
-                paddingTop: plan.id === "premium" || plan.id === "vip" ? 40 : 20,
-                boxShadow: plan.shadow,
-                display: "flex",
-                flexDirection: "column",
-                overflow: "hidden",
-              }}
-            >
-              {(plan.id === "premium" || plan.id === "vip") && (
+          {CONSULTIVE_PLANS.map((plan) => {
+            const highlightStart =
+              plan.featureHighlightCount
+                ? plan.features.length - plan.featureHighlightCount
+                : plan.features.length;
+            const accent = plan.priceColor;
+            return (
+              <div
+                key={plan.id}
+                className="plan-card"
+                style={{
+                  position: "relative",
+                  background: plan.cardBg,
+                  border: `${plan.borderWidth}px solid ${plan.border}`,
+                  borderRadius: 12,
+                  padding: 24,
+                  paddingTop: 44,
+                  boxShadow: plan.shadow,
+                  display: "flex",
+                  flexDirection: "column",
+                  overflow: "hidden",
+                }}
+              >
+                {/* Ribbon */}
                 <div
                   style={{
                     position: "absolute",
@@ -2481,190 +2503,236 @@ function SalesPage() {
                     textTransform: "uppercase",
                   }}
                 >
-                  {plan.id === "vip" ? "👑 TRANSFORMAÇÃO TOTAL" : "⭐ MAIS POPULAR"}
+                  {plan.label}
                 </div>
-              )}
-              {plan.id !== "premium" && plan.id !== "vip" && (
+
+                {/* Ancoragem de preço */}
                 <div
                   style={{
-                    fontSize: 11,
-                    fontWeight: plan.id === "basico" ? 400 : 700,
-                    color: plan.labelColor,
+                    fontSize: 14,
+                    color: "#999",
+                    textDecoration: "line-through",
+                    marginBottom: 4,
+                  }}
+                >
+                  {plan.oldPrice}
+                </div>
+                <div
+                  style={{
+                    fontSize: 36,
+                    fontWeight: 800,
+                    color: plan.priceColor,
+                    lineHeight: 1.1,
                     marginBottom: 8,
                   }}
                 >
-                  {plan.label}
+                  {plan.price}
                 </div>
-              )}
-              <div
-                style={{
-                  fontSize: plan.id === "premium" || plan.id === "vip" ? 20 : 18,
-                  fontWeight: 700,
-                  color: "#2C2C2C",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                }}
-              >
-                {plan.name}
-                {plan.id === "premium" && (
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      background: "linear-gradient(135deg,#E85D8C 0%,#FF8FB3 100%)",
-                      color: "#FFFFFF",
-                      fontSize: 10,
-                      fontWeight: 800,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.6px",
-                      padding: "3px 10px",
-                      borderRadius: 999,
-                      boxShadow: "0 2px 8px rgba(232,93,140,0.35)",
-                    }}
-                  >
-                    <span>🏆</span>
-                    Mais escolhido
-                  </span>
-                )}
-              </div>
-              {plan.subheading && (
-                <div style={{ fontSize: 12, color: "#999", marginTop: 4 }}>
-                  {plan.subheading}
+                <div
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "#4CAF50",
+                    marginBottom: plan.comparison ? 8 : 16,
+                  }}
+                >
+                  {plan.savings}
                 </div>
-              )}
-              <div
-                style={{
-                  fontSize: plan.id === "premium" || plan.id === "vip" ? 40 : 34,
-                  fontWeight: 800,
-                  color: plan.priceColor,
-                  marginTop: 12,
-                  lineHeight: 1.1,
-                }}
-              >
-                {plan.price}
-              </div>
-              <p style={{ fontSize: 13, color: "#666", lineHeight: 1.6, margin: "12px 0" }}>
-                {plan.description}
-              </p>
-              <div
-                style={{
-                  height: 1,
-                  background: plan.divider,
-                  opacity: plan.id === "basico" ? 1 : 0.6,
-                  margin: "16px 0",
-                }}
-              />
-              <div style={{ flex: 1 }}>
-                {plan.features.map((f) => (
+                {plan.comparison && (
                   <div
-                    key={f}
                     style={{
                       fontSize: 12,
-                      color: "#2C2C2C",
-                      margin: "8px 0",
-                      display: "flex",
-                      gap: 8,
+                      color: "#666",
+                      fontStyle: "italic",
+                      marginBottom: 16,
                     }}
                   >
-                    <span style={{ color: "#4CAF50", fontWeight: 700 }}>✓</span>
-                    <span>{f}</span>
+                    {plan.comparison}
                   </div>
-                ))}
+                )}
+
+                {/* Nome */}
+                <div
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 700,
+                    color: "#2C2C2C",
+                    marginBottom: 4,
+                  }}
+                >
+                  {plan.name}
+                </div>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "#666",
+                    lineHeight: 1.5,
+                    margin: "0 0 16px",
+                  }}
+                >
+                  {plan.description}
+                </p>
+
+                <div
+                  style={{
+                    height: 1,
+                    background: plan.divider,
+                    opacity: 0.5,
+                    margin: "0 0 16px",
+                  }}
+                />
+
+                <div style={{ flex: 1 }}>
+                  {plan.features.map((f, idx) => {
+                    const isHighlight = idx >= highlightStart;
+                    return (
+                      <div
+                        key={f}
+                        style={{
+                          fontSize: 13,
+                          color: isHighlight ? accent : "#2C2C2C",
+                          fontWeight: isHighlight ? 700 : 400,
+                          margin: "8px 0",
+                          display: "flex",
+                          gap: 8,
+                        }}
+                      >
+                        <span style={{ color: "#4CAF50", fontWeight: 700 }}>✓</span>
+                        <span>{f}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => handleBuy(plan)}
+                  className="cta-gold cta-premium-pulse"
+                  style={{
+                    width: "100%",
+                    height: 56,
+                    background: plan.btnBg,
+                    color: "#FFFFFF",
+                    border: "none",
+                    borderRadius: 8,
+                    fontSize: 16,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    marginTop: 20,
+                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                    boxShadow:
+                      plan.id === "vip"
+                        ? "0 4px 12px rgba(147,51,234,0.30)"
+                        : "0 4px 12px rgba(232,93,140,0.30)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = plan.btnHover;
+                    e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+                    e.currentTarget.style.boxShadow =
+                      plan.id === "vip"
+                        ? "0 6px 16px rgba(147,51,234,0.40)"
+                        : "0 6px 16px rgba(232,93,140,0.40)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = plan.btnBg;
+                    e.currentTarget.style.transform = "translateY(0) scale(1)";
+                    e.currentTarget.style.boxShadow =
+                      plan.id === "vip"
+                        ? "0 4px 12px rgba(147,51,234,0.30)"
+                        : "0 4px 12px rgba(232,93,140,0.30)";
+                  }}
+                >
+                  {plan.cta}
+                </button>
+                <p
+                  style={{
+                    fontSize: 12,
+                    color: "#666",
+                    fontStyle: "italic",
+                    textAlign: "center",
+                    margin: "12px 0 0",
+                  }}
+                >
+                  {plan.ctaSub}
+                </p>
               </div>
-              <button
-                onClick={() => handleBuy(plan)}
-                className={`cta-gold ${plan.id === "premium" || plan.id === "vip" ? "cta-premium-pulse" : ""}`}
-                style={{
-                  width: "100%",
-                  height: plan.id === "premium" || plan.id === "vip" ? 52 : 48,
-                  background: plan.btnBg,
-                  color: "#FFFFFF",
-                  border: "none",
-                  borderRadius: 10,
-                  fontSize: 14,
-                  fontWeight: 800,
-                  cursor: "pointer",
-                  marginTop: 20,
-                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  boxShadow: plan.id === "vip" 
-                    ? "0 4px 14px rgba(147,51,234,0.35)" 
-                    : "0 4px 14px rgba(232,93,140,0.35)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = plan.btnHover;
-                  e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
-                  e.currentTarget.style.boxShadow = plan.id === "vip"
-                    ? "0 8px 24px rgba(147,51,234,0.50)"
-                    : "0 8px 24px rgba(232,93,140,0.50)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = plan.btnBg;
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = plan.id === "vip"
-                    ? "0 4px 14px rgba(147,51,234,0.35)"
-                    : "0 4px 14px rgba(232,93,140,0.35)";
-                }}
-              >
-                {plan.cta}
-              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* SEÇÃO 4 — Garantia 30 dias */}
+      <section style={{ padding: "0 16px 32px" }}>
+        <div
+          style={{
+            background: "#E3F2FD",
+            borderLeft: "4px solid #2196F3",
+            borderRadius: 8,
+            padding: 20,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 12,
+            }}
+          >
+            <span style={{ fontSize: 28 }}>🛡️</span>
+            <div
+              style={{
+                fontSize: 16,
+                fontWeight: 700,
+                color: "#2196F3",
+              }}
+            >
+              30 DIAS DE GARANTIA INCONDICIONAL
+            </div>
+          </div>
+          {[
+            "Devolvemos 100% do seu dinheiro",
+            "Sem perguntas",
+            "Sem burocracia",
+            "Sem ressentimento",
+          ].map((item) => (
+            <div
+              key={item}
+              style={{
+                fontSize: 13,
+                color: "#2C2C2C",
+                margin: "8px 0",
+                display: "flex",
+                gap: 8,
+              }}
+            >
+              <span>✅</span>
+              <span>{item}</span>
             </div>
           ))}
+          <p
+            style={{
+              fontSize: 13,
+              color: "#2C2C2C",
+              lineHeight: 1.6,
+              margin: "12px 0 0",
+            }}
+          >
+            O risco é TODO nosso. Você tem nada a perder e tudo a ganhar.
+          </p>
+          <p
+            style={{
+              fontSize: 12,
+              color: "#666",
+              fontStyle: "italic",
+              margin: "12px 0 0",
+            }}
+          >
+            Esse é nosso compromisso com você.
+          </p>
         </div>
       </section>
 
-      {/* SEÇÃO 2B — Garantia + Cancelamento seguro */}
-      <section style={{ padding: "0 16px 24px" }}>
-        {/* Selo de garantia */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            background: "#F0FDF4",
-            border: "1px solid #BBF7D0",
-            borderRadius: 10,
-            padding: "14px 16px",
-            marginBottom: 12,
-          }}
-        >
-          <span style={{ fontSize: 24, flexShrink: 0 }}>🛡️</span>
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>
-              Garantia de 7 dias
-            </div>
-            <div style={{ fontSize: 12, color: "#3F6B4F", lineHeight: 1.5 }}>
-              Se você não sentir diferença na rotina em 7 dias, devolvemos 100% do valor. Sem perguntas.
-            </div>
-          </div>
-        </div>
-
-        {/* Cancelamento fácil */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            background: "#EFF6FF",
-            border: "1px solid #BFDBFE",
-            borderRadius: 10,
-            padding: "14px 16px",
-          }}
-        >
-          <span style={{ fontSize: 24, flexShrink: 0 }}>🔒</span>
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#1E40AF" }}>
-              Cancelamento fácil e seguro
-            </div>
-            <div style={{ fontSize: 12, color: "#3B5F9F", lineHeight: 1.5 }}>
-              Cancele quando quiser, sem burocracia. Você está no controle do seu investimento.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 3 — Comparação simples */}
+      {/* SEÇÃO 5 — Comparação rápida (Premium × VIP) */}
       <section style={{ background: "#FFFFFF", padding: "24px 16px" }}>
         <h3
           style={{
@@ -2674,7 +2742,7 @@ function SalesPage() {
             margin: "0 0 16px",
           }}
         >
-          Resumo das diferenças:
+          Diferenças rápidas:
         </h3>
         <div style={{ overflowX: "auto" }}>
           <table
@@ -2690,7 +2758,6 @@ function SalesPage() {
                 <th style={{ textAlign: "left", padding: 8, fontWeight: 700 }}>
                   Recurso
                 </th>
-                <th style={{ padding: 8, fontWeight: 700 }}>Básico</th>
                 <th style={{ padding: 8, fontWeight: 700, color: "#E85D8C" }}>
                   Premium
                 </th>
@@ -2701,11 +2768,12 @@ function SalesPage() {
             </thead>
             <tbody>
               {[
-                ["Acesso ao app", "✓", "✓", "✓"],
-                ["Rotina diária", "✓", "✓", "✓"],
-                ["Conteúdo Premium", "—", "✓", "✓"],
-                ["Comunidade", "—", "—", "✓"],
-                ["Consultora", "—", "—", "✓"],
+                ["Acesso ao app", "✓", "✓"],
+                ["Rotina diária", "✓", "✓"],
+                ["Módulos Premium", "✓", "✓"],
+                ["Comunidade 24h", "—", "✓"],
+                ["Consultora VIP", "—", "✓"],
+                ["Relatório médico", "—", "✓"],
               ].map((row, i) => (
                 <tr key={i} style={{ borderBottom: "1px solid #F5F5F5" }}>
                   <td style={{ textAlign: "left", padding: 8 }}>{row[0]}</td>
@@ -2727,6 +2795,7 @@ function SalesPage() {
           </table>
         </div>
       </section>
+
 
       {/* SEÇÃO 4 — FAQ consultivo */}
       <section style={{ padding: "24px 16px" }}>
