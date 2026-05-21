@@ -1591,7 +1591,7 @@ function ResultsPage() {
   const navigate = useNavigate();
 
   const goToOptions = () => {
-    navigate({ to: "/quiz/$step", params: { step: "22" } });
+    navigate({ to: "/quiz/$step", params: { step: "23" } });
   };
 
   return (
