@@ -2828,10 +2828,30 @@ function SalesPage() {
               fontSize: 13,
               color: "#E85D8C",
               fontWeight: 700,
+              margin: "0 0 4px",
+            }}
+          >
+            8.247 mulheres já começaram
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#4CAF50",
+              fontWeight: 700,
+              margin: "0 0 4px",
+            }}
+          >
+            82% veem alívio em 7 dias
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#E85D8C",
+              fontWeight: 700,
               margin: 0,
             }}
           >
-            8.247 mulheres já começaram este mês
+            67% escolhem Premium
           </p>
         </div>
       </section>
