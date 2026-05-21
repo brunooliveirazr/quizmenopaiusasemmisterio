@@ -2232,7 +2232,7 @@ type ConsultivePlan = {
 const CONSULTIVE_PLANS: ConsultivePlan[] = [
   {
     id: "premium",
-    label: "⭐ MAIS POPULAR",
+    label: "⭐ RECOMENDADO",
     labelColor: "#FFFFFF",
     name: "Premium",
     subheading: "Para transformação real",
@@ -2240,16 +2240,20 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     price: "R$ 19,90",
     priceColor: "#E85D8C",
     savings: "Economiza R$ 47,10 (70% off)",
-    description: "Plano completo. Tudo que você precisa para transformar.",
+    description: "Tudo que você precisa para transformar sua vida.",
     features: [
-      "Acesso vitalício ao app",
+      "Acesso completo ao app",
+      "Rotina diária personalizada",
+      "Check-ins e acompanhamento",
+      "Conteúdo de leitura completo",
       "Módulos Premium desbloqueados",
       "Protocolos avançados & aprofundamento",
-      "⭐ Mais escolhido por 67% das mulheres",
+      "Acesso vitalício",
+      "⭐ Escolhido por 67% das mulheres",
     ],
     featureHighlightCount: 1,
-    cta: "SIM! QUERO COMEÇAR HOJE",
-    ctaSub: "Sua primeira experiência é garantida por 30 dias.",
+    cta: "SIM! QUERO O PREMIUM",
+    ctaSub: "Transformação em 21-30 dias. 30 dias de garantia.",
     checkoutUrl: "https://ggcheckout.app/checkout/v2/3B8zcUXZYtwguGI98R0f",
     cardBg: "#FFFFFF",
     border: "#E85D8C",
@@ -2270,18 +2274,20 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     priceColor: "#9333EA",
     savings: "Economiza R$ 100,00 (68% off)",
     comparison: "= 1 consulta com especialista (normalmente R$ 497)",
-    description: "Tudo do Premium + comunidade + consultora dedicada.",
+    description:
+      "Premium + comunidade + consultora dedicada + acompanhamento.",
     features: [
       "Tudo do Premium +",
       "Comunidade 24h (WhatsApp privado)",
       "Consultora VIP (orientação personalizada)",
       "Relatório para levar ao médico",
       "Plano VIP 30 dias guiado",
+      "Acompanhamento mensal",
       "👑 SUPORTE MÁXIMO",
     ],
     featureHighlightCount: 2,
     cta: "QUERO A TRANSFORMAÇÃO TOTAL",
-    ctaSub: "Você merece suporte máximo. Sua transformação é prioridade.",
+    ctaSub: "Você merece suporte máximo. 30 dias de garantia.",
     checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
     cardBg: "linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 100%)",
     border: "#9333EA",
@@ -2296,23 +2302,27 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
 const CONSULTIVE_FAQ = [
   {
     q: "Qual a diferença entre Premium e VIP?",
-    a: "Premium tem tudo que você precisa para transformar (módulos, protocolos).\nVIP é Premium + comunidade + consultora + acompanhamento mensal.\n67% das mulheres escolhem Premium e ficam satisfeitas.",
+    a: "Premium é o plano completo com tudo que você precisa para transformar.\nVIP é Premium + comunidade + consultora dedicada + acompanhamento mensal.\nEscolha Premium se prefere autonomia. Escolha VIP se quer máximo suporte.",
   },
   {
     q: "Quanto tempo até ver resultado?",
-    a: "7-14 dias você sente diferença. 21-30 dias transformação visível.",
+    a: "7-14 dias você sente diferença nos sintomas. 21-30 dias transformação visível.",
   },
   {
     q: "E se não gostar?",
-    a: "Garantia de 30 dias. Seu dinheiro volta, sem perguntas.",
+    a: "Garantia incondicional de 30 dias. Seu dinheiro volta, sem perguntas.\nMenos de 2% das mulheres usam essa garantia.",
   },
   {
-    q: "Por que o Premium tem esse preço?",
-    a: 'Não é "mais caro" — é "mais justo". Antes estava abaixo do valor real.\nAgora você vê claramente: economiza R$ 47+ comparado ao valor real do serviço.',
+    q: "Por que não tem plano mais barato?",
+    a: "Oferecemos apenas 2 planos porque queremos qualidade, não quantidade.\nAmbos têm acesso completo ao app e método.\nA diferença é suporte: Premium é autonomia, VIP é comunidade + consultora.",
   },
   {
     q: "Posso fazer upgrade depois?",
-    a: "Sim. Compre Premium agora, depois expanda para VIP. Seus dados ficam.",
+    a: "Sim. Comece com Premium, depois expanda para VIP. Seus dados ficam salvos.",
+  },
+  {
+    q: "Como funciona o pagamento?",
+    a: "Um pagamento único. Sem mensalidade. Acesso vitalício.",
   },
 ];
 
@@ -2742,7 +2752,7 @@ function SalesPage() {
             margin: "0 0 16px",
           }}
         >
-          Diferenças rápidas:
+          O que você recebe:
         </h3>
         <div style={{ overflowX: "auto" }}>
           <table
@@ -2768,12 +2778,12 @@ function SalesPage() {
             </thead>
             <tbody>
               {[
-                ["Acesso ao app", "✓", "✓"],
-                ["Rotina diária", "✓", "✓"],
-                ["Módulos Premium", "✓", "✓"],
+                ["Acesso app completo", "✓", "✓"],
+                ["Rotina personalizada", "✓", "✓"],
+                ["Módulos premium", "✓", "✓"],
                 ["Comunidade 24h", "—", "✓"],
                 ["Consultora VIP", "—", "✓"],
-                ["Relatório médico", "—", "✓"],
+                ["Acompanhamento mensal", "—", "✓"],
               ].map((row, i) => (
                 <tr key={i} style={{ borderBottom: "1px solid #F5F5F5" }}>
                   <td style={{ textAlign: "left", padding: 8 }}>{row[0]}</td>
@@ -2818,10 +2828,30 @@ function SalesPage() {
               fontSize: 13,
               color: "#E85D8C",
               fontWeight: 700,
+              margin: "0 0 4px",
+            }}
+          >
+            8.247 mulheres já começaram
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#4CAF50",
+              fontWeight: 700,
+              margin: "0 0 4px",
+            }}
+          >
+            82% veem alívio em 7 dias
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "#E85D8C",
+              fontWeight: 700,
               margin: 0,
             }}
           >
-            8.247 mulheres já começaram este mês
+            67% escolhem Premium
           </p>
         </div>
       </section>
@@ -2921,9 +2951,11 @@ function SalesPage() {
               margin: "0 0 20px",
             }}
           >
-            Você pode continuar como está.
+            Você pode continuar como está. Acordando cansada. Sem reconhecer a si mesma.
+            <br />
             <br />
             Ou começar SUA transformação AGORA.
+            <br />
             <br />
             Os primeiros passos são os mais importantes.
           </p>
