@@ -703,8 +703,9 @@ function QuizStep() {
   const stepNum = parseInt(step, 10) || 1;
   if (step === "19") return <ProcessingPage />;
   if (step === "20") return <TimelinePage />;
-  if (step === "21") return <ResultsPage />;
-  if (step === "22") return <SalesPage />;
+  if (step === "21") return <DiagnosticPage />;
+  if (step === "22") return <ResultsPage />;
+  if (step === "23") return <SalesPage />;
 
   return <QuizQuestionPage step={step} stepNum={stepNum} />;
 }
