@@ -1,77 +1,85 @@
-# Refatoração da Tela 1 do Quiz
+# Nova Tela 21: Diagnóstico Personalizado + Prova Social + Garantia
 
-## Objetivo
+## Posicionamento no fluxo
 
-A primeira pergunta deixa de ser fria ("faixa etária") e passa a validar a dor da lead com identificação imediata por sintoma. Idade vai para a Tela 2 e a antiga Tela 3 (multi-sintomas) passa a coletar apenas sintomas adicionais.
+Insere uma tela nova **entre o TimelinePage e a página educacional**. O fluxo final fica:
 
-## Mudanças no `src/routes/quiz.$step.tsx`
+| Step | Tela | Status |
+|---|---|---|
+| 19 | ProcessingPage (loading) | inalterada |
+| 20 | TimelinePage (gráfico animado) | inalterada — apenas o destino do timer muda |
+| **21** | **NOVA: Diagnóstico + Prova Social + Garantia** | criada |
+| 22 | ResultsPage (educacional com vídeos) | renumerada (era 21) |
+| 23 | SalesPage (ofertas) | renumerada (era 22) |
 
-### Tela 1 — NOVA: sintoma principal (single-select)
+## O que entra na nova Tela 21
 
-- Título: **"Qual desses sintomas está te incomodando mais AGORA?"**
-- Subtítulo: "Sua resposta é importante para entender seu corpo"
-- 6 opções single-select, cada uma com emoji + subtítulo:
-  1. 🔥 Fogachos e suores noturnos — *Acordar encharcada, calor intenso*
-  2. 😴 Insônia e cansaço crônico — *Dormir mal, acordar sem energia*
-  3. 😰 Humor, ansiedade e irritabilidade — *Sentir emoções intensas sem razão*
-  4. ⚖️ Ganho de peso e barriga — *Corpo mudando mesmo sem comer diferente*
-  5. 💇 Queda de cabelo, pele seca — *Cabelo caindo, pele ressecada*
-  6. 🆘 Todos esses sintomas ao mesmo tempo — *Vários sintomas juntos me incomodam*
-- Usa os campos já existentes do tipo `Question`: `optionIcons`, `optionSubtitles`.
-- Sem popup (entrada rápida; popups seguem nas telas estratégicas já configuradas).
+### Seção 1 — Header
+- Ícone 🎉, título "Seu Diagnóstico Personalizado está Pronto!", subtítulo "Baseado em suas respostas específicas".
 
-### Tela 2 — agora "faixa etária"
+### Seção 2 — Recap dinâmico (lê `localStorage.quizAnswers`)
+Card rosa claro (`#FFF5F8`, borda `#E85D8C`, radius 12, padding 20). Bullets com fallback **"Não informado"** quando faltar dado:
+- ✓ Sintoma principal — de `quizAnswers["1"].single`
+- ✓ Faixa etária — de `quizAnswers["2"].single`
+- ✓ Outros sintomas — de `quizAnswers["3"].multi` (até 3, com "+N" se houver mais)
+- ✓ Nível de impacto — de `quizAnswers["6"].scale` → "X/10"
+- ✓ Tipo de plano ideal — derivado (se impacto ≥7 → "Plano intensivo"; 4-6 → "Plano completo"; ≤3 → "Plano de manutenção")
 
-- Move o conteúdo atual da Tela 1 (faixa etária, 5 opções) para a chave `"2"`.
-- Mantém o `toastMessage` motivacional que estava na Tela 2 atual ("✓ Excelente! Já estamos identificando...") — pode reaproveitar nessa nova Tela 2 de idade para manter o ritmo emocional. *Decisão final pode ficar a critério do conteúdo.*
-- O estágio (pré/peri/menopausa) que era a Tela 2 atual passa para Tela 3.
+### Seção 3 — Recomendação personalizada
+Bullets derivados das respostas:
+- ✓ Tempo disponível — de `quizAnswers["11"].single` (ou "Rotina flexível")
+- ✓ Foco específico — usa o sintoma principal (Tela 1)
+- ✓ Abordagem — de `quizAnswers["12"].single` (ou "Método guiado")
+- ✓ Suporte estruturado — de `quizAnswers["17"].single` (ou "Acompanhamento contínuo")
 
-### Tela 3 — "outros sintomas" (multi)
+Mensagem de transição: "Você descobriu como funcionava! Agora vem a solução..."
 
-- Título atual ("Selecione seus principais sintomas") vira:
-**"Além desse, quais outros sintomas você sente?"**
-- Subtítulo: "(Selecione todos que se aplicam — quanto mais, melhor a personalização)"
-- Filtra a opção já escolhida na Tela 1, exibindo as 8 opções restantes (mapeamento entre sintoma "principal" → opção equivalente da lista multi).
-- Continua `multiSelect: true`.
+### Seção 4 — Prova social massiva
+- **4A — 3 boxes em grid** (1 col mobile, 3 col ≥sm): 8.247 mulheres / 82% alívio em 7 dias / 21 dias de transformação média.
+- **4B — 3 cards de depoimento** (Marina 52, Beatriz 48, Carla 51), com aspas itálicas, nome, ⭐⭐⭐⭐⭐. Background `#FFF5F8`, borda `#E0E0E0`, radius 8, padding 16.
+- **4C — Rating geral**: ⭐⭐⭐⭐⭐ centralizadas + "4.8/5 baseado em 2.400+ avaliações".
 
-### Demais telas
+### Seção 5 — Garantia incondicional
+Caixa azul (`#E3F2FD`, `border-left: 4px solid #2196F3`, radius 8, padding 20):
+- 🛡️ "30 DIAS DE GARANTIA INCONDICIONAL" (bold `#2196F3`)
+- Checklist: Devolvemos 100%, Sem perguntas, Sem burocracia, Sem ressentimento.
+- Frase itálica: "Isso é nosso compromisso com você."
 
-- Telas 4–20: **sem alteração** de conteúdo.
-- `POPUP_STEPS` permanece `{4,6,7,8,10,12,15,17}` (alinhado com a nova numeração, já que apenas as Telas 1–3 mudam de papel, não de posição).
-- `TOTAL = 20` permanece.
+### Seção 6 — CTA
+- Botão `#E85D8C`, altura 56, full-width, radius 8: **"VER MINHA OFERTA PERSONALIZADA →"**
+- Hover: `#D64B7A`, shadow mais forte.
+- Sub-msg: "Sem compromisso. Escolha no seu ritmo."
+- Navega para **`/quiz/22`** (página educacional, agora step 22).
 
-## Detalhes técnicos
+### Seção 7 — Footer secundário
+- Link sublinhado `#E85D8C`: "Voltar e refazer" → `/quiz/1`.
 
-- O componente `QuizStep` já lê `optionIcons` e `optionSubtitles` para renderizar botões com emoji + subtítulo. Confirmar o estilo visual existente — se já estiver alinhado ao design system (#E85D8C, gradiente rosa, border-radius 12, hover/selected states), nenhuma mudança de CSS é necessária.
-- Persistência: as respostas já são salvas em `localStorage` por step. Renomear chaves não é necessário.
-- Para filtrar a Tela 3 com base na Tela 1, ler `localStorage.getItem("quiz-1")` dentro do `QuizStep` quando `step === "3"` e remover a opção correspondente.
+## Mudanças nos arquivos
 
-## Mapeamento Tela 1 → opção da Tela 3 a remover
+**Único arquivo alterado:** `src/routes/quiz.$step.tsx`
 
+1. Criar `function DiagnosticPage()` com toda a estrutura acima. Renderiza header com progress bar 100% e botão de voltar para `/quiz/20`.
+2. No dispatcher `QuizStep`, atualizar:
+   ```ts
+   if (step === "20") return <TimelinePage />;
+   if (step === "21") return <DiagnosticPage />;   // NOVO
+   if (step === "22") return <ResultsPage />;       // era "21"
+   if (step === "23") return <SalesPage />;         // era "22"
+   ```
+3. Em `TimelinePage`, manter o redirect para `step: "21"` (agora aponta para o DiagnosticPage — comportamento desejado).
+4. Em `ResultsPage`:
+   - Botão "Voltar" passa de `step: "20"` → `step: "21"` (volta para o diagnóstico).
+   - `goToOptions` passa de `step: "22"` → `step: "23"` (vai para sales).
+5. Em `SalesPage` e em qualquer outro lugar do arquivo que faça `navigate({ to: "/quiz/$step", params: { step: "22" } })` para a página de ofertas, trocar para `"23"`. Mesma coisa para "21" referente à página educacional (vira "22"). Vou auditar com `rg` antes de editar para pegar todas as ocorrências.
 
-| Tela 1 (sintoma principal)             | Remover da Tela 3                              |
-| -------------------------------------- | ---------------------------------------------- |
-| 🔥 Fogachos e suores noturnos          | "Fogachos/Ondas de calor"                      |
-| 😴 Insônia e cansaço crônico           | "Insônia/Sono ruim" + "Fadiga/Cansaço extremo" |
-| 😰 Humor, ansiedade e irritabilidade   | "Irritabilidade/Mudanças de humor"             |
-| ⚖️ Ganho de peso e barriga             | "Ganho de peso"                                |
-| 💇 Queda de cabelo, pele seca          | (nenhuma equivalente — não filtra)             |
-| 🆘 Todos esses sintomas ao mesmo tempo | (nenhuma — mostra a lista completa)            |
+## Fora de escopo (mencionado, mas para depois)
+- Refatoração de preços e âncoras de desconto na SalesPage.
+- Renomear "R$ 1,99" para "Teste 7 dias".
 
-
-## Arquivos alterados
-
-- `src/routes/quiz.$step.tsx` (única alteração necessária — apenas o objeto `QUESTIONS` e um pequeno filtro condicional para a Tela 3).
-
-## Fora de escopo
-
-- Export estático (`scripts/export-static.mjs`) — será regerado quando você rodar `npm run export:static:zip` após a mudança.
-- Mudanças nas Telas 4–20.  
-  
-Seu plano está **95% CORRETO**, apenas **3 ajustes pequenos**:
-
-  | #     | Ajuste                  | Seu plano                     | Recomendação                   |
-  | ----- | ----------------------- | ----------------------------- | ------------------------------ |
-  | **1** | Toast Tela 2 (idade)    | Reutilizar "identificando..." | Usar toast simples ou nenhum   |
-  | **2** | Filtro Tela 3 (insônia) | Remove só "insônia/sono"      | Remove AMBAS: insônia + fadiga |
-  | **3** | Progress bar            | Não menciona formato          | Confirmar "Pergunta X de 20"   |
+## Como testar
+1. Completar quiz até step 19 (processing) → 20 (timeline).
+2. Após o timer, deve abrir a **nova Tela 21** com recap dinâmico.
+3. Verificar que dados que faltam aparecem como "Não informado".
+4. Clicar CTA → deve ir para `/quiz/22` (educacional com vídeos).
+5. Clicar "VER OPÇÕES" na educacional → deve ir para `/quiz/23` (ofertas).
+6. Botões "voltar" funcionam em cada tela.
