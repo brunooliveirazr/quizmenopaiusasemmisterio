@@ -2288,7 +2288,7 @@ const CONSULTIVE_PLANS: ConsultivePlan[] = [
     featureHighlightCount: 2,
     cta: "QUERO A TRANSFORMAÇÃO TOTAL",
     ctaSub: "Você merece suporte máximo. 30 dias de garantia.",
-    checkoutUrl: "https://ggcheckout.app/checkout/v5/yUqnOnQmujpUEO6NhHb2",
+    checkoutUrl: "https://ggcheckout.app/checkout/v4/yUqnOnQmujpUEO6NhHb2",
     cardBg: "linear-gradient(180deg, #FFFFFF 0%, #F3E8FF 100%)",
     border: "#9333EA",
     borderWidth: 3,
