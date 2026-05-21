@@ -2893,25 +2893,25 @@ function SalesPage() {
         </div>
       </section>
 
-      {/* SEÇÃO 5 — Soft CTA */}
+      {/* SEÇÃO 8 — CTA final */}
       <section style={{ padding: "0 16px 32px" }}>
         <div
           style={{
-            background: "#FFE5ED",
-            padding: 24,
+            background: "linear-gradient(180deg, #FFE5ED 0%, #FFFFFF 100%)",
+            padding: 32,
             borderRadius: 12,
             textAlign: "center",
           }}
         >
           <h3
             style={{
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: 700,
               color: "#2C2C2C",
-              margin: "0 0 12px",
+              margin: "0 0 16px",
             }}
           >
-            Pronto para começar?
+            Qual é a sua escolha?
           </h3>
           <p
             style={{
@@ -2921,34 +2921,45 @@ function SalesPage() {
               margin: "0 0 20px",
             }}
           >
-            Escolha uma das opções acima.
+            Você pode continuar como está.
             <br />
-            Ou volte e refaça o diagnóstico se precisar de esclarecimento.
+            Ou começar SUA transformação AGORA.
             <br />
-            Você está no controle. Sem pressão.
+            Os primeiros passos são os mais importantes.
           </p>
           <button
             type="button"
             onClick={scrollToCards}
             style={{
               width: "100%",
-              height: 48,
+              height: 56,
               background: "#E85D8C",
               color: "#FFFFFF",
-              fontSize: 15,
-              fontWeight: 700,
+              fontSize: 16,
+              fontWeight: 800,
               border: "none",
-              borderRadius: 10,
+              borderRadius: 8,
               cursor: "pointer",
               transition: "background 0.3s ease",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "#D64B7A")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#E85D8C")}
           >
-            VOLTAR PARA AS OPÇÕES ↑
+            ESCOLHA SEU PLANO AGORA
           </button>
+          <p
+            style={{
+              fontSize: 12,
+              color: "#999",
+              fontStyle: "italic",
+              margin: "16px 0 0",
+            }}
+          >
+            Você merece se sentir bem de novo.
+          </p>
         </div>
       </section>
+
 
       {/* SEÇÃO 6 — Footer */}
       <footer
